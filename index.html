@@ -304,6 +304,102 @@
             color: #0a1a2f;
         }
 
+        /* === GALERIE PHOTOS AVEC ANIMATION === */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .gallery-item {
+            position: relative;
+            border-radius: 28px;
+            overflow: hidden;
+            box-shadow: 0 20px 30px -10px rgba(0,0,0,0.2);
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: transform 0.25s ease, box-shadow 0.4s;
+            border: 2px solid rgba(201, 169, 89, 0.3);
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02) translateY(-6px);
+            box-shadow: 0 30px 40px -8px #0a1a2f66;
+            border-color: #c9a959;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.3, 1.1);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.08);
+        }
+
+        .gallery-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(0deg, #0a1a2ff0, transparent);
+            color: white;
+            padding: 2rem 1rem 1rem;
+            font-weight: 500;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+            text-align: center;
+            backdrop-filter: blur(3px);
+            font-size: 1.1rem;
+            border-bottom-left-radius: 28px;
+            border-bottom-right-radius: 28px;
+        }
+
+        .gallery-item:hover .gallery-caption {
+            transform: translateY(0);
+        }
+
+        /* Lightbox / modal galerie */
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(10, 26, 47, 0.95);
+            z-index: 3000;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(8px);
+        }
+        .lightbox.active {
+            display: flex;
+        }
+        .lightbox-content {
+            max-width: 85vw;
+            max-height: 85vh;
+            border-radius: 32px;
+            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
+            border: 4px solid #c9a959;
+        }
+        .lightbox-close {
+            position: absolute;
+            top: 30px; right: 40px;
+            font-size: 4rem;
+            color: white;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 300;
+            text-shadow: 0 0 15px black;
+        }
+        .lightbox-close:hover {
+            color: #dbb86a;
+            transform: scale(1.1);
+        }
+
         /* Contact */
         .contact-block {
             background: white;
@@ -483,6 +579,7 @@
         <li><a href="#apropos">À propos</a></li>
         <li><a href="#services">Nos services</a></li>
         <li><a href="#avocats">Avocats</a></li>
+        <li><a href="#galerie">Galerie</a></li>
         <li><a href="#statistiques">Statistiques</a></li>
         <li><a href="#contact">Contact</a></li>
         <li class="rdv-btn"><a href="#" id="openRdv">Prendre rendez-vous</a></li>
@@ -602,7 +699,7 @@
         
         <!-- Maître Jealuc KANDA -->
         <div class="lawyer-card">
-            <div class="lawyer-photo" style="background-image: url('jeanluc.jpeg');">
+            <div class="lawyer-photo" style="background-image: url('jeanluc kanda (1).jpeg');">
                 <div class="photo-overlay">Maître Jealuc KANDA</div>
             </div>
             <div class="info">
@@ -643,18 +740,53 @@
             </div>
             
             <div class="lawyer-card">
-                <div class="lawyer-photo" style="background-image: url('logo bkr1.png');">
-                    <div class="photo-overlay">Notre Cabinet B.K.R</div>
+                <div class="lawyer-photo" style="background-image: url('maitre bivens et jeanluck.jpg');">
+                    <div class="photo-overlay">Maître Biens & Jean-Luc</div>
                 </div>
                 <div class="info">
-                    <h4>Cabinet B.K.R et</h4>
+                    <h4>Maître Biens & Jean-Luc</h4>
                     <div class="role">Associés</div>
-                    <p>Consultation et assistance juridique de haut niveau à Kolwezi et à Partout dans la ville de la RDC.</p>
+                    <p>Collaboration étroite pour les dossiers stratégiques.</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+<!-- ========== GALERIE PHOTOS (AVEC ANIMATION) ========== -->
+<section id="galerie">
+    <h2 class="section-title">Galerie du cabinet</h2>
+    <div class="gallery-grid">
+        <!-- élément 1 -->
+        <div class="gallery-item" onclick="openLightbox(this)">
+            <img src="les avocat du cabinet bkr (2).jpeg" alt="Équipe BKR" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23344e6c\'/%3E%3Ctext x=\'50\' y=\'160\' fill=\'%23c9a959\' font-size=\'24\' font-weight=\'bold\'%3ECabinet BKR%3C/text%3E%3C/svg%3E'">
+            <div class="gallery-caption">Équipe BKR & Associés</div>
+        </div>
+        <!-- élément 2 -->
+        <div class="gallery-item" onclick="openLightbox(this)">
+            <img src="maitre bivens et jeanluck.jpg" alt="Maîtres Biens & Jean-Luc" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23344e6c\'/%3E%3Ctext x=\'50\' y=\'160\' fill=\'%23c9a959\' font-size=\'24\'%3EAssociés%3C/text%3E%3C/svg%3E'">
+            <div class="gallery-caption">Maîtres Biens & Jean-Luc</div>
+        </div>
+        <!-- élément 3 : conférence/event -->
+        <div class="gallery-item" onclick="openLightbox(this)">
+            <img src="Maitre bivens kitungwa.jpeg" alt="Maître Biens en conférence" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23344e6c\'/%3E%3Ctext x=\'50\' y=\'160\' fill=\'%23c9a959\' font-size=\'24\'%3EAvocat plaidant%3C/text%3E%3C/svg%3E'">
+            <div class="gallery-caption">Maître Biens en audience</div>
+        </div>
+        <!-- élément 4 : salle de réunion -->
+        <div class="gallery-item" onclick="openLightbox(this)">
+            <img src="maitre jonathan kashama de cabinet.jpeg" alt="Maître Jonathan" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'400\' height=\'300\' viewBox=\'0 0 400 300\'%3E%3Crect width=\'400\' height=\'300\' fill=\'%23344e6c\'/%3E%3Ctext x=\'50\' y=\'160\' fill=\'%23c9a959\' font-size=\'24\'%3EConsultation%3C/text%3E%3C/svg%3E'">
+            <div class="gallery-caption">Consultation avec Maître Kashama</div>
+        </div>
+    </div>
+    <!-- petite note -->
+    <p style="margin-top: 2rem; font-style: italic; color: #2c3e50;">Cliquez sur une photo pour l'agrandir ✦ animations au survol</p>
+</section>
+
+<!-- Lightbox pour la galerie -->
+<div class="lightbox" id="galleryLightbox" onclick="closeLightbox(event)">
+    <span class="lightbox-close" onclick="closeLightbox(event)">&times;</span>
+    <img class="lightbox-content" id="lightboxImg" src="" alt="Agrandissement">
+</div>
 
 <!-- ========== STATISTIQUES ========== -->
 <section id="statistiques">
@@ -684,9 +816,9 @@
         </div>
         <div class="map-placeholder">
             <i class="fas fa-map" style="font-size: 3rem; color: #6883a5;"></i>
-            <p style="margin: 1rem 0;">Lualaba, Kolwezi<br> (Plan d'accès interactif bientôt disponible)</p>
+            <p style="margin: 1rem 0;">Gombe, Kinshasa<br> (Plan d'accès interactif bientôt disponible)</p>
             <div style="background: #cfddee; padding: 1rem; border-radius: 1rem;">
-                <img src="logo bkr2.png" style="max-width: 100px;">
+                <img src="logo bkr2.png" style="max-width: 100px;" onerror="this.style.display='none'">
                 <p>RD Congo</p>
             </div>
         </div>
@@ -694,10 +826,10 @@
 </section>
 
 <footer>
-    <p>© 2026 Cabinet BKR & Associés · Tous droits réservés</p>
+    <p>© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
     <p style="margin-top: 1rem;">
-        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;">
-        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;">
+        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;" onerror="this.style.display='none'">
+        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;" onerror="this.style.display='none'">
     </p>
 </footer>
 
@@ -764,6 +896,24 @@
             }
         });
     });
+
+    // Lightbox galerie
+    const lightbox = document.getElementById('galleryLightbox');
+    const lightboxImg = document.getElementById('lightboxImg');
+
+    window.openLightbox = function(element) {
+        const img = element.querySelector('img');
+        if (img) {
+            lightboxImg.src = img.src;
+            lightbox.classList.add('active');
+        }
+    }
+
+    window.closeLightbox = function(event) {
+        if (event.target === lightbox || event.target.classList.contains('lightbox-close')) {
+            lightbox.classList.remove('active');
+        }
+    }
 </script>
 </body>
 </html>
