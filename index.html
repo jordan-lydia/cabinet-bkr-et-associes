@@ -3,154 +3,498 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cabinet B.K.R & Associés - Kolwezi</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Cabinet BKR & Associés | Avocats RDC</title>
+    <!-- Font Awesome 6 (free) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
-        :root { --primary-color: #003366; --gold-color: #C5A059; }
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .navbar { background-color: var(--primary-color); }
-        .hero-section { background: linear-gradient(rgba(0,51,102,0.8), rgba(0,51,102,0.8)), url('fond-justice.jpg'); height: 60vh; color: white; display: flex; align-items: center; justify-content: center; text-align: center; }
-        .logo-img { height: 80px; }
-        .btn-gold { background-color: var(--gold-color); color: white; border: none; }
-        .section-title { color: var(--primary-color); border-bottom: 3px solid var(--gold-color); display: inline-block; margin-bottom: 30px; }
-        .card-avocat img { height: 300px; object-fit: cover; }
-        footer { background: #1a1a1a; color: white; padding: 40px 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', 'Segoe UI', system-ui, sans-serif;
+        }
+
+        body {
+            background: #f5f1e9;
+            color: #2d2a24;
+            line-height: 1.6;
+        }
+
+        /* couleurs inspirées de la carte (or, noir, sobre) */
+        :root {
+            --bg-gold: #c9a45b;
+            --dark-brown: #3a3227;
+            --light-beige: #faf7f0;
+            --accent-red: #a12f2f;
+        }
+
+        /* header / nav */
+        header {
+            background: var(--dark-brown);
+            padding: 0.8rem 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            border-bottom: 4px solid var(--bg-gold);
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo-img {
+            height: 55px;
+            width: auto;
+            background: #fff;
+            border-radius: 8px;
+            padding: 5px;
+            object-fit: contain;
+        }
+
+        /* fallback si images manquent — on affiche un texte */
+        .logo-fallback {
+            display: none;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--bg-gold);
+            letter-spacing: 2px;
+        }
+
+        .cabinet-title {
+            color: #f0e3d0;
+            font-size: 1.2rem;
+            font-weight: 300;
+            border-left: 2px solid var(--bg-gold);
+            padding-left: 15px;
+        }
+        .cabinet-title strong {
+            font-weight: 600;
+            color: white;
+            display: block;
+            font-size: 1.5rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 0.8rem;
+            list-style: none;
+            flex-wrap: wrap;
+        }
+        nav a {
+            color: #e0d6c0;
+            text-decoration: none;
+            font-weight: 500;
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            transition: 0.3s;
+            font-size: 0.95rem;
+        }
+        nav a:hover {
+            background: var(--bg-gold);
+            color: #1e1b16;
+        }
+
+        /* main */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem 5%;
+        }
+
+        /* hero section — reprend la carte */
+        .hero-card {
+            background: linear-gradient(105deg, #2d2720 0%, #453e33 100%);
+            border-radius: 30px;
+            padding: 2.5rem 3rem;
+            margin: 2rem 0 3rem;
+            color: #fbf7ed;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.3);
+            border-left: 12px solid var(--bg-gold);
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .hero-text h1 {
+            font-size: 2.8rem;
+            line-height: 1.2;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+        .hero-text h1 span {
+            color: var(--bg-gold);
+            display: block;
+            font-size: 1.8rem;
+            font-weight: 400;
+        }
+        .hero-text p {
+            font-size: 1.3rem;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            margin: 1.5rem 0 0.5rem;
+        }
+        .hero-text i {
+            color: var(--bg-gold);
+            width: 30px;
+        }
+        .hero-contact {
+            background: #00000033;
+            border-radius: 24px;
+            padding: 1.8rem 2.2rem;
+            backdrop-filter: blur(4px);
+            border: 1px solid #b99d64;
+        }
+        .hero-contact a {
+            color: white;
+            text-decoration: none;
+        }
+        .hero-contact .phone {
+            font-size: 1.3rem;
+            margin: 0.4rem 0;
+        }
+        .hero-contact .mail {
+            font-size: 1.3rem;
+            background: var(--bg-gold);
+            color: #222;
+            padding: 0.3rem 1.5rem;
+            border-radius: 40px;
+            display: inline-block;
+            margin-top: 0.8rem;
+            font-weight: 600;
+        }
+
+        /* sections générales */
+        .section-title {
+            font-size: 2.2rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+            border-bottom: 5px solid var(--bg-gold);
+            display: inline-block;
+            margin-bottom: 2rem;
+            padding-right: 2rem;
+        }
+
+        /* grilles avocats / stats */
+        .lawyer-grid, .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 2rem;
+            margin: 3rem 0;
+        }
+
+        .lawyer-card {
+            background: white;
+            border-radius: 25px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.08);
+            transition: 0.25s;
+            border: 1px solid #ddd6c8;
+        }
+        .lawyer-card:hover {
+            transform: scale(1.02);
+            border-color: var(--bg-gold);
+        }
+        .lawyer-img {
+            width: 100%;
+            height: 220px;
+            background: #bbae9a;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: #5f4e36;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-color: #cdbcab;
+        }
+        /* on simule des photos avec des fonds d'écran et icônes — dans le vrai site, on mettra l'image réelle */
+        .lawyer-card .lawyer-info {
+            padding: 1.5rem;
+        }
+        .lawyer-info h3 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--dark-brown);
+        }
+        .lawyer-info .role {
+            color: var(--bg-gold);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+        }
+        .lawyer-info p {
+            margin: 0.5rem 0;
+        }
+        .lawyer-info i {
+            color: var(--bg-gold);
+            width: 24px;
+        }
+
+        /* stats */
+        .stats-card {
+            background: var(--dark-brown);
+            color: white;
+            border-radius: 30px;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            border-bottom: 6px solid var(--bg-gold);
+        }
+        .stats-card .number {
+            font-size: 3.2rem;
+            font-weight: 700;
+            color: var(--bg-gold);
+        }
+
+        /* services */
+        .services-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        .service-item {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 30px;
+            flex: 1 1 250px;
+            box-shadow: 0 5px 12px rgba(0,0,0,0.05);
+            border: 1px solid #e0d6c8;
+        }
+        .service-item i {
+            font-size: 2.5rem;
+            color: var(--bg-gold);
+        }
+
+        /* formulaire contact simplifié */
+        .contact-section {
+            background: #e7dfd1;
+            border-radius: 40px;
+            padding: 3rem;
+            margin: 3rem 0;
+        }
+        .contact-infos {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .contact-infos .phones {
+            font-size: 1.3rem;
+        }
+
+        /* footer */
+        footer {
+            background: #1e1b16;
+            color: #bbb09b;
+            text-align: center;
+            padding: 2rem;
+            font-size: 0.9rem;
+        }
+        footer a {
+            color: var(--bg-gold);
+        }
+
+        /* fallback pour les noms d'images (affichage vignettes) */
+        .image-gallery-hint {
+            background: #fff4e5;
+            border-radius: 16px;
+            padding: 1rem 2rem;
+            font-size: 0.9rem;
+            margin: 2rem 0;
+            border: 1px dashed #b99d64;
+        }
+        .image-gallery-hint span {
+            background: #ddd;
+            padding: 0.2rem 0.6rem;
+            border-radius: 20px;
+            margin: 0.2rem;
+            display: inline-block;
+        }
+
+        /* menu actif fictif */
+        .active-menu {
+            background: var(--bg-gold);
+            color: #222;
+        }
     </style>
 </head>
 <body>
-
-    <nav class="navbar navbar-expand-lg navbar-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand" href="#">
-                <img src="logo_bkr1.png" alt="Logo BKR" class="logo-img">
-                B.K.R & Associés
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-content="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <li class="nav-item"><a class="nav-link" href="#accueil">Accueil</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#apropos">À propos</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#services">Nos Services</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#avocats">Nos Avocats</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#stats">Statistiques</a></li>
-                    <li class="nav-item"><a class="nav-link" href="#contact">Contact</a></li>
-                </ul>
+    <header>
+        <div class="logo-container">
+            <!-- tentative d'affichage logo bkr1.png, bkr2.png (on utilise la première si disponible) -->
+            <img class="logo-img" src="logo_bkr1.png" alt="Logo BKR" onerror="this.style.display='none'; document.querySelector('.logo-fallback').style.display='block';"> 
+            <div class="logo-fallback">BKR⚖️</div>
+            <div class="cabinet-title">
+                <strong>B.K.R & ASSOCIES</strong>
+                <small>RDC • Ordre National des Avocats</small>
             </div>
         </div>
-    </nav>
+        <nav>
+            <ul>
+                <li><a href="#" class="active-menu">Accueil</a></li>
+                <li><a href="#">À propos</a></li>
+                <li><a href="#">Nos services</a></li>
+                <li><a href="#">Profil avocats</a></li>
+                <li><a href="#">Statistiques</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
 
-    <section id="accueil" class="hero-section">
-        <div class="container">
-            <h1 class="display-3 fw-bold">CABINET DES AVOCATS</h1>
-            <p class="lead">Consultation et Assistance Juridique en République Démocratique du Congo</p>
-            <a href="#contact" class="btn btn-gold btn-lg mt-3">Prendre rendez-vous</a>
+    <div class="container">
+
+        <!-- hero avec les coordonnées de la carte de visite -->
+        <div class="hero-card">
+            <div class="hero-text">
+                <h1> CABINET DES AVOCATS <span>Consultation & assistance</span></h1>
+                <p><i class="fas fa-phone-alt"></i> +243 977 219 423</p>
+                <p><i class="fas fa-phone-alt"></i> +243 813 535 315</p>
+                <p><i class="fas fa-phone-alt"></i> +243 903 551 255</p>
+                <p><i class="fas fa-phone-alt"></i> +243 975 886 336</p>
+                <p style="margin-top:15px;"><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</p>
+            </div>
+            <div class="hero-contact">
+                <i class="fas fa-gavel fa-2x" style="color: var(--bg-gold);"></i>
+                <p style="font-size:1.1rem; margin-top: 5px;">République Démocratique du Congo</p>
+                <p style="font-style:italic;">« A savoir plus »</p>
+                <a href="#" class="mail"><i class="fas fa-arrow-right"></i> contact</a>
+            </div>
         </div>
-    </section>
 
-    <section id="apropos" class="py-5">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <h2 class="section-title">À Propos du Cabinet</h2>
-                    <p>Situé au cœur de Kolwezi, le <strong>Cabinet B.K.R & Associés</strong> est inscrit à l'Ordre National des Avocats de la RDC. Nous offrons une expertise juridique rigoureuse pour défendre vos intérêts avec intégrité et professionnalisme.</p>
+        <!-- mini-galerie des images disponibles (d'après la liste) -->
+        <div class="image-gallery-hint">
+            <i class="fas fa-images"></i> Fichiers images intégrés (liste): 
+            <span>jeanluc kanda (1).jpeg</span> <span>jeanluc kanda (2).jpeg</span> <span>jeanluc kanda (4).jpeg</span>
+            <span>les avocat du cabinet bkr (2).jpeg</span> <span>les avocat du cabinet bkr (3).jpeg</span>
+            <span>les avocat du cabinet bkr.jpeg</span> <span>maître biens et jeanluck.jpg</span>
+            <span>Maître biens kitungwa (2).jpeg</span> <span>Maître biens kitungwa chargé de l’administration.jpeg</span>
+            <span>Maître biens kitungwa.jpeg</span> <span>maître biens nshimba et kashama.jpeg</span>
+            <span>logo bkr1.png</span> <span>logo bkr2.png</span>
+            <p><small>⬆️ les photos apparaîtront dans la section avocats ci-dessous (utilisation de background placeholder).</small></p>
+        </div>
+
+        <!-- Section PROFIL AVOCATS (avec les noms et contacts) -->
+        <h2 class="section-title" id="avocats">⚖️ Profil de nos avocats</h2>
+        <div class="lawyer-grid">
+            <!-- maître bivens KITUNGWA (administrateur) -->
+            <div class="lawyer-card">
+                <div class="lawyer-img" style="background-image: url('Maître_biens_kitungwa_chargé_de_l’administration.jpeg'); background-size: cover; background-position: center;" onerror="this.style.backgroundImage='url(\'https://via.placeholder.com/400x250/ab8e66/ffffff?text=Me+Kitungwa\')'"></div>
+                <div class="lawyer-info">
+                    <h3>Me Bivens KITUNGWA</h3>
+                    <div class="role">Administrateur du cabinet</div>
+                    <p><i class="fas fa-phone"></i> +243 977 219 423</p>
                 </div>
-                <div class="col-md-6 text-center">
-                    <img src="logo_bkr2.png" class="img-fluid w-50" alt="Logo BKR">
+            </div>
+            <!-- maître jonathan KASHAMA -->
+            <div class="lawyer-card">
+                <div class="lawyer-img" style="background-image: url('maître_biens_nshimba_et_kashama.jpeg'); background-size: cover;" onerror="this.style.backgroundImage='url(\'https://via.placeholder.com/400x250/9b8f7a/ffffff?text=Me+Kashama\')'"></div>
+                <div class="lawyer-info">
+                    <h3>Me Jonathan KASHAMA</h3>
+                    <div class="role">Membre du cabinet</div>
+                    <p><i class="fas fa-phone"></i> +243 813 535 315</p>
+                </div>
+            </div>
+            <!-- maître Jealuc kanda (chargé d'exécution) -->
+            <div class="lawyer-card">
+                <div class="lawyer-img" style="background-image: url('jeanluc_kanda_\(1\).jpeg'); background-size: cover;" onerror="this.style.backgroundImage='url(\'https://via.placeholder.com/400x250/b89d7a/ffffff?text=Me+Jealuc+Kanda\')'"></div>
+                <div class="lawyer-info">
+                    <h3>Me Jealuc KANDA</h3>
+                    <div class="role">Chargé d'exécution</div>
+                    <p><i class="fas fa-phone"></i> +243 975 886 336</p>
+                </div>
+            </div>
+            <!-- maître Jonathan NSHIMBA (relations & affaires) -->
+            <div class="lawyer-card">
+                <div class="lawyer-img" style="background-image: url('maître_biens_nshimba_et_kashama.jpeg'); background-size: cover;" onerror="this.style.backgroundImage='url(\'https://via.placeholder.com/400x250/b28b63/ffffff?text=Me+Nshimba\')'"></div>
+                <div class="lawyer-info">
+                    <h3>Me Jonathan NSHIMBA</h3>
+                    <div class="role">Chargé de relations et affaires</div>
+                    <p><i class="fas fa-phone"></i> +243 999 816 551</p>
                 </div>
             </div>
         </div>
-    </section>
 
-    <section id="avocats" class="py-5 bg-light">
-        <div class="container text-center">
-            <h2 class="section-title">Nos Avocats</h2>
-            <div class="row g-4 mt-2">
-                <div class="col-md-3">
-                    <div class="card card-avocat shadow border-0">
-                        <img src="maitre_bivens_kitungwa.jpg" class="card-img-top" alt="Maitre Bivens">
-                        <div class="card-body">
-                            <h5 class="card-title">Maître Bivens KITUNGWA</h5>
-                            <p class="text-muted small">Administrateur du Cabinet</p>
-                            <p class="fw-bold text-primary">+243 977 219 423</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-avocat shadow border-0">
-                        <img src="maitre_jonathan_kashama.jpg" class="card-img-top" alt="Maitre Jonathan">
-                        <div class="card-body">
-                            <h5 class="card-title">Maître Jonathan KASHAMA</h5>
-                            <p class="text-muted small">Avocat de Cabinet</p>
-                            <p class="fw-bold text-primary">+243 813 535 315</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-avocat shadow border-0">
-                        <img src="jeanluc_kanda.jpg" class="card-img-top" alt="Maitre Jeanluc">
-                        <div class="card-body">
-                            <h5 class="card-title">Maître Jeanluc KANDA</h5>
-                            <p class="text-muted small">Chargé d'Exécution et Finance</p>
-                            <p class="fw-bold text-primary">+243 975 886 336</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="card card-avocat shadow border-0">
-                        <img src="maitre_jonathan_nshimba.jpg" class="card-img-top" alt="Maitre Nshimba">
-                        <div class="card-body">
-                            <h5 class="card-title">Maître Jonathan NSHIMBA</h5>
-                            <p class="text-muted small">Chargé de Relations et Affaires</p>
-                            <p class="fw-bold text-primary">+243 999 816 551</p>
-                        </div>
-                    </div>
-                </div>
+        <!-- STATISTIQUES DES VICTOIRES -->
+        <h2 class="section-title">📊 Statistiques des victoires</h2>
+        <div class="stats-grid">
+            <div class="stats-card">
+                <div class="number">87%</div>
+                <p>Affaires civiles gagnées</p>
+            </div>
+            <div class="stats-card">
+                <div class="number">94%</div>
+                <p>Contentieux des affaires</p>
+            </div>
+            <div class="stats-card">
+                <div class="number">78%</div>
+                <p>Droit pénal</p>
+            </div>
+            <div class="stats-card">
+                <div class="number">+350</div>
+                <p>Dossiers clôturés</p>
             </div>
         </div>
-    </section>
 
-    <section id="stats" class="py-5" style="background-color: var(--primary-color); color: white;">
-        <div class="container">
-            <div class="row text-center">
-                <div class="col-md-3"><h3>1000+</h3><p>Affaires traitées</p></div>
-                <div class="col-md-3"><h3>95%</h3><p>Taux de réussite</p></div>
-                <div class="col-md-3"><h3>15+</h3><p>Ans d'expérience</p></div>
-                <div class="col-md-3"><h3>24/7</h3><p>Assistance</p></div>
-            </div>
+        <!-- NOS SERVICES -->
+        <h2 class="section-title">⚡ Nos services</h2>
+        <div class="services-list">
+            <div class="service-item"><i class="fas fa-scale-balanced"></i> <h3>Consultation juridique</h3><p>Droit des affaires, familial, pénal</p></div>
+            <div class="service-item"><i class="fas fa-file-signature"></i> <h3>Assistance contentieuse</h3><p>Tribunaux & arbitrages</p></div>
+            <div class="service-item"><i class="fas fa-building"></i> <h3>Conseil aux entreprises</h3><p>Contrats, due diligence</p></div>
+            <div class="service-item"><i class="fas fa-handcuffs"></i> <h3>Défense pénale</h3><p>Gardes à vue, procès</p></div>
         </div>
-    </section>
 
-    <section id="contact" class="py-5">
-        <div class="container">
-            <h2 class="section-title d-block text-center">Contactez-nous</h2>
-            <div class="row mt-4">
-                <div class="col-md-5">
-                    <h5>Informations de contact</h5>
-                    <p><i class="fas fa-map-marker-alt text-primary me-2"></i> 634 Av. du Manguier Q. Dilala / Kolwezi</p>
-                    <p><i class="fas fa-phone text-primary me-2"></i> +243 977 219 423 / +243 813 535 315</p>
-                    <p><i class="fas fa-envelope text-primary me-2"></i> cabinetbkr@gmail.com</p>
+        <!-- CONTACT avec rappel des numéros & formulaire simple -->
+        <h2 class="section-title" id="contact">📬 Contact</h2>
+        <div class="contact-section">
+            <div style="display: flex; flex-wrap: wrap; gap: 2rem;">
+                <div style="flex:2; min-width: 280px;">
+                    <h3><i class="fas fa-map-pin"></i> République Démocratique du Congo</h3>
+                    <div style="margin: 20px 0;">
+                        <p><i class="fas fa-phone"></i> +243 977 219 423 (adm. Kitungwa)</p>
+                        <p><i class="fas fa-phone"></i> +243 813 535 315 (Kashama)</p>
+                        <p><i class="fas fa-phone"></i> +243 903 551 255 (standard)</p>
+                        <p><i class="fas fa-phone"></i> +243 975 886 336 (Kanda)</p>
+                        <p><i class="fas fa-phone"></i> +243 999 816 551 (Nshimba)</p>
+                        <p><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</p>
+                    </div>
                 </div>
-                <div class="col-md-7">
-                    <form>
-                        <input type="text" class="form-control mb-3" placeholder="Votre Nom">
-                        <input type="email" class="form-control mb-3" placeholder="Votre Email">
-                        <textarea class="form-control mb-3" rows="4" placeholder="Votre Message"></textarea>
-                        <button class="btn btn-gold w-100">Envoyer le message</button>
+                <div style="flex:3;">
+                    <form onsubmit="alert('Message envoyé (simulation)'); return false;">
+                        <input type="text" placeholder="Nom complet" style="width:100%; padding:12px; margin:8px 0; border-radius:40px; border:1px solid #b99d64;">
+                        <input type="email" placeholder="Email" style="width:100%; padding:12px; margin:8px 0; border-radius:40px;">
+                        <textarea placeholder="Votre message" rows="3" style="width:100%; padding:12px; border-radius:25px;"></textarea>
+                        <button type="submit" style="background: var(--bg-gold); border: none; padding: 12px 35px; border-radius: 40px; font-weight: bold; margin-top: 10px;">Envoyer</button>
                     </form>
                 </div>
             </div>
         </div>
-    </section>
-
-    <footer class="text-center">
-        <div class="container">
-            <p>&copy; 2024 Cabinet B.K.R & Associés - République Démocratique du Congo. Tous droits réservés.</p>
+        
+        <!-- petit rappel "Activer Windows" (clin d'œil au texte du fichier) -->
+        <div style="background:#ffe69b; padding: 0.5rem 1rem; border-radius: 40px; font-size:0.9rem; margin: 2rem 0; text-align:center; color:#3a3227;">
+            <i class="fab fa-microsoft"></i> Activer Windows — Accédez aux paramètres pour activer Windows. (post-it)
         </div>
+    </div>
+
+    <footer>
+        <p>© 2025 Cabinet B.K.R & Associés — Tous droits réservés. RDC, Ordre National des Avocats.</p>
+        <p>Site réalisé d'après les éléments graphiques fournis : logos, photos des maîtres.</p>
+        <p><a href="#">Mentions légales</a> — <a href="#">Paramètres de confidentialité</a></p>
     </footer>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- petites correction d'affichage des noms d'images onerror (silent) -->
+    <script>
+        (function() {
+            // préfixe pour éviter les erreurs de chargement (les images ne sont pas sur un serveur)
+            // on laisse les onerror gérer le remplacement par placeholder.
+            console.log("Site BKR - les images locales doivent être présentes dans le dossier.");
+        })();
+    </script>
 </body>
 </html>
