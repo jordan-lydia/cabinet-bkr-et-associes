@@ -330,7 +330,7 @@
             color: #dbb86a;
         }
 
-        /* Profil des avocats - avec images GitHub */
+        /* Profil des avocats */
         .lawyers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -783,7 +783,7 @@
             background: #c82333;
         }
 
-        /* Section d'upload - UNIQUEMENT VISIBLE POUR L'ADMIN */
+        /* Section d'upload */
         .upload-section {
             display: none;
             margin-bottom: 2rem;
@@ -958,7 +958,7 @@
             border: 1px dashed #a0b3c9;
         }
 
-        /* Rendez-vous modal (simplifié) */
+        /* Rendez-vous modal */
         .modal {
             display: none;
             position: fixed;
@@ -1061,6 +1061,93 @@
             color: #c9a959;
         }
 
+        /* Indicateur de chargement */
+        .loading-spinner {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.8);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            z-index: 7000;
+            display: none;
+        }
+
+        .loading-spinner.active {
+            display: block;
+        }
+
+        /* Modal configuration GitHub */
+        .github-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 8000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .github-modal.active {
+            display: flex;
+        }
+
+        .github-modal-content {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 32px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+        }
+
+        .github-modal-content h3 {
+            color: #0a1a2f;
+            margin-bottom: 1.5rem;
+        }
+
+        .github-form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .github-form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #0a1a2f;
+        }
+
+        .github-form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+
+        .github-status {
+            margin-top: 1rem;
+            padding: 1rem;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .github-status.success {
+            background: #d4edda;
+            color: #155724;
+            display: block;
+        }
+
+        .github-status.error {
+            background: #f8d7da;
+            color: #721c24;
+            display: block;
+        }
+
         /* === RESPONSIVE MENU HAMBURGER === */
         @media (max-width: 900px) {
             .menu-toggle {
@@ -1109,6 +1196,11 @@
 </head>
 <body>
 
+<!-- ========== INDICATEUR DE CHARGEMENT ========== -->
+<div class="loading-spinner" id="loadingSpinner">
+    <i class="fas fa-spinner fa-spin"></i> Chargement...
+</div>
+
 <!-- ========== TOAST NOTIFICATION ========== -->
 <div class="toast" id="toast">
     <i class="fas fa-check-circle"></i>
@@ -1130,7 +1222,44 @@
         </div>
         <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') checkAdminPassword()">
         <button class="admin-btn" onclick="checkAdminPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(Mot de passe par défaut : admin123)</p>
+        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(pour accéder à la page admin il obligatoirement d'entrer le mot de passe)</p>
+    </div>
+</div>
+
+<!-- ========== MODAL CONFIGURATION GITHUB ========== -->
+<div class="github-modal" id="githubModal">
+    <div class="github-modal-content">
+        <h3><i class="fab fa-github"></i> Configuration GitHub</h3>
+        <p style="margin-bottom: 1.5rem; color: #666;">Configurez votre dépôt GitHub pour sauvegarder les données</p>
+        
+        <div class="github-form-group">
+            <label>Token GitHub</label>
+            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <small style="color: #666;">Créez un token sur GitHub > Settings > Developer settings > Personal access tokens</small>
+        </div>
+        
+        <div class="github-form-group">
+            <label>Nom d'utilisateur GitHub</label>
+            <input type="text" id="githubUsername" placeholder="votre-nom-utilisateur">
+        </div>
+        
+        <div class="github-form-group">
+            <label>Nom du dépôt</label>
+            <input type="text" id="githubRepo" placeholder="bkr-avocats">
+        </div>
+        
+        <div class="github-form-group">
+            <label>Branche</label>
+            <input type="text" id="githubBranch" value="main" placeholder="main">
+        </div>
+        
+        <div class="github-status" id="githubStatus"></div>
+        
+        <div class="github-form-group">
+            <button class="admin-panel-btn" onclick="testGithubConnection()">Tester la connexion</button>
+            <button class="admin-panel-btn" onclick="saveGithubConfig()">Sauvegarder</button>
+            <button class="admin-panel-btn danger" onclick="closeGithubModal()">Fermer</button>
+        </div>
     </div>
 </div>
 
@@ -1139,6 +1268,17 @@
     <div class="admin-panel-header">
         <h3><i class="fas fa-cog"></i> Panneau d'administration</h3>
         <button class="close-panel" onclick="toggleAdminPanel()">&times;</button>
+    </div>
+    
+    <div class="admin-panel-section">
+        <h4><i class="fab fa-github"></i> GitHub</h4>
+        <p id="githubConnectionStatus" style="color: #ff6b6b;">🔴 Non connecté</p>
+        <button class="admin-panel-btn" onclick="openGithubModal()">
+            <i class="fab fa-github"></i> Configurer GitHub
+        </button>
+        <button class="admin-panel-btn" onclick="syncWithGithub()">
+            <i class="fas fa-sync"></i> Synchroniser maintenant
+        </button>
     </div>
     
     <div class="admin-panel-section">
@@ -1176,6 +1316,9 @@
         <button class="admin-panel-btn" onclick="reorderLawyers()">
             <i class="fas fa-arrows-alt"></i> Réorganiser les avocats
         </button>
+        <button class="admin-panel-btn" onclick="resetLawyersToDefault()">
+            <i class="fas fa-undo-alt"></i> Restaurer les avocats par défaut
+        </button>
     </div>
     
     <div class="admin-panel-section">
@@ -1210,12 +1353,15 @@
     <div class="admin-panel-section">
         <h4><i class="fas fa-database"></i> Sauvegarde</h4>
         <button class="admin-panel-btn" onclick="exportData()">
-            <i class="fas fa-download"></i> Exporter les données
+            <i class="fas fa-download"></i> Exporter toutes les données
         </button>
         <button class="admin-panel-btn" onclick="document.getElementById('importFile').click()">
             <i class="fas fa-upload"></i> Importer les données
         </button>
         <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+        <button class="admin-panel-btn" onclick="clearLocalData()">
+            <i class="fas fa-trash-alt"></i> Effacer les données locales
+        </button>
     </div>
 </div>
 
@@ -1432,7 +1578,7 @@
 <section id="avocats">
     <h2 class="section-title" id="avocatsTitle" ondblclick="if(window.editMode) editText(this)">Nos avocats</h2>
     <div class="lawyers-grid" id="lawyersGrid">
-        <!-- Les avocats seront chargés dynamiquement ici -->
+        <!-- Les avocats seront chargés dynamiquement depuis GitHub -->
     </div>
 </section>
 
@@ -1453,7 +1599,7 @@
     
     <div class="carousel-container">
         <div class="carousel-track" id="carouselTrack">
-            <!-- Les slides seront ajoutés dynamiquement ici -->
+            <!-- Les slides seront ajoutés dynamiquement depuis GitHub -->
         </div>
         
         <!-- Boutons de navigation -->
@@ -1509,7 +1655,7 @@
         </div>
         <div class="map-placeholder">
             <i class="fas fa-map" style="font-size: 3rem; color: #6883a5;"></i>
-            <p style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Gombe, Kinshasa<br> (Plan d'accès interactif bientôt disponible)</p>
+            <p style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Kolwezi, Lualaba<br> (Plan d'accès interactif bientôt disponible)</p>
             <div style="background: #cfddee; padding: 1rem; border-radius: 1rem;">
                 <img src="logo bkr2.png" style="max-width: 100px;" id="footerLogo">
                 <p ondblclick="if(window.editMode) editText(this)">RD Congo</p>
@@ -1542,8 +1688,20 @@
     let lawyers = [];
     let currentEditLawyerId = null;
     
-    // Mot de passe admin (à changer selon vos besoins)
+    // Configuration GitHub
+    let githubConfig = {
+        token: '',
+        username: '',
+        repo: '',
+        branch: 'main'
+    };
+    
+    // Mot de passe admin
     const ADMIN_PASSWORD = "admin123";
+    
+    // Clé pour le stockage local
+    const STORAGE_KEY = 'bkr_website_data';
+    const GITHUB_CONFIG_KEY = 'bkr_github_config';
     
     // Menu hamburger
     const menuToggle = document.getElementById('menuToggle');
@@ -1608,7 +1766,381 @@
         });
     });
     
-    // Fonctions admin
+    // ========== FONCTIONS GITHUB ==========
+    
+    // Charger la configuration GitHub
+    function loadGithubConfig() {
+        const saved = localStorage.getItem(GITHUB_CONFIG_KEY);
+        if (saved) {
+            try {
+                githubConfig = JSON.parse(saved);
+                updateGithubConnectionStatus();
+            } catch (e) {
+                console.error('Erreur chargement config GitHub');
+            }
+        }
+    }
+    
+    // Sauvegarder la configuration GitHub
+    function saveGithubConfig() {
+        githubConfig = {
+            token: document.getElementById('githubToken').value,
+            username: document.getElementById('githubUsername').value,
+            repo: document.getElementById('githubRepo').value,
+            branch: document.getElementById('githubBranch').value || 'main'
+        };
+        
+        localStorage.setItem(GITHUB_CONFIG_KEY, JSON.stringify(githubConfig));
+        updateGithubConnectionStatus();
+        closeGithubModal();
+        showToast('Configuration GitHub sauvegardée');
+    }
+    
+    // Mettre à jour le statut de connexion GitHub
+    function updateGithubConnectionStatus() {
+        const status = document.getElementById('githubConnectionStatus');
+        if (githubConfig.token && githubConfig.username && githubConfig.repo) {
+            status.innerHTML = '🟢 Connecté à GitHub';
+            status.style.color = '#28a745';
+        } else {
+            status.innerHTML = '🔴 Non connecté';
+            status.style.color = '#ff6b6b';
+        }
+    }
+    
+    // Ouvrir le modal GitHub
+    function openGithubModal() {
+        document.getElementById('githubToken').value = githubConfig.token || '';
+        document.getElementById('githubUsername').value = githubConfig.username || '';
+        document.getElementById('githubRepo').value = githubConfig.repo || '';
+        document.getElementById('githubBranch').value = githubConfig.branch || 'main';
+        document.getElementById('githubModal').classList.add('active');
+    }
+    
+    // Fermer le modal GitHub
+    function closeGithubModal() {
+        document.getElementById('githubModal').classList.remove('active');
+    }
+    
+    // Tester la connexion GitHub
+    async function testGithubConnection() {
+        const token = document.getElementById('githubToken').value;
+        const username = document.getElementById('githubUsername').value;
+        const repo = document.getElementById('githubRepo').value;
+        
+        if (!token || !username || !repo) {
+            showGithubStatus('Veuillez remplir tous les champs', 'error');
+            return;
+        }
+        
+        showLoading(true);
+        
+        try {
+            const response = await fetch(`https://api.github.com/repos/${username}/${repo}`, {
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            
+            if (response.ok) {
+                showGithubStatus('Connexion réussie !', 'success');
+            } else {
+                showGithubStatus('Erreur de connexion. Vérifiez vos identifiants.', 'error');
+            }
+        } catch (error) {
+            showGithubStatus('Erreur réseau', 'error');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    // Afficher le statut dans le modal GitHub
+    function showGithubStatus(message, type) {
+        const status = document.getElementById('githubStatus');
+        status.className = `github-status ${type}`;
+        status.textContent = message;
+    }
+    
+    // Synchroniser avec GitHub
+    async function syncWithGithub() {
+        if (!githubConfig.token || !githubConfig.username || !githubConfig.repo) {
+            alert('Veuillez d\'abord configurer GitHub');
+            openGithubModal();
+            return;
+        }
+        
+        showLoading(true);
+        
+        try {
+            // Récupérer les données actuelles
+            const data = {
+                lawyers: lawyers,
+                pdfs: pdfDocuments,
+                texts: getAllTexts(),
+                images: await getAllImages(),
+                colors: {
+                    primary: document.getElementById('primaryColor').value,
+                    secondary: document.getElementById('secondaryColor').value
+                },
+                lastUpdate: new Date().toISOString()
+            };
+            
+            // Convertir en JSON
+            const jsonData = JSON.stringify(data, null, 2);
+            
+            // Vérifier si le fichier existe déjà
+            const fileResponse = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json?ref=${githubConfig.branch}`, {
+                headers: {
+                    'Authorization': `token ${githubConfig.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            
+            let sha = null;
+            if (fileResponse.ok) {
+                const fileData = await fileResponse.json();
+                sha = fileData.sha;
+            }
+            
+            // Préparer la requête
+            const requestBody = {
+                message: `Mise à jour des données - ${new Date().toLocaleString()}`,
+                content: btoa(unescape(encodeURIComponent(jsonData))),
+                branch: githubConfig.branch
+            };
+            
+            if (sha) {
+                requestBody.sha = sha;
+            }
+            
+            // Envoyer à GitHub
+            const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json`, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${githubConfig.token}`,
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/vnd.github.v3+json'
+                },
+                body: JSON.stringify(requestBody)
+            });
+            
+            if (response.ok) {
+                showToast('Données synchronisées avec GitHub !');
+            } else {
+                const error = await response.json();
+                showToast('Erreur de synchronisation : ' + error.message);
+            }
+            
+        } catch (error) {
+            console.error('Erreur synchronisation:', error);
+            showToast('Erreur de synchronisation');
+        } finally {
+            showLoading(false);
+        }
+    }
+    
+    // Charger les données depuis GitHub
+    async function loadFromGithub() {
+        if (!githubConfig.token || !githubConfig.username || !githubConfig.repo) {
+            loadFromLocalStorage();
+            return;
+        }
+        
+        showLoading(true);
+        
+        try {
+            const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json?ref=${githubConfig.branch}`, {
+                headers: {
+                    'Authorization': `token ${githubConfig.token}`,
+                    'Accept': 'application/vnd.github.v3+json'
+                }
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
+                
+                // Charger les avocats
+                if (content.lawyers) {
+                    lawyers = content.lawyers;
+                }
+                
+                // Charger les PDFs
+                if (content.pdfs) {
+                    pdfDocuments = content.pdfs;
+                }
+                
+                // Charger les textes
+                if (content.texts) {
+                    applyTexts(content.texts);
+                }
+                
+                // Charger les images
+                if (content.images) {
+                    applyImages(content.images);
+                }
+                
+                // Charger les couleurs
+                if (content.colors) {
+                    if (content.colors.primary) {
+                        document.getElementById('primaryColor').value = content.colors.primary;
+                        changePrimaryColor(content.colors.primary);
+                    }
+                    if (content.colors.secondary) {
+                        document.getElementById('secondaryColor').value = content.colors.secondary;
+                        changeSecondaryColor(content.colors.secondary);
+                    }
+                }
+                
+                showToast('Données chargées depuis GitHub');
+            } else {
+                loadFromLocalStorage();
+            }
+            
+        } catch (error) {
+            console.error('Erreur chargement GitHub:', error);
+            loadFromLocalStorage();
+        } finally {
+            showLoading(false);
+            displayLawyers();
+            updateCarousel();
+            updateLawyerSelect();
+        }
+    }
+    
+    // ========== FONCTIONS DE STOCKAGE LOCAL ==========
+    
+    // Sauvegarder dans le localStorage
+    function saveToLocalStorage() {
+        const data = {
+            lawyers: lawyers,
+            pdfs: pdfDocuments,
+            texts: getAllTexts(),
+            colors: {
+                primary: document.getElementById('primaryColor').value,
+                secondary: document.getElementById('secondaryColor').value
+            },
+            lastUpdate: new Date().toISOString()
+        };
+        
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+    }
+    
+    // Charger depuis le localStorage
+    function loadFromLocalStorage() {
+        const saved = localStorage.getItem(STORAGE_KEY);
+        if (saved) {
+            try {
+                const data = JSON.parse(saved);
+                
+                if (data.lawyers) lawyers = data.lawyers;
+                if (data.pdfs) pdfDocuments = data.pdfs;
+                if (data.texts) applyTexts(data.texts);
+                if (data.colors) {
+                    if (data.colors.primary) {
+                        document.getElementById('primaryColor').value = data.colors.primary;
+                        changePrimaryColor(data.colors.primary);
+                    }
+                    if (data.colors.secondary) {
+                        document.getElementById('secondaryColor').value = data.colors.secondary;
+                        changeSecondaryColor(data.colors.secondary);
+                    }
+                }
+            } catch (e) {
+                console.error('Erreur chargement localStorage');
+            }
+        }
+        
+        // Si pas d'avocats, charger les avocats par défaut
+        if (!lawyers || lawyers.length === 0) {
+            loadDefaultLawyers();
+        }
+    }
+    
+    // Récupérer tous les textes
+    function getAllTexts() {
+        const texts = {};
+        document.querySelectorAll('[id]').forEach(el => {
+            if (el.id && el.innerText) {
+                texts[el.id] = el.innerText;
+            }
+        });
+        return texts;
+    }
+    
+    // Appliquer les textes
+    function applyTexts(texts) {
+        Object.keys(texts).forEach(id => {
+            const el = document.getElementById(id);
+            if (el) {
+                el.innerText = texts[id];
+            }
+        });
+    }
+    
+    // Récupérer toutes les images
+    async function getAllImages() {
+        const images = {};
+        const imageElements = document.querySelectorAll('img[id]');
+        imageElements.forEach(img => {
+            if (img.id && img.src) {
+                images[img.id] = img.src;
+            }
+        });
+        return images;
+    }
+    
+    // Appliquer les images
+    function applyImages(images) {
+        Object.keys(images).forEach(id => {
+            const el = document.getElementById(id);
+            if (el && el.tagName === 'IMG') {
+                el.src = images[id];
+            }
+        });
+    }
+    
+    // Charger les avocats par défaut
+    function loadDefaultLawyers() {
+        lawyers = [
+            {
+                id: 1,
+                name: "Maître bivens KITUNGWA",
+                role: "Administrateur du cabinet",
+                desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.",
+                phone: "+243 977 219 423",
+                photo: "Maitre bivens kitungwa.jpeg"
+            },
+            {
+                id: 2,
+                name: "Maître Jonathan KASHAMA",
+                role: "Membre du cabinet",
+                desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.",
+                phone: "+243 813 535 315",
+                photo: "maitre jonathan kashama de cabinet.jpeg"
+            },
+            {
+                id: 3,
+                name: "Maître Jealuc KANDA",
+                role: "Chargé d'exécution",
+                desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires.",
+                phone: "+243 975 886 336",
+                photo: "jeanluc.jpeg"
+            },
+            {
+                id: 4,
+                name: "Maître Jonathan NSHIMBA",
+                role: "Chargé de relations et affaires",
+                desc: "Gestion des partenariats, relations clients et développement des affaires juridiques.",
+                phone: "+243 999 816 551",
+                photo: "Maitre jonathan nshima charger des relation et des affaire.jpeg"
+            }
+        ];
+    }
+    
+    // ========== FONCTIONS ADMIN ==========
+    
     function toggleAdminLogin() {
         if (!isAdminLogged) {
             document.getElementById('adminModal').classList.add('active');
@@ -1622,8 +2154,6 @@
             document.getElementById('uploadSection').classList.remove('active');
             document.getElementById('adminPanel').classList.remove('active');
             showToast('Déconnexion réussie');
-            // Cacher tous les boutons admin
-            document.querySelectorAll('.admin-delete-btn, .admin-edit-photo-btn').forEach(btn => btn.remove());
         }
     }
     
@@ -1638,6 +2168,7 @@
             document.getElementById('adminPassword').value = '';
             showToast('Connexion réussie');
             toggleAdminPanel();
+            displayLawyers(); // Reafficher pour montrer les boutons admin
         } else {
             alert('Mot de passe incorrect !');
         }
@@ -1661,149 +2192,33 @@
         }
     }
     
-    function editText(element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const currentText = element.innerText;
-        const newText = prompt('Modifier le texte :', currentText);
-        
-        if (newText !== null && newText.trim() !== '') {
-            element.innerText = newText;
-            showToast('Texte modifié');
-            saveLawyersToStorage();
+    async function saveAllChanges() {
+        showLoading(true);
+        saveToLocalStorage();
+        if (githubConfig.token) {
+            await syncWithGithub();
+        } else {
+            showToast('Modifications sauvegardées localement');
         }
-    }
-    
-    function changeImage(element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                element.src = event.target.result;
-                showToast('Image modifiée');
-                saveLawyersToStorage();
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-    
-    function changeLogo(input) {
-        if (!isAdminLogged) return;
-        
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('logo').src = event.target.result;
-            showToast('Logo modifié');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function changeHeroImage(input) {
-        if (!isAdminLogged) return;
-        
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('hero').style.backgroundImage = `url('${event.target.result}')`;
-            showToast('Image d\'arrière-plan modifiée');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function changePrimaryColor(color) {
-        document.documentElement.style.setProperty('--primary-color', color);
-        document.querySelectorAll('.btn, .rdv-btn a, .carousel-dot.active, .admin-panel-btn').forEach(el => {
-            el.style.backgroundColor = color;
-        });
-    }
-    
-    function changeSecondaryColor(color) {
-        document.documentElement.style.setProperty('--secondary-color', color);
-        document.querySelectorAll('nav, .hero, .stats-container').forEach(el => {
-            el.style.backgroundColor = color;
-        });
-    }
-    
-    function saveAllChanges() {
-        const changes = {};
-        document.querySelectorAll('[id]').forEach(el => {
-            if (el.id && el.innerText) {
-                changes[el.id] = el.innerText;
-            }
-        });
-        
-        localStorage.setItem('bkrWebsiteData', JSON.stringify(changes));
-        saveLawyersToStorage();
-        showToast('Toutes les modifications ont été sauvegardées');
+        showLoading(false);
     }
     
     function resetChanges() {
         if (confirm('Êtes-vous sûr de vouloir annuler toutes les modifications ?')) {
-            localStorage.removeItem('bkrWebsiteData');
-            localStorage.removeItem('bkrLawyers');
+            localStorage.removeItem(STORAGE_KEY);
             location.reload();
         }
     }
     
-    // Gestion des avocats
-    function loadLawyers() {
-        const saved = localStorage.getItem('bkrLawyers');
-        if (saved) {
-            try {
-                lawyers = JSON.parse(saved);
-            } catch (e) {
-                lawyers = [];
-            }
-        } else {
-            // Avocats par défaut
-            lawyers = [
-                {
-                    id: 1,
-                    name: "Maître bivens KITUNGWA",
-                    role: "Administrateur du cabinet",
-                    desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.",
-                    phone: "+243 977 219 423",
-                    photo: "Maitre bivens kitungwa.jpeg"
-                },
-                {
-                    id: 2,
-                    name: "Maître Jonathan KASHAMA",
-                    role: "Membre du cabinet",
-                    desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.",
-                    phone: "+243 813 535 315",
-                    photo: "maitre jonathan kashama de cabinet.jpeg"
-                },
-                {
-                    id: 3,
-                    name: "Maître Jealuc KANDA",
-                    role: "Chargé d'exécution",
-                    desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires.",
-                    phone: "+243 975 886 336",
-                    photo: "jeanluc.jpeg"
-                },
-                {
-                    id: 4,
-                    name: "Maître Jonathan NSHIMBA",
-                    role: "Chargé de relations et affaires",
-                    desc: "Gestion des partenariats, relations clients et développement des affaires juridiques.",
-                    phone: "+243 999 816 551",
-                    photo: "Maitre jonathan nshima charger des relation et des affaire.jpeg"
-                }
-            ];
+    function clearLocalData() {
+        if (confirm('Effacer toutes les données locales ? Cette action est irréversible.')) {
+            localStorage.removeItem(STORAGE_KEY);
+            showToast('Données locales effacées');
+            setTimeout(() => location.reload(), 1500);
         }
-        displayLawyers();
     }
     
-    function saveLawyersToStorage() {
-        localStorage.setItem('bkrLawyers', JSON.stringify(lawyers));
-    }
+    // ========== GESTION DES AVOCATS ==========
     
     function displayLawyers() {
         const grid = document.getElementById('lawyersGrid');
@@ -1812,26 +2227,28 @@
         lawyers.forEach((lawyer, index) => {
             const card = document.createElement('div');
             card.className = 'lawyer-card';
-            card.dataset.lawyerId = lawyer.id;
+            card.dataset.lawyerId = lawyer.id || index;
+            
+            const photoUrl = lawyer.photo && lawyer.photo.startsWith('data:') ? lawyer.photo : lawyer.photo;
             
             card.innerHTML = `
-                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}');" 
-                     onclick="if(window.isAdminLogged && window.editMode) changeLawyerPhoto(${lawyer.id})">
+                <div class="lawyer-photo" style="background-image: url('${photoUrl || 'https://via.placeholder.com/400x300?text=Photo'}');" 
+                     onclick="if(window.isAdminLogged && window.editMode) changeLawyerPhoto(${lawyer.id || index})">
                     <div class="photo-overlay">${lawyer.name}</div>
                     ${isAdminLogged ? `
-                        <div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id})">
+                        <div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id || index})">
                             <i class="fas fa-trash"></i>
                         </div>
-                        <div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id})">
+                        <div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id || index})">
                             <i class="fas fa-edit"></i>
                         </div>
                     ` : ''}
                 </div>
                 <div class="info">
-                    <h4 ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'name', this)">${lawyer.name}</h4>
-                    <div class="role" ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'role', this)">${lawyer.role}</div>
-                    <p ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'desc', this)">${lawyer.desc}</p>
-                    <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'phone', this)">${lawyer.phone}</span></div>
+                    <h4 ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'name', this)">${lawyer.name}</h4>
+                    <div class="role" ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'role', this)">${lawyer.role}</div>
+                    <p ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'desc', this)">${lawyer.desc}</p>
+                    <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'phone', this)">${lawyer.phone}</span></div>
                 </div>
             `;
             
@@ -1844,11 +2261,11 @@
         
         const newValue = prompt(`Modifier ${field} :`, element.innerText);
         if (newValue && newValue.trim() !== '') {
-            const lawyer = lawyers.find(l => l.id === id);
+            const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === id);
             if (lawyer) {
                 lawyer[field] = newValue;
                 element.innerText = newValue;
-                saveLawyersToStorage();
+                saveToLocalStorage();
                 showToast('Informations modifiées');
             }
         }
@@ -1864,10 +2281,10 @@
             const file = e.target.files[0];
             const reader = new FileReader();
             reader.onload = function(event) {
-                const lawyer = lawyers.find(l => l.id === id);
+                const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === id);
                 if (lawyer) {
                     lawyer.photo = event.target.result;
-                    saveLawyersToStorage();
+                    saveToLocalStorage();
                     displayLawyers();
                     showToast('Photo modifiée');
                 }
@@ -1903,7 +2320,7 @@
             return;
         }
         
-        const newId = Math.max(...lawyers.map(l => l.id), 0) + 1;
+        const newId = Math.max(...lawyers.map(l => l.id || 0), 0) + 1;
         
         if (photo) {
             const reader = new FileReader();
@@ -1916,7 +2333,7 @@
                     phone: phone,
                     photo: event.target.result
                 });
-                saveLawyersToStorage();
+                saveToLocalStorage();
                 displayLawyers();
                 closeAddLawyerModal();
                 showToast('Avocat ajouté avec succès');
@@ -1931,7 +2348,7 @@
                 phone: phone,
                 photo: 'https://via.placeholder.com/400x300?text=Photo'
             });
-            saveLawyersToStorage();
+            saveToLocalStorage();
             displayLawyers();
             closeAddLawyerModal();
             showToast('Avocat ajouté avec succès');
@@ -1941,7 +2358,7 @@
     function editLawyer(id) {
         if (!isAdminLogged) return;
         
-        const lawyer = lawyers.find(l => l.id === id);
+        const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === id);
         if (lawyer) {
             currentEditLawyerId = id;
             document.getElementById('editLawyerName').value = lawyer.name;
@@ -1958,7 +2375,7 @@
     }
     
     function saveLawyerEdit() {
-        const lawyer = lawyers.find(l => l.id === currentEditLawyerId);
+        const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === currentEditLawyerId);
         if (lawyer) {
             const photo = document.getElementById('editLawyerPhoto').files[0];
             const name = document.getElementById('editLawyerName').value;
@@ -1974,7 +2391,7 @@
                     lawyer.role = role;
                     lawyer.desc = desc;
                     lawyer.phone = phone;
-                    saveLawyersToStorage();
+                    saveToLocalStorage();
                     displayLawyers();
                     closeEditLawyerModal();
                     showToast('Avocat modifié avec succès');
@@ -1985,7 +2402,7 @@
                 lawyer.role = role;
                 lawyer.desc = desc;
                 lawyer.phone = phone;
-                saveLawyersToStorage();
+                saveToLocalStorage();
                 displayLawyers();
                 closeEditLawyerModal();
                 showToast('Avocat modifié avec succès');
@@ -1997,10 +2414,21 @@
         if (!isAdminLogged) return;
         
         if (confirm('Êtes-vous sûr de vouloir supprimer cet avocat ?')) {
-            lawyers = lawyers.filter(l => l.id !== id);
-            saveLawyersToStorage();
+            lawyers = lawyers.filter(l => (l.id || lawyers.indexOf(l)) !== id);
+            saveToLocalStorage();
             displayLawyers();
             showToast('Avocat supprimé');
+        }
+    }
+    
+    function resetLawyersToDefault() {
+        if (!isAdminLogged) return;
+        
+        if (confirm('Restaurer les avocats par défaut ?')) {
+            loadDefaultLawyers();
+            saveToLocalStorage();
+            displayLawyers();
+            showToast('Avocats restaurés par défaut');
         }
     }
     
@@ -2009,16 +2437,16 @@
         
         new Sortable(document.getElementById('lawyersGrid'), {
             animation: 150,
-            onEnd: function(evt) {
-                // Réorganiser le tableau lawyers selon le nouvel ordre
+            onEnd: function() {
+                // Réorganiser le tableau
                 const newOrder = [];
                 document.querySelectorAll('.lawyer-card').forEach(card => {
-                    const id = parseInt(card.dataset.lawyerId);
-                    const lawyer = lawyers.find(l => l.id === id);
+                    const index = Array.from(card.parentNode.children).indexOf(card);
+                    const lawyer = lawyers[index];
                     if (lawyer) newOrder.push(lawyer);
                 });
                 lawyers = newOrder;
-                saveLawyersToStorage();
+                saveToLocalStorage();
                 showToast('Ordre des avocats modifié');
             }
         });
@@ -2035,6 +2463,159 @@
         });
     }
     
+    // ========== GESTION DES TEXTES ==========
+    
+    function editText(element) {
+        if (!editMode || !isAdminLogged) return;
+        
+        const currentText = element.innerText;
+        const newText = prompt('Modifier le texte :', currentText);
+        
+        if (newText !== null && newText.trim() !== '') {
+            element.innerText = newText;
+            saveToLocalStorage();
+            showToast('Texte modifié');
+        }
+    }
+    
+    // ========== GESTION DES IMAGES ==========
+    
+    function changeImage(element) {
+        if (!editMode || !isAdminLogged) return;
+        
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                element.src = event.target.result;
+                saveToLocalStorage();
+                showToast('Image modifiée');
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+    
+    function changeLogo(input) {
+        if (!isAdminLogged) return;
+        
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('logo').src = event.target.result;
+            saveToLocalStorage();
+            showToast('Logo modifié');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function changeHeroImage(input) {
+        if (!isAdminLogged) return;
+        
+        const file = input.files[0];
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            document.getElementById('hero').style.backgroundImage = `url('${event.target.result}')`;
+            saveToLocalStorage();
+            showToast('Image d\'arrière-plan modifiée');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    // ========== GESTION DES COULEURS ==========
+    
+    function changePrimaryColor(color) {
+        document.documentElement.style.setProperty('--primary-color', color);
+        document.querySelectorAll('.btn, .rdv-btn a, .carousel-dot.active, .admin-panel-btn').forEach(el => {
+            el.style.backgroundColor = color;
+        });
+        saveToLocalStorage();
+    }
+    
+    function changeSecondaryColor(color) {
+        document.documentElement.style.setProperty('--secondary-color', color);
+        document.querySelectorAll('nav, .hero, .stats-container').forEach(el => {
+            el.style.backgroundColor = color;
+        });
+        saveToLocalStorage();
+    }
+    
+    // ========== GESTION DES PDFS ==========
+    
+    function addPdfToCarousel() {
+        if (!isAdminLogged) {
+            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
+            return;
+        }
+        
+        const fileInput = document.getElementById('pdfUpload');
+        const titleInput = document.getElementById('pdfTitle');
+        const descInput = document.getElementById('pdfDescription');
+        
+        if (!fileInput.files[0]) {
+            alert('Veuillez sélectionner un fichier PDF');
+            return;
+        }
+        
+        if (!titleInput.value || !descInput.value) {
+            alert('Veuillez remplir tous les champs');
+            return;
+        }
+        
+        const file = fileInput.files[0];
+        const title = titleInput.value;
+        const description = descInput.value;
+        
+        const reader = new FileReader();
+        reader.onload = function(event) {
+            const doc = {
+                id: Date.now(),
+                title: title,
+                description: description,
+                data: event.target.result,
+                date: new Date().toLocaleDateString('fr-FR'),
+                fileName: file.name
+            };
+            
+            pdfDocuments.push(doc);
+            saveToLocalStorage();
+            updateCarousel();
+            
+            // Réinitialiser le formulaire
+            fileInput.value = '';
+            titleInput.value = '';
+            descInput.value = '';
+            
+            showToast('Document publié avec succès !');
+        };
+        reader.readAsDataURL(file);
+    }
+    
+    function deletePdf(id) {
+        if (!isAdminLogged) return;
+        
+        if (confirm('Supprimer ce document ?')) {
+            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
+            saveToLocalStorage();
+            updateCarousel();
+            showToast('Document supprimé');
+        }
+    }
+    
+    function clearAllDocuments() {
+        if (!isAdminLogged) return;
+        
+        if (confirm('Êtes-vous sûr de vouloir supprimer tous les dossiers ?')) {
+            pdfDocuments = [];
+            saveToLocalStorage();
+            updateCarousel();
+            showToast('Tous les dossiers ont été supprimés');
+        }
+    }
+    
     function editStatistics() {
         if (!isAdminLogged) return;
         
@@ -2044,29 +2625,27 @@
         });
     }
     
+    // ========== FONCTIONS D'EXPORT/IMPORT ==========
+    
     function exportData() {
         const data = {
-            texts: {},
-            images: {},
-            pdfDocuments: pdfDocuments,
-            lawyers: lawyers
+            lawyers: lawyers,
+            pdfs: pdfDocuments,
+            texts: getAllTexts(),
+            colors: {
+                primary: document.getElementById('primaryColor').value,
+                secondary: document.getElementById('secondaryColor').value
+            },
+            exportDate: new Date().toISOString()
         };
-        
-        document.querySelectorAll('[id]').forEach(el => {
-            if (el.tagName === 'IMG') {
-                data.images[el.id] = el.src;
-            } else if (el.innerText) {
-                data.texts[el.id] = el.innerText;
-            }
-        });
         
         const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = 'bkr-website-backup.json';
+        a.download = `bkr-backup-${new Date().toISOString().split('T')[0]}.json`;
         a.click();
-        showToast('Données exportées');
+        showToast('Données exportées avec succès');
     }
     
     function importData(input) {
@@ -2077,65 +2656,45 @@
             try {
                 const data = JSON.parse(e.target.result);
                 
-                // Restaurer les textes
-                if (data.texts) {
-                    Object.keys(data.texts).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.innerText = data.texts[id];
-                    });
-                }
-                
-                // Restaurer les images
-                if (data.images) {
-                    Object.keys(data.images).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.src = data.images[id];
-                    });
-                }
-                
-                // Restaurer les PDFs
-                if (data.pdfDocuments) {
-                    pdfDocuments = data.pdfDocuments;
-                    updateCarousel();
-                }
-                
-                // Restaurer les avocats
                 if (data.lawyers) {
                     lawyers = data.lawyers;
-                    saveLawyersToStorage();
-                    displayLawyers();
                 }
+                
+                if (data.pdfs) {
+                    pdfDocuments = data.pdfs;
+                }
+                
+                if (data.texts) {
+                    applyTexts(data.texts);
+                }
+                
+                if (data.colors) {
+                    if (data.colors.primary) {
+                        document.getElementById('primaryColor').value = data.colors.primary;
+                        changePrimaryColor(data.colors.primary);
+                    }
+                    if (data.colors.secondary) {
+                        document.getElementById('secondaryColor').value = data.colors.secondary;
+                        changeSecondaryColor(data.colors.secondary);
+                    }
+                }
+                
+                saveToLocalStorage();
+                displayLawyers();
+                updateCarousel();
+                updateLawyerSelect();
                 
                 showToast('Données importées avec succès');
             } catch (error) {
-                alert('Erreur lors de l\'importation');
+                alert('Erreur lors de l\'importation des données');
             }
         };
         
         reader.readAsText(file);
     }
     
-    function clearAllDocuments() {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer tous les dossiers ?')) {
-            pdfDocuments = [];
-            document.getElementById('carouselTrack').innerHTML = '';
-            checkEmptyGallery();
-            showToast('Tous les dossiers ont été supprimés');
-        }
-    }
+    // ========== FONCTIONS DU CARROUSEL ==========
     
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        document.getElementById('toastMessage').textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
-    
-    // Fonctions du carrousel
     const track = document.getElementById('carouselTrack');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -2171,100 +2730,6 @@
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
     
-    // Fonction pour ajouter un PDF au carrousel (admin seulement)
-    function addPdfToCarousel() {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
-            return;
-        }
-        
-        const fileInput = document.getElementById('pdfUpload');
-        const titleInput = document.getElementById('pdfTitle');
-        const descInput = document.getElementById('pdfDescription');
-        
-        if (!fileInput.files[0]) {
-            alert('Veuillez sélectionner un fichier PDF');
-            return;
-        }
-        
-        if (!titleInput.value || !descInput.value) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        const title = titleInput.value;
-        const description = descInput.value;
-        
-        // Créer l'URL du fichier
-        const fileUrl = URL.createObjectURL(file);
-        
-        // Ajouter le document à la liste
-        const doc = {
-            id: Date.now(),
-            title: title,
-            description: description,
-            url: fileUrl,
-            file: file,
-            date: new Date().toLocaleDateString('fr-FR')
-        };
-        
-        pdfDocuments.push(doc);
-        
-        // Supprimer le message "Aucun document" s'il existe
-        const emptyMessage = document.querySelector('.empty-gallery');
-        if (emptyMessage) {
-            emptyMessage.remove();
-        }
-        
-        // Créer la slide
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.innerHTML = `
-            <div class="pdf-preview" onclick="openPdf(${pdfDocuments.length - 1})">
-                <i class="fas fa-file-pdf"></i>
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${doc.date}</p>
-                ${isAdminLogged ? `
-                    <div class="admin-delete-btn" onclick="deletePdf(${doc.id})">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                ` : ''}
-            </div>
-            <div class="carousel-caption">
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <p style="font-size: 0.9rem;"><i class="fas fa-calendar"></i> ${doc.date}</p>
-            </div>
-        `;
-        
-        track.appendChild(slide);
-        
-        // Mettre à jour les dots
-        updateDots();
-        
-        // Réinitialiser le formulaire
-        fileInput.value = '';
-        titleInput.value = '';
-        descInput.value = '';
-        
-        // Aller à la nouvelle slide
-        goToSlide(pdfDocuments.length - 1);
-        
-        showToast('Document publié avec succès !');
-    }
-    
-    function deletePdf(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Supprimer ce document ?')) {
-            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
-            updateCarousel();
-            showToast('Document supprimé');
-        }
-    }
-    
     function updateCarousel() {
         track.innerHTML = '';
         pdfDocuments.forEach((doc, index) => {
@@ -2293,12 +2758,23 @@
         checkEmptyGallery();
     }
     
-    // Fonction pour ouvrir un PDF
     async function openPdf(index) {
         const doc = pdfDocuments[index];
-        if (!doc || !doc.url) {
+        if (!doc) {
             alert('Ce document n\'est pas disponible pour le moment.');
             return;
+        }
+        
+        let pdfUrl = doc.url;
+        if (doc.data && !doc.url) {
+            const byteCharacters = atob(doc.data.split(',')[1]);
+            const byteNumbers = new Array(byteCharacters.length);
+            for (let i = 0; i < byteCharacters.length; i++) {
+                byteNumbers[i] = byteCharacters.charCodeAt(i);
+            }
+            const byteArray = new Uint8Array(byteNumbers);
+            const blob = new Blob([byteArray], {type: 'application/pdf'});
+            pdfUrl = URL.createObjectURL(blob);
         }
         
         const modal = document.getElementById('pdfModal');
@@ -2309,27 +2785,25 @@
         title.textContent = doc.title;
         modal.classList.add('active');
         
-        // Vider le viewer
         viewer.innerHTML = '';
         
-        // Charger le PDF
         try {
-            const loadingTask = pdfjsLib.getDocument(doc.url);
+            const loadingTask = pdfjsLib.getDocument(pdfUrl);
             currentPdf = await loadingTask.promise;
             totalPages = currentPdf.numPages;
             currentPage = 1;
             
             document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
             
-            // Afficher la première page
             renderPage(currentPage);
             
-            // Configurer le bouton de téléchargement
             downloadBtn.onclick = () => {
-                const a = document.createElement('a');
-                a.href = doc.url;
-                a.download = doc.file ? doc.file.name : 'document.pdf';
-                a.click();
+                if (doc.data) {
+                    const a = document.createElement('a');
+                    a.href = doc.data;
+                    a.download = doc.fileName || 'document.pdf';
+                    a.click();
+                }
             };
             
         } catch (error) {
@@ -2338,20 +2812,17 @@
         }
     }
     
-    // Fonction pour rendre une page PDF
     async function renderPage(pageNumber) {
         if (!currentPdf) return;
         
         const viewer = document.getElementById('pdfViewer');
         const page = await currentPdf.getPage(pageNumber);
         
-        // Déterminer l'échelle pour s'adapter à la largeur
         const containerWidth = viewer.clientWidth - 40;
         const viewport = page.getViewport({ scale: 1 });
         const scale = containerWidth / viewport.width;
         const scaledViewport = page.getViewport({ scale });
         
-        // Créer un canvas
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         canvas.width = scaledViewport.width;
@@ -2360,7 +2831,6 @@
         viewer.innerHTML = '';
         viewer.appendChild(canvas);
         
-        // Rendre la page
         const renderContext = {
             canvasContext: context,
             viewport: scaledViewport
@@ -2369,7 +2839,6 @@
         await page.render(renderContext).promise;
     }
     
-    // Gestionnaire pour le modal PDF
     document.getElementById('closePdfModal').addEventListener('click', () => {
         document.getElementById('pdfModal').classList.remove('active');
         currentPdf = null;
@@ -2391,10 +2860,8 @@
         }
     });
     
-    // Auto-play optionnel
     setInterval(nextSlide, 5000);
     
-    // Ajouter un message si aucun document
     function checkEmptyGallery() {
         if (pdfDocuments.length === 0) {
             const emptyMessage = document.createElement('div');
@@ -2411,30 +2878,36 @@
         }
     }
     
-    // Charger les données sauvegardées
-    function loadSavedData() {
-        const saved = localStorage.getItem('bkrWebsiteData');
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                Object.keys(data).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerText = data[id];
-                });
-            } catch (e) {
-                console.error('Erreur lors du chargement des données');
-            }
+    // ========== FONCTIONS UTILITAIRES ==========
+    
+    function showLoading(show) {
+        const spinner = document.getElementById('loadingSpinner');
+        if (show) {
+            spinner.classList.add('active');
+        } else {
+            spinner.classList.remove('active');
         }
+    }
+    
+    function showToast(message) {
+        const toast = document.getElementById('toast');
+        document.getElementById('toastMessage').textContent = message;
+        toast.classList.add('show');
+        setTimeout(() => {
+            toast.classList.remove('show');
+        }, 3000);
     }
     
     // Initialisation
     window.onload = function() {
-        loadSavedData();
-        loadLawyers();
-        checkEmptyGallery();
+        loadGithubConfig();
+        loadFromLocalStorage();
+        displayLawyers();
+        updateCarousel();
         updateLawyerSelect();
+        updateGithubConnectionStatus();
         
-        // Créer les dots
+        // Créer les dots du carrousel
         if (pdfDocuments.length > 0) {
             for (let i = 0; i < pdfDocuments.length; i++) {
                 const dot = document.createElement('div');
