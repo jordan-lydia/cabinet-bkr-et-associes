@@ -4,27 +4,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabinet BKR & Associés · Avocats à Kolwezi</title>
-    <!-- Font Awesome pour les icônes -->
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- PDF.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, sans-serif;
+            font-family: 'Segoe UI', system-ui, sans-serif;
         }
 
         body {
             background: #f9fafc;
             color: #1e293b;
+            padding-top: 0;
+            transition: all 0.3s;
         }
 
+        /* MODE ÉDITION */
         body.edit-mode .editable {
             position: relative;
             cursor: pointer;
             border: 2px dashed #c9a959;
-            padding: 5px;
+            padding: 8px;
             background: rgba(201, 169, 89, 0.05);
+            transition: all 0.3s;
         }
 
         body.edit-mode .editable:hover {
@@ -32,21 +38,21 @@
         }
 
         body.edit-mode .editable::after {
-            content: '✎ Cliquer pour modifier';
+            content: '✎ Modifier';
             position: absolute;
             top: -30px;
             right: 0;
             background: #c9a959;
             color: #0a1a2f;
-            padding: 5px 10px;
-            border-radius: 5px;
+            padding: 4px 12px;
+            border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
-            white-space: nowrap;
             z-index: 10000;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
 
-        /* Admin Bar */
+        /* ADMIN BAR */
         .admin-bar {
             position: fixed;
             top: 0;
@@ -54,28 +60,31 @@
             right: 0;
             background: #0a1a2f;
             color: white;
-            padding: 10px 20px;
-            display: flex;
+            padding: 12px 30px;
+            display: none;
             justify-content: space-between;
             align-items: center;
             z-index: 10001;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-bottom: 3px solid #c9a959;
         }
 
         .admin-status {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 600;
         }
 
         .admin-status i {
             color: #c9a959;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
         }
 
         .admin-buttons {
             display: flex;
             gap: 10px;
+            flex-wrap: wrap;
         }
 
         .admin-btn {
@@ -83,17 +92,19 @@
             color: #0a1a2f;
             border: none;
             padding: 8px 16px;
-            border-radius: 5px;
+            border-radius: 30px;
             cursor: pointer;
             font-weight: 600;
             font-size: 14px;
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 8px;
+            transition: 0.3s;
         }
 
         .admin-btn:hover {
             background: #dbb86a;
+            transform: translateY(-2px);
         }
 
         .admin-btn.logout {
@@ -110,7 +121,7 @@
             color: #0a1a2f;
         }
 
-        /* Login Modal */
+        /* LOGIN MODAL */
         .login-modal {
             display: none;
             position: fixed;
@@ -122,6 +133,7 @@
             z-index: 20000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(5px);
         }
 
         .login-modal.active {
@@ -131,44 +143,51 @@
         .login-box {
             background: white;
             padding: 40px;
-            border-radius: 20px;
+            border-radius: 30px;
             width: 400px;
             max-width: 90%;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .login-box i {
+            font-size: 4rem;
+            color: #c9a959;
+            margin-bottom: 20px;
         }
 
         .login-box h2 {
             color: #0a1a2f;
-            margin-bottom: 20px;
-            text-align: center;
+            margin-bottom: 30px;
         }
 
         .login-box input {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             margin: 10px 0;
             border: 2px solid #e9eef3;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
         }
 
         .login-box button {
             width: 100%;
-            padding: 12px;
+            padding: 15px;
             background: #c9a959;
             color: #0a1a2f;
             border: none;
-            border-radius: 8px;
+            border-radius: 12px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
-            margin-top: 10px;
+            margin-top: 20px;
         }
 
         .login-box button:hover {
             background: #dbb86a;
         }
 
-        /* Edit Modal */
+        /* EDIT MODAL */
         .edit-modal {
             display: none;
             position: fixed;
@@ -189,7 +208,7 @@
         .edit-box {
             background: white;
             padding: 30px;
-            border-radius: 20px;
+            border-radius: 30px;
             width: 600px;
             max-width: 90%;
             max-height: 80vh;
@@ -200,7 +219,7 @@
             color: #0a1a2f;
             margin-bottom: 20px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #c9a959;
+            border-bottom: 3px solid #c9a959;
         }
 
         .form-group {
@@ -209,7 +228,7 @@
 
         .form-group label {
             display: block;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
             font-weight: 600;
             color: #0a1a2f;
         }
@@ -217,83 +236,161 @@
         .form-group input,
         .form-group textarea {
             width: 100%;
-            padding: 10px;
+            padding: 12px;
             border: 2px solid #e9eef3;
-            border-radius: 8px;
-            font-size: 16px;
+            border-radius: 10px;
+            font-size: 15px;
         }
 
         .form-group textarea {
-            min-height: 100px;
+            min-height: 120px;
             resize: vertical;
         }
 
         .edit-actions {
             display: flex;
-            gap: 10px;
-            margin-top: 20px;
+            gap: 15px;
+            margin-top: 30px;
         }
 
         .save-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             background: #28a745;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
         }
 
         .cancel-btn {
             flex: 1;
-            padding: 12px;
+            padding: 14px;
             background: #6c757d;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             font-weight: 600;
             cursor: pointer;
         }
 
-        /* Upload Section */
+        /* UPLOAD SECTION */
         .upload-section {
-            background: white;
-            padding: 20px;
-            border-radius: 16px;
-            margin: 20px 0;
-            border: 2px solid #c9a959;
+            background: linear-gradient(135deg, #f8f9fa, #ffffff);
+            padding: 30px;
+            border-radius: 24px;
+            margin: 30px 0;
+            border: 3px dashed #c9a959;
+            display: none;
         }
 
         .upload-section h3 {
             color: #0a1a2f;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
+            font-size: 1.3rem;
         }
 
         .upload-section input,
         .upload-section textarea {
             width: 100%;
-            padding: 10px;
-            margin: 5px 0 15px;
+            padding: 14px;
+            margin: 8px 0 20px;
             border: 2px solid #e9eef3;
-            border-radius: 8px;
+            border-radius: 12px;
+            font-size: 15px;
         }
 
         .publish-btn {
             background: #c9a959;
             color: #0a1a2f;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 15px 30px;
+            border-radius: 40px;
             font-weight: 600;
             cursor: pointer;
             width: 100%;
+            font-size: 16px;
+            transition: 0.3s;
         }
 
-        /* Navigation */
+        .publish-btn:hover {
+            background: #dbb86a;
+            transform: translateY(-2px);
+        }
+
+        /* PDF MODAL */
+        .pdf-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.95);
+            z-index: 25000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .pdf-modal.active {
+            display: flex;
+        }
+
+        .pdf-modal-content {
+            width: 90%;
+            height: 90%;
+            background: white;
+            border-radius: 24px;
+            overflow: hidden;
+        }
+
+        .pdf-header {
+            background: #0a1a2f;
+            color: white;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .pdf-header h3 {
+            color: #c9a959;
+        }
+
+        .pdf-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .pdf-controls button {
+            background: #c9a959;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        .pdf-viewer {
+            width: 100%;
+            height: calc(100% - 80px);
+            overflow: auto;
+            background: #525659;
+            padding: 20px;
+        }
+
+        .pdf-viewer canvas {
+            display: block;
+            margin: 0 auto;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+        }
+
+        /* NAVIGATION */
         nav {
             background: #0a1a2f;
             padding: 1rem 6%;
@@ -303,18 +400,23 @@
             position: sticky;
             top: 0;
             z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 15px;
         }
 
         .logo-placeholder {
             background: white;
-            padding: 5px 12px;
-            border-radius: 8px;
+            padding: 8px 15px;
+            border-radius: 12px;
+        }
+
+        .logo-placeholder img {
+            height: 45px;
         }
 
         .logo-text {
@@ -322,37 +424,74 @@
             font-size: 1.3rem;
             font-weight: 700;
             border-left: 2px solid #c9a959;
-            padding-left: 12px;
+            padding-left: 15px;
         }
 
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             list-style: none;
         }
 
         .nav-links a {
             color: white;
             text-decoration: none;
+            font-weight: 500;
         }
 
         .rdv-btn a {
             background: #c9a959;
             color: #0a1a2f;
-            padding: 8px 16px;
-            border-radius: 30px;
+            padding: 10px 20px;
+            border-radius: 40px;
             font-weight: 600;
         }
 
-        /* Sections */
+        /* HERO */
+        .hero {
+            background: linear-gradient(135deg, #102b42, #1b3a5c);
+            color: white;
+            padding: 4rem 6%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-radius: 30px;
+            margin: 20px 6%;
+        }
+
+        .hero-text h1 {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero-text p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .contact-hero {
+            background: rgba(255,255,255,0.1);
+            padding: 2rem;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border-left: 4px solid #c9a959;
+        }
+
+        .contact-hero div {
+            margin: 10px 0;
+        }
+
+        /* SECTIONS */
         section {
             padding: 4rem 6%;
         }
 
         .section-title {
-            font-size: 2rem;
-            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+            margin-bottom: 3rem;
             position: relative;
+            display: inline-block;
         }
         
         .section-title:after {
@@ -361,38 +500,46 @@
             width: 70px;
             height: 4px;
             background: #c9a959;
-            margin-top: 8px;
+            margin-top: 10px;
         }
 
-        .hero {
-            background: linear-gradient(105deg, #102b42, #1b3a5c);
-            color: white;
-            padding: 3rem 6%;
-            display: flex;
-            justify-content: space-between;
-            border-radius: 20px;
-        }
-
+        /* SERVICES */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .card {
             background: white;
-            padding: 2rem;
-            border-radius: 20px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+            text-align: center;
         }
 
+        .card i {
+            font-size: 2.5rem;
+            color: #c9a959;
+            margin-bottom: 1rem;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
+
+        /* STATISTIQUES */
         .stats-container {
             display: flex;
             justify-content: space-around;
             background: #102b42;
             color: white;
             padding: 3rem;
-            border-radius: 48px;
+            border-radius: 60px;
+            flex-wrap: wrap;
+            gap: 2rem;
         }
 
         .stat-item {
@@ -400,25 +547,28 @@
         }
 
         .stat-item h3 {
-            font-size: 2.5rem;
+            font-size: 3rem;
             color: #dbb86a;
+            margin-bottom: 0.5rem;
         }
 
+        /* AVOCATS */
         .lawyers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
         .lawyer-card {
             background: white;
-            border-radius: 16px;
+            border-radius: 24px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
         }
 
         .lawyer-photo {
-            height: 250px;
+            height: 280px;
+            background: #102b42;
             background-size: cover;
             background-position: center;
         }
@@ -427,50 +577,37 @@
             padding: 1.5rem;
         }
 
-        .contact-block {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 32px;
-            display: flex;
-            gap: 3rem;
+        .info h4 {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
         }
 
-        .info-line {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin: 1rem 0;
-        }
-
-        .info-line i {
+        .role {
             color: #c9a959;
-            width: 30px;
+            font-weight: 600;
+            margin-bottom: 1rem;
         }
 
-        /* Carousel */
+        /* CARROUSEL */
         .carousel-container {
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
             overflow: hidden;
-            border-radius: 24px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
         }
 
         .carousel-track {
             display: flex;
-            transition: transform 0.5s;
+            transition: transform 0.5s ease;
         }
 
         .carousel-slide {
             min-width: 100%;
-            height: 400px;
-            background: #102b42;
+            height: 500px;
+            background: linear-gradient(135deg, #102b42, #1b3a5c);
             position: relative;
-        }
-
-        .pdf-preview {
-            width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -478,9 +615,20 @@
             color: white;
         }
 
+        .pdf-preview {
+            text-align: center;
+            cursor: pointer;
+            padding: 2rem;
+        }
+
         .pdf-preview i {
-            font-size: 4rem;
+            font-size: 5rem;
             color: #c9a959;
+            margin-bottom: 1rem;
+        }
+
+        .pdf-preview h3 {
+            font-size: 2rem;
             margin-bottom: 1rem;
         }
 
@@ -490,15 +638,23 @@
             transform: translateY(-50%);
             background: rgba(255,255,255,0.2);
             color: white;
-            width: 40px;
-            height: 40px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
+            font-size: 2rem;
+            backdrop-filter: blur(5px);
             border: 2px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
             z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #c9a959;
+            border-color: #c9a959;
         }
 
         .carousel-btn.prev {
@@ -512,7 +668,7 @@
         .carousel-dots {
             display: flex;
             justify-content: center;
-            gap: 10px;
+            gap: 12px;
             margin-top: 20px;
         }
 
@@ -522,10 +678,59 @@
             border-radius: 50%;
             background: #ccc;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .carousel-dot.active {
             background: #c9a959;
+            transform: scale(1.3);
+        }
+
+        /* CONTACT */
+        .contact-block {
+            background: white;
+            padding: 3rem;
+            border-radius: 40px;
+            display: flex;
+            gap: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-info {
+            flex: 1;
+        }
+
+        .info-line {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            font-size: 1.1rem;
+        }
+
+        .info-line i {
+            color: #c9a959;
+            font-size: 1.3rem;
+            width: 30px;
+        }
+
+        .btn {
+            background: #c9a959;
+            color: #0a1a2f;
+            padding: 14px 32px;
+            border: none;
+            border-radius: 40px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background: #dbb86a;
+            transform: translateY(-2px);
         }
 
         footer {
@@ -533,23 +738,40 @@
             color: white;
             text-align: center;
             padding: 2rem;
+            margin-top: 2rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 900px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .admin-buttons {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- Admin Bar (cachée par défaut) -->
-<div id="adminBar" class="admin-bar" style="display: none;">
+<!-- ADMIN BAR -->
+<div id="adminBar" class="admin-bar">
     <div class="admin-status">
         <i class="fas fa-crown"></i>
-        <span>Mode Administration - <span id="adminName">Admin</span></span>
+        <span>Mode Administration - <span id="adminName">Admin BKR</span></span>
     </div>
     <div class="admin-buttons">
         <button class="admin-btn" onclick="toggleEditMode()">
             <i class="fas fa-edit"></i> <span id="editModeBtn">Activer mode édition</span>
         </button>
-        <button class="admin-btn" onclick="showPdfUpload()">
-            <i class="fas fa-file-pdf"></i> Publier PDF
+        <button class="admin-btn" onclick="showUploadSection()">
+            <i class="fas fa-file-pdf"></i> Publier un PDF
         </button>
         <button class="admin-btn warning" onclick="resetToDefault()">
             <i class="fas fa-undo"></i> Réinitialiser
@@ -560,17 +782,18 @@
     </div>
 </div>
 
-<!-- Login Modal -->
+<!-- LOGIN MODAL -->
 <div id="loginModal" class="login-modal">
     <div class="login-box">
-        <h2><i class="fas fa-crown"></i> Connexion Admin</h2>
+        <i class="fas fa-crown"></i>
+        <h2>Espace Administrateur</h2>
         <input type="password" id="adminPassword" placeholder="Mot de passe" onkeypress="if(event.key==='Enter') checkPassword()">
         <button onclick="checkPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 15px; color: #666;">Mot de passe: admin123</p>
+        <p style="margin-top: 20px; color: #666;">Mot de passe par défaut: <strong>admin123</strong></p>
     </div>
 </div>
 
-<!-- Edit Modal -->
+<!-- EDIT MODAL -->
 <div id="editModal" class="edit-modal">
     <div class="edit-box">
         <h3 id="editModalTitle">Modifier le contenu</h3>
@@ -582,88 +805,161 @@
     </div>
 </div>
 
-<!-- Navigation -->
+<!-- PDF MODAL -->
+<div id="pdfModal" class="pdf-modal">
+    <div class="pdf-modal-content">
+        <div class="pdf-header">
+            <h3 id="pdfModalTitle">Document BKR</h3>
+            <div class="pdf-controls">
+                <button id="pdfPrevPage"><i class="fas fa-chevron-left"></i> Précédent</button>
+                <span id="pdfPageInfo">Page 1 / 1</span>
+                <button id="pdfNextPage">Suivant <i class="fas fa-chevron-right"></i></button>
+                <button id="pdfDownloadBtn"><i class="fas fa-download"></i> Télécharger</button>
+            </div>
+            <button style="background: none; border: none; color: white; font-size: 2rem;" onclick="closePDFModal()">&times;</button>
+        </div>
+        <div class="pdf-viewer" id="pdfViewer"></div>
+    </div>
+</div>
+
+<!-- NAVIGATION -->
 <nav>
     <div class="logo-container">
-        <div class="logo-placeholder editable" id="logo">
-            <img src="logo bkr1.png" alt="logo" id="logoImg" style="height: 40px;">
+        <div class="logo-placeholder editable" id="logo" onclick="if(editMode) openEditModal(this)">
+            <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='50' height='40' viewBox='0 0 100 80'%3E%3Crect width='100' height='80' fill='%23c9a959'/%3E%3Ctext x='15' y='55' font-size='42' fill='%230a1a2f' font-weight='bold'%3EBKR%3C/text%3E%3C/svg%3E" alt="BKR Logo" id="logoImg">
         </div>
-        <span class="logo-text editable" id="logoText">& ASSOCIÉS</span>
+        <span class="logo-text editable" id="logoText" onclick="if(editMode) openEditModal(this)">& ASSOCIÉS</span>
     </div>
     
     <ul class="nav-links">
         <li><a href="#accueil">Accueil</a></li>
         <li><a href="#apropos">À propos</a></li>
-        <li><a href="#services">Nos services</a></li>
+        <li><a href="#services">Services</a></li>
         <li><a href="#avocats">Avocats</a></li>
         <li><a href="#galerie">Galerie</a></li>
         <li><a href="#statistiques">Statistiques</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li class="rdv-btn"><a href="#" id="openRdv">Prendre rendez-vous</a></li>
+        <li class="rdv-btn"><a href="#" id="openRdv">Rendez-vous</a></li>
     </ul>
 </nav>
 
-<!-- Accueil -->
+<!-- ACCUEIL -->
 <section id="accueil">
     <div class="hero">
         <div class="hero-text">
-            <h1 class="editable" id="heroTitle">CABINET B K R & ASSOCIES</h1>
-            <p class="editable" id="heroSubtitle">Consultation et assistance juridique de haut niveau à Kolwezi</p>
+            <h1 class="editable" id="heroTitle" onclick="if(editMode) openEditModal(this)">CABINET BKR & ASSOCIÉS</h1>
+            <p class="editable" id="heroSubtitle" onclick="if(editMode) openEditModal(this)">Avocats à Kolwezi · Droit des affaires, minier et fiscal</p>
             <a href="#" class="btn" id="heroRdvBtn">Prendre rendez-vous</a>
         </div>
         <div class="contact-hero">
-            <div class="editable" id="phone1"><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
-            <div class="editable" id="phone2"><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
-            <div class="editable" id="phone3"><i class="fas fa-phone-alt"></i> +243 903 551 255</div>
-            <div class="editable" id="phone4"><i class="fas fa-phone-alt"></i> +243 975 886 336</div>
-            <div class="editable" id="email"><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
+            <div class="editable" id="phone1" onclick="if(editMode) openEditModal(this)"><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
+            <div class="editable" id="phone2" onclick="if(editMode) openEditModal(this)"><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
+            <div class="editable" id="phone3" onclick="if(editMode) openEditModal(this)"><i class="fas fa-phone-alt"></i> +243 903 551 255</div>
+            <div class="editable" id="phone4" onclick="if(editMode) openEditModal(this)"><i class="fas fa-phone-alt"></i> +243 975 886 336</div>
+            <div class="editable" id="email" onclick="if(editMode) openEditModal(this)"><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
         </div>
     </div>
 </section>
 
-<!-- À propos -->
+<!-- À PROPOS -->
 <section id="apropos">
     <h2 class="section-title">À propos</h2>
-    <div style="background: white; padding: 2rem; border-radius: 32px;">
-        <p class="editable" id="aboutText">Basé à Kolwezi, le Cabinet BKR & Associés réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux.</p>
+    <div style="background: white; padding: 3rem; border-radius: 40px;">
+        <p class="editable" id="aboutText" onclick="if(editMode) openEditModal(this)" style="font-size: 1.2rem; line-height: 1.8;">
+            Basé à Kolwezi, le Cabinet BKR & Associés réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.
+        </p>
     </div>
 </section>
 
-<!-- Services -->
+<!-- SERVICES -->
 <section id="services">
     <h2 class="section-title">Nos services</h2>
     <div class="cards-grid">
-        <div class="card editable" id="service1"><i class="fas fa-balance-scale"></i><h3>Droit des affaires</h3></div>
-        <div class="card editable" id="service2"><i class="fas fa-hard-hat"></i><h3>Droit minier</h3></div>
-        <div class="card editable" id="service3"><i class="fas fa-hand-holding-usd"></i><h3>Fiscalité</h3></div>
+        <div class="card editable" id="service1" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-balance-scale"></i>
+            <h3>Droit des affaires</h3>
+            <p>Création de sociétés, contrats, fusions-acquisitions</p>
+        </div>
+        <div class="card editable" id="service2" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-hard-hat"></i>
+            <h3>Droit minier</h3>
+            <p>Assistance dans le secteur extractif, permis, conformité</p>
+        </div>
+        <div class="card editable" id="service3" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-hand-holding-usd"></i>
+            <h3>Fiscalité & douanes</h3>
+            <p>Conseil fiscal, contentieux, optimisation</p>
+        </div>
+        <div class="card editable" id="service4" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-users"></i>
+            <h3>Droit social</h3>
+            <p>Contrats de travail, procédures disciplinaires</p>
+        </div>
+        <div class="card editable" id="service5" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-gavel"></i>
+            <h3>Contentieux & arbitrage</h3>
+            <p>Représentation devant toutes les juridictions</p>
+        </div>
+        <div class="card editable" id="service6" onclick="if(editMode) openEditModal(this)">
+            <i class="fas fa-file-signature"></i>
+            <h3>Conseil & rédaction</h3>
+            <p>Contrats, statuts, avis juridiques</p>
+        </div>
     </div>
 </section>
 
-<!-- Avocats -->
+<!-- AVOCATS -->
 <section id="avocats">
     <h2 class="section-title">Nos avocats</h2>
     <div class="lawyers-grid">
-        <div class="lawyer-card editable" id="avocat1">
-            <div class="lawyer-photo" style="background: #102b42;"></div>
+        <div class="lawyer-card editable" id="avocat1" onclick="if(editMode) openEditModal(this)">
+            <div class="lawyer-photo" style="background: #1b3a5c;"></div>
             <div class="info">
                 <h4>Maître biens KITUNGWA</h4>
-                <p>Administrateur</p>
+                <div class="role">Administrateur du cabinet</div>
+                <p>Expert en droit minier et corporate</p>
+            </div>
+        </div>
+        <div class="lawyer-card editable" id="avocat2" onclick="if(editMode) openEditModal(this)">
+            <div class="lawyer-photo" style="background: #1b3a5c;"></div>
+            <div class="info">
+                <h4>Maître Jonathan KASHAMA</h4>
+                <div class="role">Membre du cabinet</div>
+                <p>Spécialiste en contentieux et droit fiscal</p>
+            </div>
+        </div>
+        <div class="lawyer-card editable" id="avocat3" onclick="if(editMode) openEditModal(this)">
+            <div class="lawyer-photo" style="background: #1b3a5c;"></div>
+            <div class="info">
+                <h4>Maître Jealuc KANDA</h4>
+                <div class="role">Chargé d'exécution</div>
+                <p>Suivi opérationnel des dossiers</p>
+            </div>
+        </div>
+        <div class="lawyer-card editable" id="avocat4" onclick="if(editMode) openEditModal(this)">
+            <div class="lawyer-photo" style="background: #1b3a5c;"></div>
+            <div class="info">
+                <h4>Maître Jonathan NSHIMBA</h4>
+                <div class="role">Chargé des relations</div>
+                <p>Gestion des partenariats</p>
             </div>
         </div>
     </div>
 </section>
 
-<!-- Galerie avec upload PDF -->
+<!-- GALERIE -->
 <section id="galerie">
     <h2 class="section-title">Nos dossiers réussis</h2>
     
-    <!-- Section d'upload (visible seulement pour admin) -->
-    <div id="uploadSection" class="upload-section" style="display: none;">
+    <!-- Upload section (visible seulement pour admin) -->
+    <div id="uploadSection" class="upload-section">
         <h3><i class="fas fa-file-pdf"></i> Publier un nouveau dossier</h3>
         <input type="file" id="pdfFile" accept=".pdf">
         <input type="text" id="pdfTitle" placeholder="Titre du document">
-        <textarea id="pdfDesc" placeholder="Description"></textarea>
-        <button class="publish-btn" onclick="publishPDF()">Publier le dossier</button>
+        <textarea id="pdfDesc" placeholder="Description du dossier"></textarea>
+        <button class="publish-btn" onclick="publishPDF()">
+            <i class="fas fa-upload"></i> Publier le dossier
+        </button>
     </div>
     
     <!-- Carrousel -->
@@ -675,92 +971,110 @@
     </div>
 </section>
 
-<!-- Statistiques -->
+<!-- STATISTIQUES -->
 <section id="statistiques">
     <h2 class="section-title">Statistiques</h2>
     <div class="stats-container">
-        <div class="stat-item editable" id="stat1"><h3>95%</h3><p>Dossiers gagnés</p></div>
-        <div class="stat-item editable" id="stat2"><h3>+350</h3><p>Clients</p></div>
-        <div class="stat-item editable" id="stat3"><h3>120</h3><p>Affaires minières</p></div>
-        <div class="stat-item editable" id="stat4"><h3>98%</h3><p>Médiations</p></div>
+        <div class="stat-item editable" id="stat1" onclick="if(editMode) openEditModal(this)">
+            <h3>95%</h3>
+            <p>Dossiers gagnés</p>
+        </div>
+        <div class="stat-item editable" id="stat2" onclick="if(editMode) openEditModal(this)">
+            <h3>+350</h3>
+            <p>Clients</p>
+        </div>
+        <div class="stat-item editable" id="stat3" onclick="if(editMode) openEditModal(this)">
+            <h3>120</h3>
+            <p>Affaires minières</p>
+        </div>
+        <div class="stat-item editable" id="stat4" onclick="if(editMode) openEditModal(this)">
+            <h3>98%</h3>
+            <p>Médiations</p>
+        </div>
     </div>
 </section>
 
-<!-- Contact -->
+<!-- CONTACT -->
 <section id="contact">
     <h2 class="section-title">Contact</h2>
     <div class="contact-block">
         <div class="contact-info">
-            <div class="info-line editable" id="address"><i class="fas fa-map-marker-alt"></i> 634 Av. du Manguier, Kolwezi</div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span class="editable" id="contactPhone">+243 977 219 423</span></div>
-            <div class="info-line"><i class="fas fa-envelope"></i> <span class="editable" id="contactEmail">cabinetbkr@gmail.com</span></div>
-            <button class="btn" id="contactRdvBtn">Rendez-vous</button>
+            <div class="info-line editable" id="address" onclick="if(editMode) openEditModal(this)">
+                <i class="fas fa-map-marker-alt"></i> 634 Av. du Manguier, Kolwezi
+            </div>
+            <div class="info-line">
+                <i class="fas fa-phone-alt"></i>
+                <span class="editable" id="contactPhone1" onclick="if(editMode) openEditModal(this)">+243 977 219 423</span>
+            </div>
+            <div class="info-line">
+                <i class="fas fa-phone-alt"></i>
+                <span class="editable" id="contactPhone2" onclick="if(editMode) openEditModal(this)">+243 813 535 315</span>
+            </div>
+            <div class="info-line">
+                <i class="fas fa-envelope"></i>
+                <span class="editable" id="contactEmail" onclick="if(editMode) openEditModal(this)">cabinetbkr@gmail.com</span>
+            </div>
+            <div class="info-line">
+                <i class="fas fa-clock"></i> Lun-Ven 8h30 - 17h30
+            </div>
+            <button class="btn" id="contactRdvBtn" style="margin-top: 20px;">Prendre rendez-vous</button>
         </div>
     </div>
 </section>
 
 <footer>
-    <p>© 2025 Cabinet BKR & Associés</p>
+    <p>© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
 </footer>
 
 <script>
+    // Configuration PDF.js
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
+    
     // Variables globales
     let isAdmin = false;
     let editMode = false;
     let currentEditElement = null;
     let pdfDocuments = [];
     let currentSlide = 0;
+    let currentPdf = null;
+    let currentPage = 1;
+    let totalPages = 1;
     
-    // Mot de passe
+    // Mot de passe admin
     const ADMIN_PASSWORD = "admin123";
     
-    // Valeurs par défaut
-    const defaultValues = {
-        heroTitle: 'CABINET B K R & ASSOCIES',
-        heroSubtitle: 'Consultation et assistance juridique de haut niveau à Kolwezi',
-        phone1: '+243 977 219 423',
-        phone2: '+243 813 535 315',
-        phone3: '+243 903 551 255',
-        phone4: '+243 975 886 336',
-        email: 'cabinetbkr@gmail.com',
-        aboutText: 'Basé à Kolwezi, le Cabinet BKR & Associés réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions.',
-        stat1: '95% Dossiers gagnés',
-        stat2: '+350 Clients',
-        stat3: '120 Affaires minières',
-        stat4: '98% Médiations'
-    };
-    
-    // Vérifier si déjà connecté
-    if (localStorage.getItem('adminLogged') === 'true') {
+    // Vérifier connexion existante
+    if (localStorage.getItem('bkr_admin') === 'connected') {
         isAdmin = true;
         document.getElementById('adminBar').style.display = 'flex';
+        document.getElementById('uploadSection').style.display = 'block';
     }
     
-    // Connexion
+    // Fonctions admin
     function checkPassword() {
         const pwd = document.getElementById('adminPassword').value;
         if (pwd === ADMIN_PASSWORD) {
             isAdmin = true;
-            localStorage.setItem('adminLogged', 'true');
+            localStorage.setItem('bkr_admin', 'connected');
             document.getElementById('loginModal').classList.remove('active');
             document.getElementById('adminBar').style.display = 'flex';
             document.getElementById('uploadSection').style.display = 'block';
+            alert('Connexion réussie ! Bienvenue administrateur.');
         } else {
             alert('Mot de passe incorrect');
         }
     }
     
-    // Déconnexion
     function logout() {
         isAdmin = false;
         editMode = false;
-        localStorage.removeItem('adminLogged');
+        localStorage.removeItem('bkr_admin');
         document.getElementById('adminBar').style.display = 'none';
         document.getElementById('uploadSection').style.display = 'none';
         document.body.classList.remove('edit-mode');
+        document.getElementById('editModeBtn').textContent = 'Activer mode édition';
     }
     
-    // Mode édition
     function toggleEditMode() {
         if (!isAdmin) return;
         editMode = !editMode;
@@ -769,39 +1083,32 @@
             editMode ? 'Désactiver mode édition' : 'Activer mode édition';
     }
     
-    // Éditer un élément
-    document.querySelectorAll('.editable').forEach(el => {
-        el.addEventListener('click', function(e) {
-            if (editMode && isAdmin) {
-                currentEditElement = this;
-                const id = this.id;
-                document.getElementById('editModalTitle').textContent = 'Modifier : ' + id;
-                
-                let content = '';
-                if (id.startsWith('stat')) {
-                    content = this.innerText;
-                } else {
-                    content = this.innerHTML;
-                }
-                
-                document.getElementById('editForm').innerHTML = `
-                    <div class="form-group">
-                        <label>Contenu</label>
-                        <textarea id="editContent" rows="5">${content}</textarea>
-                    </div>
-                `;
-                
-                document.getElementById('editModal').classList.add('active');
-            }
-        });
-    });
+    function openEditModal(element) {
+        if (!editMode || !isAdmin) return;
+        
+        currentEditElement = element;
+        const id = element.id || 'element';
+        const content = element.innerHTML;
+        
+        document.getElementById('editModalTitle').textContent = `Modifier : ${id}`;
+        document.getElementById('editForm').innerHTML = `
+            <div class="form-group">
+                <label>Contenu (HTML autorisé)</label>
+                <textarea id="editContent" rows="8">${content.replace(/"/g, '&quot;')}</textarea>
+            </div>
+        `;
+        
+        document.getElementById('editModal').classList.add('active');
+    }
     
-    // Sauvegarder modification
     function saveEdit() {
         if (currentEditElement) {
             const newContent = document.getElementById('editContent').value;
             currentEditElement.innerHTML = newContent;
             closeEditModal();
+            
+            // Sauvegarder dans localStorage
+            saveAllContent();
         }
     }
     
@@ -810,7 +1117,46 @@
         currentEditElement = null;
     }
     
-    // Publier PDF
+    function saveAllContent() {
+        const content = {};
+        document.querySelectorAll('[id]').forEach(el => {
+            if (el.id && !el.id.startsWith('carousel') && el.id !== 'adminBar' && el.id !== 'loginModal' && el.id !== 'editModal') {
+                content[el.id] = el.innerHTML;
+            }
+        });
+        localStorage.setItem('bkr_content', JSON.stringify(content));
+    }
+    
+    function loadSavedContent() {
+        const saved = localStorage.getItem('bkr_content');
+        if (saved) {
+            try {
+                const content = JSON.parse(saved);
+                Object.keys(content).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) {
+                        el.innerHTML = content[id];
+                    }
+                });
+            } catch (e) {
+                console.error('Erreur chargement contenu');
+            }
+        }
+    }
+    
+    function resetToDefault() {
+        if (confirm('Restaurer les valeurs par défaut ? Cette action est irréversible.')) {
+            localStorage.removeItem('bkr_content');
+            location.reload();
+        }
+    }
+    
+    function showUploadSection() {
+        document.getElementById('uploadSection').style.display = 'block';
+        document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth' });
+    }
+    
+    // Gestion PDF
     function publishPDF() {
         const file = document.getElementById('pdfFile').files[0];
         const title = document.getElementById('pdfTitle').value;
@@ -832,23 +1178,43 @@
             };
             
             pdfDocuments.push(pdfData);
-            localStorage.setItem('pdfDocuments', JSON.stringify(pdfDocuments));
+            localStorage.setItem('bkr_pdfs', JSON.stringify(pdfDocuments));
             updateCarousel();
             
             document.getElementById('pdfFile').value = '';
             document.getElementById('pdfTitle').value = '';
             document.getElementById('pdfDesc').value = '';
+            
+            alert('PDF publié avec succès !');
         };
         reader.readAsDataURL(file);
     }
     
-    // Mettre à jour le carrousel
     function updateCarousel() {
         const track = document.getElementById('carouselTrack');
         const dots = document.getElementById('carouselDots');
         
         track.innerHTML = '';
         dots.innerHTML = '';
+        
+        if (pdfDocuments.length === 0) {
+            // Message par défaut
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.innerHTML = `
+                <div class="pdf-preview">
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>Galerie vide</h3>
+                    <p>Connectez-vous en tant qu'admin pour publier des dossiers</p>
+                </div>
+            `;
+            track.appendChild(slide);
+            
+            const dot = document.createElement('span');
+            dot.className = 'carousel-dot active';
+            dots.appendChild(dot);
+            return;
+        }
         
         pdfDocuments.forEach((doc, index) => {
             const slide = document.createElement('div');
@@ -858,6 +1224,7 @@
                     <i class="fas fa-file-pdf"></i>
                     <h3>${doc.title}</h3>
                     <p>${doc.description || ''}</p>
+                    <p style="margin-top: 20px; font-size: 14px;"><i class="fas fa-eye"></i> Cliquez pour visualiser</p>
                 </div>
             `;
             track.appendChild(slide);
@@ -867,6 +1234,64 @@
             dot.onclick = () => goToSlide(index);
             dots.appendChild(dot);
         });
+    }
+    
+    async function viewPDF(index) {
+        const doc = pdfDocuments[index];
+        if (!doc || !doc.data) return;
+        
+        const modal = document.getElementById('pdfModal');
+        const title = document.getElementById('pdfModalTitle');
+        const viewer = document.getElementById('pdfViewer');
+        
+        title.textContent = doc.title;
+        modal.classList.add('active');
+        viewer.innerHTML = '<p style="color: white; text-align: center;">Chargement...</p>';
+        
+        try {
+            const loadingTask = pdfjsLib.getDocument({ data: atob(doc.data.split(',')[1]) });
+            currentPdf = await loadingTask.promise;
+            totalPages = currentPdf.numPages;
+            currentPage = 1;
+            
+            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
+            renderPage(currentPage);
+            
+            document.getElementById('pdfDownloadBtn').onclick = () => {
+                const a = document.createElement('a');
+                a.href = doc.data;
+                a.download = doc.fileName || 'document.pdf';
+                a.click();
+            };
+        } catch (error) {
+            viewer.innerHTML = '<p style="color: white; text-align: center;">Erreur de chargement</p>';
+        }
+    }
+    
+    async function renderPage(pageNumber) {
+        if (!currentPdf) return;
+        
+        const viewer = document.getElementById('pdfViewer');
+        const page = await currentPdf.getPage(pageNumber);
+        const viewport = page.getViewport({ scale: 1.5 });
+        
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+        
+        viewer.innerHTML = '';
+        viewer.appendChild(canvas);
+        
+        await page.render({
+            canvasContext: context,
+            viewport: viewport
+        }).promise;
+    }
+    
+    function closePDFModal() {
+        document.getElementById('pdfModal').classList.remove('active');
+        currentPdf = null;
     }
     
     // Navigation carrousel
@@ -891,59 +1316,77 @@
         });
     }
     
-    // Voir PDF (à implémenter avec PDF.js)
-    function viewPDF(index) {
-        alert('Visualisation PDF - ' + pdfDocuments[index].title);
-    }
-    
-    // Réinitialiser
-    function resetToDefault() {
-        if (confirm('Restaurer les valeurs par défaut ?')) {
-            document.getElementById('heroTitle').innerHTML = defaultValues.heroTitle;
-            document.getElementById('heroSubtitle').innerHTML = defaultValues.heroSubtitle;
-            document.getElementById('phone1').innerHTML = '<i class="fas fa-phone-alt"></i> ' + defaultValues.phone1;
-            document.getElementById('phone2').innerHTML = '<i class="fas fa-phone-alt"></i> ' + defaultValues.phone2;
-            document.getElementById('phone3').innerHTML = '<i class="fas fa-phone-alt"></i> ' + defaultValues.phone3;
-            document.getElementById('phone4').innerHTML = '<i class="fas fa-phone-alt"></i> ' + defaultValues.phone4;
-            document.getElementById('email').innerHTML = '<i class="fas fa-envelope"></i> ' + defaultValues.email;
-            document.getElementById('aboutText').innerHTML = defaultValues.aboutText;
+    // Événements PDF modal
+    document.getElementById('pdfPrevPage').addEventListener('click', () => {
+        if (currentPdf && currentPage > 1) {
+            currentPage--;
+            renderPage(currentPage);
+            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
         }
-    }
-    
-    // Afficher section upload PDF
-    function showPdfUpload() {
-        document.getElementById('uploadSection').style.display = 'block';
-        document.getElementById('uploadSection').scrollIntoView({ behavior: 'smooth' });
-    }
-    
-    // Charger les PDF sauvegardés
-    const savedPDFs = localStorage.getItem('pdfDocuments');
-    if (savedPDFs) {
-        pdfDocuments = JSON.parse(savedPDFs);
-        updateCarousel();
-    } else {
-        // Exemple par défaut
-        pdfDocuments = [{
-            id: 1,
-            title: 'Bienvenue',
-            description: 'Publiez vos premiers dossiers'
-        }];
-        updateCarousel();
-    }
-    
-    // Modal de connexion
-    function showLogin() {
-        document.getElementById('loginModal').classList.add('active');
-    }
-    
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(a => {
-        a.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) target.scrollIntoView({behavior: 'smooth'});
-        });
     });
+    
+    document.getElementById('pdfNextPage').addEventListener('click', () => {
+        if (currentPdf && currentPage < totalPages) {
+            currentPage++;
+            renderPage(currentPage);
+            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
+        }
+    });
+    
+    // Rendez-vous modal
+    const rdvModal = document.getElementById('rdvModal');
+    const openRdv = document.getElementById('openRdv');
+    const heroRdvBtn = document.getElementById('heroRdvBtn');
+    const contactRdvBtn = document.getElementById('contactRdvBtn');
+    
+    if (openRdv) {
+        openRdv.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Formulaire de rendez-vous : Veuillez appeler le +243 977 219 423');
+        });
+    }
+    
+    if (heroRdvBtn) {
+        heroRdvBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Formulaire de rendez-vous : Veuillez appeler le +243 977 219 423');
+        });
+    }
+    
+    if (contactRdvBtn) {
+        contactRdvBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            alert('Formulaire de rendez-vous : Veuillez appeler le +243 977 219 423');
+        });
+    }
+    
+    // Initialisation
+    window.onload = function() {
+        // Charger les contenus sauvegardés
+        loadSavedContent();
+        
+        // Charger les PDF sauvegardés
+        const savedPDFs = localStorage.getItem('bkr_pdfs');
+        if (savedPDFs) {
+            pdfDocuments = JSON.parse(savedPDFs);
+        }
+        
+        updateCarousel();
+        
+        // Auto-play carrousel
+        setInterval(() => {
+            if (pdfDocuments.length > 1) {
+                nextSlide();
+            }
+        }, 5000);
+        
+        // Afficher modal de connexion si pas connecté
+        setTimeout(() => {
+            if (!isAdmin) {
+                document.getElementById('loginModal').classList.add('active');
+            }
+        }, 500);
+    };
 </script>
 </body>
 </html>
