@@ -66,51 +66,6 @@
             background: rgba(201, 169, 89, 0.1);
         }
 
-        /* Boutons admin sur les éléments */
-        .admin-delete-btn {
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            background: #dc3545;
-            color: white;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 101;
-            border: 2px solid white;
-            font-size: 0.9rem;
-        }
-
-        body.admin-mode .admin-delete-btn {
-            display: flex;
-        }
-
-        .admin-edit-photo-btn {
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
-            background: #c9a959;
-            color: #0a1a2f;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            display: none;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            z-index: 101;
-            border: 2px solid white;
-            font-size: 0.9rem;
-        }
-
-        body.admin-mode .admin-edit-photo-btn {
-            display: flex;
-        }
-
         /* === NAVIGATION AVEC MENU HAMBURGER === */
         nav {
             background: #0a1a2f;
@@ -130,7 +85,6 @@
             align-items: center;
             gap: 10px;
             z-index: 1001;
-            position: relative;
         }
 
         .logo-placeholder {
@@ -142,7 +96,6 @@
             background: #fff;
             padding: 5px 12px;
             border-radius: 8px;
-            position: relative;
         }
 
         .logo-placeholder img {
@@ -347,18 +300,12 @@
             position: relative;
         }
         
-        .lawyer-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2);
-        }
-        
         .lawyer-photo {
             height: 280px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             position: relative;
-            cursor: pointer;
         }
         
         .photo-overlay {
@@ -448,7 +395,6 @@
             color: white;
             cursor: pointer;
             transition: 0.3s;
-            position: relative;
         }
 
         .pdf-preview:hover {
@@ -783,19 +729,14 @@
             background: #c82333;
         }
 
-        /* Section d'upload - UNIQUEMENT VISIBLE POUR L'ADMIN */
+        /* Section d'upload */
         .upload-section {
-            display: none;
             margin-bottom: 2rem;
             padding: 1.5rem;
             background: white;
             border-radius: 16px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border: 2px solid #c9a959;
-        }
-
-        .upload-section.active {
-            display: block;
         }
 
         .upload-section h3 {
@@ -838,58 +779,6 @@
 
         .upload-form button:hover {
             background: #dbb86a;
-        }
-
-        /* Modal d'ajout d'avocat */
-        .lawyer-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 5500;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lawyer-modal.active {
-            display: flex;
-        }
-
-        .lawyer-modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 32px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .lawyer-modal-content h3 {
-            color: #0a1a2f;
-            margin-bottom: 1.5rem;
-        }
-
-        .lawyer-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .lawyer-form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #0a1a2f;
-        }
-
-        .lawyer-form-group input,
-        .lawyer-form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
         }
 
         .admin-badge {
@@ -1170,7 +1059,7 @@
     
     <div class="admin-panel-section">
         <h4><i class="fas fa-users"></i> Gestion des avocats</h4>
-        <button class="admin-panel-btn" onclick="openAddLawyerModal()">
+        <button class="admin-panel-btn" onclick="addLawyer()">
             <i class="fas fa-user-plus"></i> Ajouter un avocat
         </button>
         <button class="admin-panel-btn" onclick="reorderLawyers()">
@@ -1219,68 +1108,6 @@
     </div>
 </div>
 
-<!-- ========== MODAL D'AJOUT D'AVOCAT ========== -->
-<div class="lawyer-modal" id="addLawyerModal">
-    <div class="lawyer-modal-content">
-        <h3><i class="fas fa-user-plus"></i> Ajouter un avocat</h3>
-        <div class="lawyer-form-group">
-            <label>Photo de l'avocat</label>
-            <input type="file" id="lawyerPhoto" accept="image/*">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Nom complet</label>
-            <input type="text" id="lawyerName" placeholder="Maître Jean DUPONT">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Titre / Rôle</label>
-            <input type="text" id="lawyerRole" placeholder="Avocat associé">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Description</label>
-            <textarea id="lawyerDesc" rows="3" placeholder="Spécialiste en..."></textarea>
-        </div>
-        <div class="lawyer-form-group">
-            <label>Téléphone</label>
-            <input type="text" id="lawyerPhone" placeholder="+243 000 000 000">
-        </div>
-        <div class="lawyer-form-group">
-            <button class="admin-panel-btn" onclick="addLawyer()">Ajouter l'avocat</button>
-            <button class="admin-panel-btn danger" onclick="closeAddLawyerModal()">Annuler</button>
-        </div>
-    </div>
-</div>
-
-<!-- ========== MODAL DE MODIFICATION D'AVOCAT ========== -->
-<div class="lawyer-modal" id="editLawyerModal">
-    <div class="lawyer-modal-content">
-        <h3><i class="fas fa-edit"></i> Modifier l'avocat</h3>
-        <div class="lawyer-form-group">
-            <label>Photo de l'avocat</label>
-            <input type="file" id="editLawyerPhoto" accept="image/*">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Nom complet</label>
-            <input type="text" id="editLawyerName">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Titre / Rôle</label>
-            <input type="text" id="editLawyerRole">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Description</label>
-            <textarea id="editLawyerDesc" rows="3"></textarea>
-        </div>
-        <div class="lawyer-form-group">
-            <label>Téléphone</label>
-            <input type="text" id="editLawyerPhone">
-        </div>
-        <div class="lawyer-form-group">
-            <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer</button>
-            <button class="admin-panel-btn danger" onclick="closeEditLawyerModal()">Annuler</button>
-        </div>
-    </div>
-</div>
-
 <!-- ========== NAVIGATION AVEC MENU HAMBURGER ========== -->
 <nav>
     <div class="logo-container">
@@ -1289,7 +1116,7 @@
                  alt="logo bkr" 
                  onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'40\' viewBox=\'0 0 100 80\'%3E%3Crect width=\'100\' height=\'80\' fill=\'%23c9a959\'/%3E%3Ctext x=\'15\' y=\'55\' font-size=\'42\' fill=\'%230a1a2f\' font-weight=\'bold\'%3EBKR%3C/text%3E%3C/svg%3E'">
         </div>
-        <span class="logo-text" id="logoText" ondblclick="if(window.editMode) editText(this)">& ASSOCIÉS</span>
+        <span class="logo-text" id="logoText" ondblclick="editText(this)">& ASSOCIÉS</span>
     </div>
     
     <div class="menu-toggle" id="menuToggle">
@@ -1299,14 +1126,14 @@
     </div>
     
     <ul class="nav-links" id="navLinks">
-        <li><a href="#accueil" id="navAccueil" ondblclick="if(window.editMode) editText(this)">Accueil</a></li>
-        <li><a href="#apropos" id="navApropos" ondblclick="if(window.editMode) editText(this)">À propos</a></li>
-        <li><a href="#services" id="navServices" ondblclick="if(window.editMode) editText(this)">Nos services</a></li>
-        <li><a href="#avocats" id="navAvocats" ondblclick="if(window.editMode) editText(this)">Avocats</a></li>
-        <li><a href="#galerie" id="navGalerie" ondblclick="if(window.editMode) editText(this)">Galerie</a></li>
-        <li><a href="#statistiques" id="navStats" ondblclick="if(window.editMode) editText(this)">Statistiques</a></li>
-        <li><a href="#contact" id="navContact" ondblclick="if(window.editMode) editText(this)">Contact</a></li>
-        <li class="rdv-btn"><a href="#" id="openRdv" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</a></li>
+        <li><a href="#accueil" id="navAccueil" ondblclick="editText(this)">Accueil</a></li>
+        <li><a href="#apropos" id="navApropos" ondblclick="editText(this)">À propos</a></li>
+        <li><a href="#services" id="navServices" ondblclick="editText(this)">Nos services</a></li>
+        <li><a href="#avocats" id="navAvocats" ondblclick="editText(this)">Avocats</a></li>
+        <li><a href="#galerie" id="navGalerie" ondblclick="editText(this)">Galerie</a></li>
+        <li><a href="#statistiques" id="navStats" ondblclick="editText(this)">Statistiques</a></li>
+        <li><a href="#contact" id="navContact" ondblclick="editText(this)">Contact</a></li>
+        <li class="rdv-btn"><a href="#" id="openRdv" ondblclick="editText(this)">Prendre rendez-vous</a></li>
     </ul>
 </nav>
 
@@ -1314,29 +1141,33 @@
 <div class="modal" id="rdvModal">
     <div class="modal-content">
         <span class="close-modal" id="closeModal">&times;</span>
-        <h2 style="margin-bottom: 1.5rem; color: #0a1a2f;" id="rdvTitle" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</h2>
+        <h2 style="margin-bottom: 1.5rem; color: #0a1a2f;" id="rdvTitle" ondblclick="editText(this)">Prendre rendez-vous</h2>
         <form id="rdvForm">
             <div class="form-group">
-                <input type="text" placeholder="Votre nom complet" required id="rdvName">
+                <input type="text" placeholder="Votre nom complet" required id="rdvName" onfocus="if(window.editMode) this.placeholder = prompt('Nouveau placeholder', this.placeholder)">
             </div>
             <div class="form-group">
-                <input type="email" placeholder="Votre email" required id="rdvEmail">
+                <input type="email" placeholder="Votre email" required id="rdvEmail" onfocus="if(window.editMode) this.placeholder = prompt('Nouveau placeholder', this.placeholder)">
             </div>
             <div class="form-group">
-                <input type="tel" placeholder="Votre téléphone" required id="rdvPhone">
+                <input type="tel" placeholder="Votre téléphone" required id="rdvPhone" onfocus="if(window.editMode) this.placeholder = prompt('Nouveau placeholder', this.placeholder)">
             </div>
             <div class="form-group">
                 <select required id="rdvLawyer">
                     <option value="">Choisissez un avocat</option>
+                    <option>Maître biens KITUNGWA</option>
+                    <option>Maître Jonathan KASHAMA</option>
+                    <option>Maître Jealuc KANDA</option>
+                    <option>Maître Jonathan NSHIMBA</option>
                 </select>
             </div>
             <div class="form-group">
                 <input type="date" required id="rdvDate">
             </div>
             <div class="form-group">
-                <textarea rows="3" placeholder="Motif du rendez-vous" id="rdvMotif"></textarea>
+                <textarea rows="3" placeholder="Motif du rendez-vous" id="rdvMotif" onfocus="if(window.editMode) this.placeholder = prompt('Nouveau placeholder', this.placeholder)"></textarea>
             </div>
-            <button type="submit" class="btn" style="width: 100%;" id="rdvSubmit" ondblclick="if(window.editMode) editText(this)">Confirmer le rendez-vous</button>
+            <button type="submit" class="btn" style="width: 100%;" id="rdvSubmit" ondblclick="editText(this)">Confirmer le rendez-vous</button>
         </form>
     </div>
 </div>
@@ -1362,85 +1193,163 @@
 <section id="accueil" style="padding-top: 1rem;">
     <div class="hero" id="hero">
         <div class="hero-text">
-            <h1 id="heroTitle" ondblclick="if(window.editMode) editText(this)">CABINET B K R & ASSOCIES<br><span style="font-size: 1.4rem; color: #dbb86a;" id="heroSubtitle" ondblclick="if(window.editMode) editText(this)">Ordre National des Avocats · RDC</span></h1>
-            <p id="heroText" ondblclick="if(window.editMode) editText(this)">Consultation et assistance juridique de haut niveau<br>à Kolwezi et à Partout dans la ville de la RDC.</p>
-            <a href="#" class="btn" id="heroRdvBtn" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</a>
+            <h1 id="heroTitle" ondblclick="editText(this)">CABINET B K R & ASSOCIES<br><span style="font-size: 1.4rem; color: #dbb86a;" id="heroSubtitle" ondblclick="editText(this)">Ordre National des Avocats · RDC</span></h1>
+            <p id="heroText" ondblclick="editText(this)">Consultation et assistance juridique de haut niveau<br>à Kolwezi et à Partout dans la ville de la RDC.</p>
+            <a href="#" class="btn" id="heroRdvBtn" ondblclick="editText(this)">Prendre rendez-vous</a>
         </div>
         <div class="contact-hero" id="heroContact">
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 903 551 255</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
-            <div><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 977 219 423</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 813 535 315</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 903 551 255</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 975 886 336</span></div>
+            <div><i class="fas fa-envelope"></i> <span ondblclick="editText(this)">cabinetbkr@gmail.com</span></div>
         </div>
     </div>
 </section>
 
 <!-- ========== À PROPOS ========== -->
 <section id="apropos">
-    <h2 class="section-title" id="aproposTitle" ondblclick="if(window.editMode) editText(this)">À propos du cabinet</h2>
+    <h2 class="section-title" id="aproposTitle" ondblclick="editText(this)">À propos du cabinet</h2>
     <div style="display: flex; flex-wrap: wrap; gap: 2rem; background: white; padding: 2rem; border-radius: 32px; box-shadow: 0 5px 15px rgba(0,0,0,0.03);">
         <div style="flex: 2; min-width: 280px;">
-            <p style="font-size: 1.2rem;" id="aproposText1" ondblclick="if(window.editMode) editText(this)">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.</p>
-            <p style="margin-top: 1.5rem;" id="aproposText2" ondblclick="if(window.editMode) editText(this)">Notre devise : <em>rigueur, disponibilité et efficacité.</em> Nous accompagnons nos clients avec une stratégie sur mesure, que ce soit en conseil ou en représentation devant les juridictions nationales et internationales.</p>
+            <p style="font-size: 1.2rem;" id="aproposText1" ondblclick="editText(this)">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.</p>
+            <p style="margin-top: 1.5rem;" id="aproposText2" ondblclick="editText(this)">Notre devise : <em>rigueur, disponibilité et efficacité.</em> Nous accompagnons nos clients avec une stratégie sur mesure, que ce soit en conseil ou en représentation devant les juridictions nationales et internationales.</p>
         </div>
         <div style="flex: 1; background: #e9eff7; border-radius: 2rem; padding: 2rem; text-align: center;">
             <i class="fas fa-gavel" style="font-size: 3rem; color: #0a1a2f;"></i>
-            <p style="font-weight: 600; margin-top: 1rem;" id="aproposStat" ondblclick="if(window.editMode) editText(this)">Plus de 15 ans d'expérience collective</p>
+            <p style="font-weight: 600; margin-top: 1rem;" id="aproposStat" ondblclick="editText(this)">Plus de 15 ans d'expérience collective</p>
         </div>
     </div>
 </section>
 
 <!-- ========== SERVICES ========== -->
 <section id="services">
-    <h2 class="section-title" id="servicesTitle" ondblclick="if(window.editMode) editText(this)">Nos services</h2>
+    <h2 class="section-title" id="servicesTitle" ondblclick="editText(this)">Nos services</h2>
     <div class="cards-grid" id="servicesGrid">
         <div class="card">
             <i class="fas fa-balance-scale" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit des affaires</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Création de sociétés, fusions/acquisitions, contrats commerciaux, due diligence.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Droit des affaires</h3>
+            <p ondblclick="editText(this)">Création de sociétés, fusions/acquisitions, contrats commerciaux, due diligence.</p>
         </div>
         <div class="card">
             <i class="fas fa-hard-hat" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit minier</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Assistance dans le secteur extractif, permis, conformité, partenariats.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Droit minier</h3>
+            <p ondblclick="editText(this)">Assistance dans le secteur extractif, permis, conformité, partenariats.</p>
         </div>
         <div class="card">
             <i class="fas fa-hand-holding-usd" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Fiscalité & douanes</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Conseil fiscal, contentieux, optimisation et contrôle douanier.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Fiscalité & douanes</h3>
+            <p ondblclick="editText(this)">Conseil fiscal, contentieux, optimisation et contrôle douanier.</p>
         </div>
         <div class="card">
             <i class="fas fa-users" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit social</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Contrats de travail, procédures disciplinaires, négociations collectives.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Droit social</h3>
+            <p ondblclick="editText(this)">Contrats de travail, procédures disciplinaires, négociations collectives.</p>
         </div>
         <div class="card">
             <i class="fas fa-gavel" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Contentieux & arbitrage</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Représentation devant toutes les juridictions, médiation et arbitrage OHADA.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Contentieux & arbitrage</h3>
+            <p ondblclick="editText(this)">Représentation devant toutes les juridictions, médiation et arbitrage OHADA.</p>
         </div>
         <div class="card">
             <i class="fas fa-file-signature" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Conseil & rédaction</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Contrats, statuts, accords de confidentialité, avis juridiques.</p>
+            <h3 style="margin: 1rem 0;" ondblclick="editText(this)">Conseil & rédaction</h3>
+            <p ondblclick="editText(this)">Contrats, statuts, accords de confidentialité, avis juridiques.</p>
         </div>
     </div>
 </section>
 
 <!-- ========== PROFIL DES AVOCATS ========== -->
 <section id="avocats">
-    <h2 class="section-title" id="avocatsTitle" ondblclick="if(window.editMode) editText(this)">Nos avocats</h2>
+    <h2 class="section-title" id="avocatsTitle" ondblclick="editText(this)">Nos avocats</h2>
     <div class="lawyers-grid" id="lawyersGrid">
-        <!-- Les avocats seront chargés dynamiquement ici -->
+        <!-- Maître biens KITUNGWA -->
+        <div class="lawyer-card" data-lawyer-id="1">
+            <div class="lawyer-photo" style="background-image: url('Maitre bivens kitungwa.jpeg');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                <div class="photo-overlay">Maître bivens KITUNGWA</div>
+            </div>
+            <div class="info">
+                <h4 ondblclick="editText(this)">Maître bivens KITUNGWA</h4>
+                <div class="role" ondblclick="editText(this)">Administrateur du cabinet</div>
+                <p ondblclick="editText(this)">Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.</p>
+                <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="editText(this)">+243 977 219 423</span></div>
+            </div>
+        </div>
+        
+        <!-- Maître Jonathan KASHAMA -->
+        <div class="lawyer-card" data-lawyer-id="2">
+            <div class="lawyer-photo" style="background-image: url('maitre jonathan kashama de cabinet.jpeg');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                <div class="photo-overlay">Maître Jonathan KASHAMA</div>
+            </div>
+            <div class="info">
+                <h4 ondblclick="editText(this)">Maître Jonathan KASHAMA</h4>
+                <div class="role" ondblclick="editText(this)">Membre du cabinet</div>
+                <p ondblclick="editText(this)">Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.</p>
+                <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="editText(this)">+243 813 535 315</span></div>
+            </div>
+        </div>
+        
+        <!-- Maître Jealuc KANDA -->
+        <div class="lawyer-card" data-lawyer-id="3">
+            <div class="lawyer-photo" style="background-image: url('jeanluc.jpeg');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                <div class="photo-overlay">Maître Jealuc KANDA</div>
+            </div>
+            <div class="info">
+                <h4 ondblclick="editText(this)">Maître Jealuc KANDA</h4>
+                <div class="role" ondblclick="editText(this)">Chargé d'exécution</div>
+                <p ondblclick="editText(this)">Responsable du suivi opérationnel des dossiers et des procédures judiciaires.</p>
+                <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="editText(this)">+243 975 886 336</span></div>
+            </div>
+        </div>
+        
+        <!-- Maître Jonathan NSHIMBA -->
+        <div class="lawyer-card" data-lawyer-id="4">
+            <div class="lawyer-photo" style="background-image: url('Maitre jonathan nshima charger des relation et des affaire.jpeg');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                <div class="photo-overlay">Maître Jonathan NSHIMBA</div>
+            </div>
+            <div class="info">
+                <h4 ondblclick="editText(this)">Maître Jonathan NSHIMBA</h4>
+                <div class="role" ondblclick="editText(this)">Chargé de relations et affaires</div>
+                <p ondblclick="editText(this)">Gestion des partenariats, relations clients et développement des affaires juridiques.</p>
+                <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="editText(this)">+243 999 816 551</span></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Autres avocats du cabinet -->
+    <div style="margin-top: 3rem;">
+        <h3 style="margin-bottom: 1.5rem;" id="otherLawyersTitle" ondblclick="editText(this)">Équipe élargie</h3>
+        <div class="lawyers-grid" id="otherLawyersGrid">
+            <div class="lawyer-card">
+                <div class="lawyer-photo" style="background-image: url('les avocat du cabinet bkr (2).jpeg');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                    <div class="photo-overlay">Avocats du cabinet BKR</div>
+                </div>
+                <div class="info">
+                    <h4 ondblclick="editText(this)">Les avocats du cabinet</h4>
+                    <div class="role" ondblclick="editText(this)">Équipe BKR</div>
+                    <p ondblclick="editText(this)">Notre équipe complète d'avocats spécialisés dans différents domaines du droit.</p>
+                </div>
+            </div>
+            
+            <div class="lawyer-card">
+                <div class="lawyer-photo" style="background-image: url('logo bkr1.png');" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                    <div class="photo-overlay">Notre Cabinet B.K.R</div>
+                </div>
+                <div class="info">
+                    <h4 ondblclick="editText(this)">Cabinet B.K.R et</h4>
+                    <div class="role" ondblclick="editText(this)">Associés</div>
+                    <p ondblclick="editText(this)">Consultation et assistance juridique de haut niveau à Kolwezi et à Partout dans la ville de la RDC.</p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
 <!-- ========== GALERIE CARROUSEL AVEC PDF ========== -->
 <section id="galerie">
-    <h2 class="section-title" id="galerieTitle" ondblclick="if(window.editMode) editText(this)">Nos dossiers réussis</h2>
+    <h2 class="section-title" id="galerieTitle" ondblclick="editText(this)">Nos dossiers réussis</h2>
     
-    <!-- Section d'upload - UNIQUEMENT VISIBLE POUR L'ADMIN CONNECTÉ -->
+    <!-- Section d'upload (visible uniquement pour admin connecté) -->
     <div class="upload-section" id="uploadSection">
         <h3><i class="fas fa-lock-open"></i> Mode Administrateur - Publier un nouveau dossier</h3>
         <div class="upload-form">
@@ -1471,58 +1380,58 @@
 
 <!-- ========== STATISTIQUES ========== -->
 <section id="statistiques">
-    <h2 class="section-title" id="statsTitle" ondblclick="if(window.editMode) editText(this)">Statistiques & victoires</h2>
+    <h2 class="section-title" id="statsTitle" ondblclick="editText(this)">Statistiques & victoires</h2>
     <div class="stats-container" id="statsContainer">
         <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">95%</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Dossiers contentieux gagnés</p>
+            <h3 ondblclick="editText(this)">95%</h3>
+            <p ondblclick="editText(this)">Dossiers contentieux gagnés</p>
         </div>
         <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">+350</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Clients accompagnés</p>
+            <h3 ondblclick="editText(this)">+350</h3>
+            <p ondblclick="editText(this)">Clients accompagnés</p>
         </div>
         <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">120</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Affaires miniers traitées</p>
+            <h3 ondblclick="editText(this)">120</h3>
+            <p ondblclick="editText(this)">Affaires miniers traitées</p>
         </div>
         <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">98%</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Médiations réussies</p>
+            <h3 ondblclick="editText(this)">98%</h3>
+            <p ondblclick="editText(this)">Médiations réussies</p>
         </div>
     </div>
 </section>
 
 <!-- ========== CONTACT ========== -->
 <section id="contact">
-    <h2 class="section-title" id="contactTitle" ondblclick="if(window.editMode) editText(this)">Contact</h2>
+    <h2 class="section-title" id="contactTitle" ondblclick="editText(this)">Contact</h2>
     <div class="contact-block">
         <div class="contact-info">
-            <p><strong id="contactName" ondblclick="if(window.editMode) editText(this)">Cabinet BKR & Associés</strong><br><span ondblclick="if(window.editMode) editText(this)">Ordre National des Avocats, RDC</span></p>
-            <div class="info-line"><i class="fas fa-map-marker-alt"></i> <span ondblclick="if(window.editMode) editText(this)">634 Av. du Manguier Q. Dilala / Kolwezi</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 903 551 255</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
-            <div class="info-line"><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
-            <div class="info-line"><i class="fas fa-clock"></i> <span ondblclick="if(window.editMode) editText(this)">Lun-Ven 8h30 – 17h30</span></div>
-            <button class="btn" id="contactRdvBtn" style="margin-top: 1.5rem;" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous en ligne</button>
+            <p><strong id="contactName" ondblclick="editText(this)">Cabinet BKR & Associés</strong><br><span ondblclick="editText(this)">Ordre National des Avocats, RDC</span></p>
+            <div class="info-line"><i class="fas fa-map-marker-alt"></i> <span ondblclick="editText(this)">634 Av. du Manguier Q. Dilala / Kolwezi</span></div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 977 219 423</span></div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 813 535 315</span></div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 903 551 255</span></div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="editText(this)">+243 975 886 336</span></div>
+            <div class="info-line"><i class="fas fa-envelope"></i> <span ondblclick="editText(this)">cabinetbkr@gmail.com</span></div>
+            <div class="info-line"><i class="fas fa-clock"></i> <span ondblclick="editText(this)">Lun-Ven 8h30 – 17h30</span></div>
+            <button class="btn" id="contactRdvBtn" style="margin-top: 1.5rem;" ondblclick="editText(this)">Prendre rendez-vous en ligne</button>
         </div>
         <div class="map-placeholder">
             <i class="fas fa-map" style="font-size: 3rem; color: #6883a5;"></i>
-            <p style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Gombe, Kinshasa<br> (Plan d'accès interactif bientôt disponible)</p>
+            <p style="margin: 1rem 0;" ondblclick="editText(this)">Gombe, Kinshasa<br> (Plan d'accès interactif bientôt disponible)</p>
             <div style="background: #cfddee; padding: 1rem; border-radius: 1rem;">
-                <img src="logo bkr2.png" style="max-width: 100px;" id="footerLogo">
-                <p ondblclick="if(window.editMode) editText(this)">RD Congo</p>
+                <img src="logo bkr2.png" style="max-width: 100px;" id="footerLogo" onclick="if(window.editMode) changeImage(this)">
+                <p ondblclick="editText(this)">RD Congo</p>
             </div>
         </div>
     </div>
 </section>
 
 <footer>
-    <p id="footerText" ondblclick="if(window.editMode) editText(this)">© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
+    <p id="footerText" ondblclick="editText(this)">© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
     <p style="margin-top: 1rem;">
-        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;">
-        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;">
+        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;" onclick="if(window.editMode) changeImage(this)">
+        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;" onclick="if(window.editMode) changeImage(this)">
     </p>
 </footer>
 
@@ -1539,8 +1448,7 @@
     let totalPages = 1;
     let isAdminLogged = false;
     let editMode = false;
-    let lawyers = [];
-    let currentEditLawyerId = null;
+    let originalContents = {};
     
     // Mot de passe admin (à changer selon vos besoins)
     const ADMIN_PASSWORD = "admin123";
@@ -1570,7 +1478,6 @@
     function openModal(e) {
         e.preventDefault();
         modal.classList.add('active');
-        updateLawyerSelect();
     }
     
     openRdv.addEventListener('click', openModal);
@@ -1622,8 +1529,6 @@
             document.getElementById('uploadSection').classList.remove('active');
             document.getElementById('adminPanel').classList.remove('active');
             showToast('Déconnexion réussie');
-            // Cacher tous les boutons admin
-            document.querySelectorAll('.admin-delete-btn, .admin-edit-photo-btn').forEach(btn => btn.remove());
         }
     }
     
@@ -1644,13 +1549,10 @@
     }
     
     function toggleAdminPanel() {
-        if (isAdminLogged) {
-            document.getElementById('adminPanel').classList.toggle('active');
-        }
+        document.getElementById('adminPanel').classList.toggle('active');
     }
     
     function enableEditMode() {
-        if (!isAdminLogged) return;
         editMode = !editMode;
         if (editMode) {
             document.body.classList.add('admin-mode');
@@ -1670,7 +1572,6 @@
         if (newText !== null && newText.trim() !== '') {
             element.innerText = newText;
             showToast('Texte modifié');
-            saveLawyersToStorage();
         }
     }
     
@@ -1686,7 +1587,24 @@
             reader.onload = function(event) {
                 element.src = event.target.result;
                 showToast('Image modifiée');
-                saveLawyersToStorage();
+            };
+            reader.readAsDataURL(file);
+        };
+        input.click();
+    }
+    
+    function changeLawyerPhoto(element) {
+        if (!editMode || !isAdminLogged) return;
+        
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = 'image/*';
+        input.onchange = function(e) {
+            const file = e.target.files[0];
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                element.style.backgroundImage = `url('${event.target.result}')`;
+                showToast('Photo modifiée');
             };
             reader.readAsDataURL(file);
         };
@@ -1733,275 +1651,41 @@
     
     function saveAllChanges() {
         const changes = {};
-        document.querySelectorAll('[id]').forEach(el => {
-            if (el.id && el.innerText) {
+        document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+            if (el.id) {
                 changes[el.id] = el.innerText;
             }
         });
         
         localStorage.setItem('bkrWebsiteData', JSON.stringify(changes));
-        saveLawyersToStorage();
         showToast('Toutes les modifications ont été sauvegardées');
     }
     
     function resetChanges() {
         if (confirm('Êtes-vous sûr de vouloir annuler toutes les modifications ?')) {
-            localStorage.removeItem('bkrWebsiteData');
-            localStorage.removeItem('bkrLawyers');
             location.reload();
         }
     }
     
-    // Gestion des avocats
-    function loadLawyers() {
-        const saved = localStorage.getItem('bkrLawyers');
-        if (saved) {
-            try {
-                lawyers = JSON.parse(saved);
-            } catch (e) {
-                lawyers = [];
-            }
-        } else {
-            // Avocats par défaut
-            lawyers = [
-                {
-                    id: 1,
-                    name: "Maître bivens KITUNGWA",
-                    role: "Administrateur du cabinet",
-                    desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.",
-                    phone: "+243 977 219 423",
-                    photo: "Maitre bivens kitungwa charger.jpeg"
-                },
-                {
-                    id: 2,
-                    name: "Maître Jonathan KASHAMA",
-                    role: "Membre du cabinet",
-                    desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.",
-                    phone: "+243 813 535 315",
-                    photo: "maitre jonathan kashama de cabinet.jpeg"
-                },
-                {
-                    id: 3,
-                    name: "Maître Jealuc KANDA",
-                    role: "Chargé d'exécution",
-                    desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires.",
-                    phone: "+243 975 886 336",
-                    photo: "jeanluc.jpeg"
-                },
-                {
-                    id: 4,
-                    name: "Maître Jonathan NSHIMBA",
-                    role: "Chargé de relations et affaires",
-                    desc: "Gestion des partenariats, relations clients et développement des affaires juridiques.",
-                    phone: "+243 999 816 551",
-                    photo: "Maitre jonathan nshima charger des relation et des affaire.jpeg"
-                }
-            ];
-        }
-        displayLawyers();
-    }
-    
-    function saveLawyersToStorage() {
-        localStorage.setItem('bkrLawyers', JSON.stringify(lawyers));
-    }
-    
-    function displayLawyers() {
-        const grid = document.getElementById('lawyersGrid');
-        grid.innerHTML = '';
-        
-        lawyers.forEach((lawyer, index) => {
-            const card = document.createElement('div');
-            card.className = 'lawyer-card';
-            card.dataset.lawyerId = lawyer.id;
-            
-            card.innerHTML = `
-                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}');" 
-                     onclick="if(window.isAdminLogged && window.editMode) changeLawyerPhoto(${lawyer.id})">
-                    <div class="photo-overlay">${lawyer.name}</div>
-                    ${isAdminLogged ? `
-                        <div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id})">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                        <div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id})">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                    ` : ''}
-                </div>
-                <div class="info">
-                    <h4 ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'name', this)">${lawyer.name}</h4>
-                    <div class="role" ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'role', this)">${lawyer.role}</div>
-                    <p ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'desc', this)">${lawyer.desc}</p>
-                    <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'phone', this)">${lawyer.phone}</span></div>
-                </div>
-            `;
-            
-            grid.appendChild(card);
-        });
-    }
-    
-    function editLawyerField(id, field, element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const newValue = prompt(`Modifier ${field} :`, element.innerText);
-        if (newValue && newValue.trim() !== '') {
-            const lawyer = lawyers.find(l => l.id === id);
-            if (lawyer) {
-                lawyer[field] = newValue;
-                element.innerText = newValue;
-                saveLawyersToStorage();
-                showToast('Informations modifiées');
-            }
-        }
-    }
-    
-    function changeLawyerPhoto(id) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const lawyer = lawyers.find(l => l.id === id);
-                if (lawyer) {
-                    lawyer.photo = event.target.result;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                    showToast('Photo modifiée');
-                }
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-    
-    function openAddLawyerModal() {
-        if (!isAdminLogged) return;
-        document.getElementById('addLawyerModal').classList.add('active');
-    }
-    
-    function closeAddLawyerModal() {
-        document.getElementById('addLawyerModal').classList.remove('active');
-        document.getElementById('lawyerPhoto').value = '';
-        document.getElementById('lawyerName').value = '';
-        document.getElementById('lawyerRole').value = '';
-        document.getElementById('lawyerDesc').value = '';
-        document.getElementById('lawyerPhone').value = '';
-    }
-    
     function addLawyer() {
-        const photo = document.getElementById('lawyerPhoto').files[0];
-        const name = document.getElementById('lawyerName').value;
-        const role = document.getElementById('lawyerRole').value;
-        const desc = document.getElementById('lawyerDesc').value;
-        const phone = document.getElementById('lawyerPhone').value;
-        
-        if (!name || !role || !desc || !phone) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const newId = Math.max(...lawyers.map(l => l.id), 0) + 1;
-        
-        if (photo) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                lawyers.push({
-                    id: newId,
-                    name: name,
-                    role: role,
-                    desc: desc,
-                    phone: phone,
-                    photo: event.target.result
-                });
-                saveLawyersToStorage();
-                displayLawyers();
-                closeAddLawyerModal();
-                showToast('Avocat ajouté avec succès');
-            };
-            reader.readAsDataURL(photo);
-        } else {
-            lawyers.push({
-                id: newId,
-                name: name,
-                role: role,
-                desc: desc,
-                phone: phone,
-                photo: 'https://via.placeholder.com/400x300?text=Photo'
-            });
-            saveLawyersToStorage();
-            displayLawyers();
-            closeAddLawyerModal();
-            showToast('Avocat ajouté avec succès');
-        }
-    }
-    
-    function editLawyer(id) {
         if (!isAdminLogged) return;
         
-        const lawyer = lawyers.find(l => l.id === id);
-        if (lawyer) {
-            currentEditLawyerId = id;
-            document.getElementById('editLawyerName').value = lawyer.name;
-            document.getElementById('editLawyerRole').value = lawyer.role;
-            document.getElementById('editLawyerDesc').value = lawyer.desc;
-            document.getElementById('editLawyerPhone').value = lawyer.phone;
-            document.getElementById('editLawyerModal').classList.add('active');
-        }
-    }
-    
-    function closeEditLawyerModal() {
-        document.getElementById('editLawyerModal').classList.remove('active');
-        currentEditLawyerId = null;
-    }
-    
-    function saveLawyerEdit() {
-        const lawyer = lawyers.find(l => l.id === currentEditLawyerId);
-        if (lawyer) {
-            const photo = document.getElementById('editLawyerPhoto').files[0];
-            const name = document.getElementById('editLawyerName').value;
-            const role = document.getElementById('editLawyerRole').value;
-            const desc = document.getElementById('editLawyerDesc').value;
-            const phone = document.getElementById('editLawyerPhone').value;
-            
-            if (photo) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    lawyer.photo = event.target.result;
-                    lawyer.name = name;
-                    lawyer.role = role;
-                    lawyer.desc = desc;
-                    lawyer.phone = phone;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                    closeEditLawyerModal();
-                    showToast('Avocat modifié avec succès');
-                };
-                reader.readAsDataURL(photo);
-            } else {
-                lawyer.name = name;
-                lawyer.role = role;
-                lawyer.desc = desc;
-                lawyer.phone = phone;
-                saveLawyersToStorage();
-                displayLawyers();
-                closeEditLawyerModal();
-                showToast('Avocat modifié avec succès');
-            }
-        }
-    }
-    
-    function deleteLawyer(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet avocat ?')) {
-            lawyers = lawyers.filter(l => l.id !== id);
-            saveLawyersToStorage();
-            displayLawyers();
-            showToast('Avocat supprimé');
-        }
+        const lawyersGrid = document.getElementById('lawyersGrid');
+        const newLawyer = document.createElement('div');
+        newLawyer.className = 'lawyer-card';
+        newLawyer.innerHTML = `
+            <div class="lawyer-photo" style="background-image: url('https://via.placeholder.com/400x300?text=Photo')" onclick="if(window.editMode) changeLawyerPhoto(this)">
+                <div class="photo-overlay">Nouvel avocat</div>
+            </div>
+            <div class="info">
+                <h4 ondblclick="editText(this)">Nouvel avocat</h4>
+                <div class="role" ondblclick="editText(this)">Titre</div>
+                <p ondblclick="editText(this)">Description</p>
+                <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="editText(this)">+243 000 000 000</span></div>
+            </div>
+        `;
+        lawyersGrid.appendChild(newLawyer);
+        showToast('Nouvel avocat ajouté');
     }
     
     function reorderLawyers() {
@@ -2009,29 +1693,9 @@
         
         new Sortable(document.getElementById('lawyersGrid'), {
             animation: 150,
-            onEnd: function(evt) {
-                // Réorganiser le tableau lawyers selon le nouvel ordre
-                const newOrder = [];
-                document.querySelectorAll('.lawyer-card').forEach(card => {
-                    const id = parseInt(card.dataset.lawyerId);
-                    const lawyer = lawyers.find(l => l.id === id);
-                    if (lawyer) newOrder.push(lawyer);
-                });
-                lawyers = newOrder;
-                saveLawyersToStorage();
+            onEnd: function() {
                 showToast('Ordre des avocats modifié');
             }
-        });
-    }
-    
-    function updateLawyerSelect() {
-        const select = document.getElementById('rdvLawyer');
-        select.innerHTML = '<option value="">Choisissez un avocat</option>';
-        lawyers.forEach(lawyer => {
-            const option = document.createElement('option');
-            option.value = lawyer.name;
-            option.textContent = lawyer.name;
-            select.appendChild(option);
         });
     }
     
@@ -2048,8 +1712,7 @@
         const data = {
             texts: {},
             images: {},
-            pdfDocuments: pdfDocuments,
-            lawyers: lawyers
+            pdfDocuments: pdfDocuments
         };
         
         document.querySelectorAll('[id]').forEach(el => {
@@ -2078,32 +1741,21 @@
                 const data = JSON.parse(e.target.result);
                 
                 // Restaurer les textes
-                if (data.texts) {
-                    Object.keys(data.texts).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.innerText = data.texts[id];
-                    });
-                }
+                Object.keys(data.texts).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.innerText = data.texts[id];
+                });
                 
                 // Restaurer les images
-                if (data.images) {
-                    Object.keys(data.images).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.src = data.images[id];
-                    });
-                }
+                Object.keys(data.images).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el) el.src = data.images[id];
+                });
                 
                 // Restaurer les PDFs
                 if (data.pdfDocuments) {
                     pdfDocuments = data.pdfDocuments;
                     updateCarousel();
-                }
-                
-                // Restaurer les avocats
-                if (data.lawyers) {
-                    lawyers = data.lawyers;
-                    saveLawyersToStorage();
-                    displayLawyers();
                 }
                 
                 showToast('Données importées avec succès');
@@ -2226,11 +1878,6 @@
                 <h3>${title}</h3>
                 <p>${description}</p>
                 <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${doc.date}</p>
-                ${isAdminLogged ? `
-                    <div class="admin-delete-btn" onclick="deletePdf(${doc.id})">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                ` : ''}
             </div>
             <div class="carousel-caption">
                 <h3>${title}</h3>
@@ -2255,16 +1902,6 @@
         showToast('Document publié avec succès !');
     }
     
-    function deletePdf(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Supprimer ce document ?')) {
-            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
-            updateCarousel();
-            showToast('Document supprimé');
-        }
-    }
-    
     function updateCarousel() {
         track.innerHTML = '';
         pdfDocuments.forEach((doc, index) => {
@@ -2276,11 +1913,6 @@
                     <h3>${doc.title}</h3>
                     <p>${doc.description}</p>
                     <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${doc.date}</p>
-                    ${isAdminLogged ? `
-                        <div class="admin-delete-btn" onclick="deletePdf(${doc.id})">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                    ` : ''}
                 </div>
                 <div class="carousel-caption">
                     <h3>${doc.title}</h3>
@@ -2430,9 +2062,7 @@
     // Initialisation
     window.onload = function() {
         loadSavedData();
-        loadLawyers();
         checkEmptyGallery();
-        updateLawyerSelect();
         
         // Créer les dots
         if (pdfDocuments.length > 0) {
