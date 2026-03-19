@@ -304,6 +304,109 @@
             color: #0a1a2f;
         }
 
+        /* === GALERIE CARROUSEL === */
+        .carousel-container {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            overflow: hidden;
+            border-radius: 24px;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2);
+        }
+
+        .carousel-track {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .carousel-slide {
+            min-width: 100%;
+            position: relative;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 500px;
+            object-fit: cover;
+            display: block;
+        }
+
+        .carousel-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(10, 26, 47, 0.9));
+            color: white;
+            padding: 2rem;
+            text-align: left;
+        }
+
+        .carousel-caption h3 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+            color: #dbb86a;
+        }
+
+        .carousel-caption p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.2);
+            backdrop-filter: blur(4px);
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: 0.3s;
+            z-index: 10;
+        }
+
+        .carousel-btn:hover {
+            background: #c9a959;
+            border-color: #c9a959;
+        }
+
+        .carousel-btn.prev {
+            left: 20px;
+        }
+
+        .carousel-btn.next {
+            right: 20px;
+        }
+
+        .carousel-dots {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .carousel-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #ccc;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .carousel-dot.active {
+            background: #c9a959;
+            transform: scale(1.2);
+        }
+
         /* Contact */
         .contact-block {
             background: white;
@@ -483,6 +586,7 @@
         <li><a href="#apropos">À propos</a></li>
         <li><a href="#services">Nos services</a></li>
         <li><a href="#avocats">Avocats</a></li>
+        <li><a href="#galerie">Galerie</a></li>
         <li><a href="#statistiques">Statistiques</a></li>
         <li><a href="#contact">Contact</a></li>
         <li class="rdv-btn"><a href="#" id="openRdv">Prendre rendez-vous</a></li>
@@ -656,6 +760,58 @@
     </div>
 </section>
 
+<!-- ========== GALERIE CARROUSEL ========== -->
+<section id="galerie">
+    <h2 class="section-title">Nos dossiers réussis</h2>
+    <div class="carousel-container">
+        <div class="carousel-track" id="carouselTrack">
+            <!-- Slide 1 -->
+            <div class="carousel-slide">
+                <img src="logo bkr1.png" alt="Affaire minière majeure" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'500\' viewBox=\'0 0 1200 500\'%3E%3Crect width=\'1200\' height=\'500\' fill=\'%23102b42\'/%3E%3Ctext x=\'100\' y=\'250\' font-family=\'Arial\' font-size=\'40\' fill=\'%23c9a959\'%3EAffaire minière%3C/text%3E%3C/svg%3E'">
+                <div class="carousel-caption">
+                    <h3>Affaire minière majeure - 2024</h3>
+                    <p>Obtention d'un permis d'exploitation pour une société internationale dans le Lualaba</p>
+                </div>
+            </div>
+            <!-- Slide 2 -->
+            <div class="carousel-slide">
+                <img src="logo bkr2.png" alt="Contentieux fiscal" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'500\' viewBox=\'0 0 1200 500\'%3E%3Crect width=\'1200\' height=\'500\' fill=\'%231b3a5c\'/%3E%3Ctext x=\'100\' y=\'250\' font-family=\'Arial\' font-size=\'40\' fill=\'%23c9a959\'%3EContentieux fiscal%3C/text%3E%3C/svg%3E'">
+                <div class="carousel-caption">
+                    <h3>Victoire fiscale historique</h3>
+                    <p>Annulation d'une pénalité de 2M$ pour une entreprise locale</p>
+                </div>
+            </div>
+            <!-- Slide 3 -->
+            <div class="carousel-slide">
+                <img src="les avocat du cabinet bkr (2).jpeg" alt="Médiation réussie" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'500\' viewBox=\'0 0 1200 500\'%3E%3Crect width=\'1200\' height=\'500\' fill=\'%230a1a2f\'/%3E%3Ctext x=\'100\' y=\'250\' font-family=\'Arial\' font-size=\'40\' fill=\'%23c9a959\'%3EMédiation réussie%3C/text%3E%3C/svg%3E'">
+                <div class="carousel-caption">
+                    <h3>Médiation dans un conflit social</h3>
+                    <p>Accord à l'amiable entre une entreprise minière et 150 travailleurs</p>
+                </div>
+            </div>
+            <!-- Slide 4 -->
+            <div class="carousel-slide">
+                <img src="Maitre bivens kitungwa.jpeg" alt="Arbitrage CCI" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'1200\' height=\'500\' viewBox=\'0 0 1200 500\'%3E%3Crect width=\'1200\' height=\'500\' fill=\'%232c3e50\'/%3E%3Ctext x=\'100\' y=\'250\' font-family=\'Arial\' font-size=\'40\' fill=\'%23c9a959\'%3EArbitrage CCI%3C/text%3E%3C/svg%3E'">
+                <div class="carousel-caption">
+                    <h3>Arbitrage international</h3>
+                    <p>Gain de cause dans une procédure d'arbitrage CCI pour un partenaire européen</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Boutons de navigation -->
+        <div class="carousel-btn prev" id="prevBtn">
+            <i class="fas fa-chevron-left"></i>
+        </div>
+        <div class="carousel-btn next" id="nextBtn">
+            <i class="fas fa-chevron-right"></i>
+        </div>
+        
+        <!-- Indicateurs -->
+        <div class="carousel-dots" id="carouselDots"></div>
+    </div>
+</section>
+
 <!-- ========== STATISTIQUES ========== -->
 <section id="statistiques">
     <h2 class="section-title">Statistiques & victoires</h2>
@@ -764,6 +920,55 @@
             }
         });
     });
+
+    // Carrousel
+    const track = document.getElementById('carouselTrack');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const dotsContainer = document.getElementById('carouselDots');
+    
+    let currentIndex = 0;
+    const slides = document.querySelectorAll('.carousel-slide');
+    const totalSlides = slides.length;
+    
+    // Créer les dots
+    for (let i = 0; i < totalSlides; i++) {
+        const dot = document.createElement('div');
+        dot.classList.add('carousel-dot');
+        if (i === 0) dot.classList.add('active');
+        dot.addEventListener('click', () => goToSlide(i));
+        dotsContainer.appendChild(dot);
+    }
+    
+    const dots = document.querySelectorAll('.carousel-dot');
+    
+    function updateDots() {
+        dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === currentIndex);
+        });
+    }
+    
+    function goToSlide(index) {
+        currentIndex = index;
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        updateDots();
+    }
+    
+    function nextSlide() {
+        currentIndex = (currentIndex + 1) % totalSlides;
+        goToSlide(currentIndex);
+    }
+    
+    function prevSlide() {
+        currentIndex = (currentIndex - 1 + totalSlides) % totalSlides;
+        goToSlide(currentIndex);
+    }
+    
+    nextBtn.addEventListener('click', nextSlide);
+    prevBtn.addEventListener('click', prevSlide);
+    
+    // Auto-play optionnel
+    setInterval(nextSlide, 5000);
 </script>
 </body>
 </html>
