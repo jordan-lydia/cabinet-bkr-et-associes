@@ -11,6 +11,7 @@
     <!-- SortableJS pour le drag & drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
     <style>
+        /* ... (garder tous les styles existants) ... */
         * {
             margin: 0;
             padding: 0;
@@ -1061,6 +1062,21 @@
             color: #c9a959;
         }
 
+        /* Loading spinner */
+        .loading-spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #c9a959;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
         /* === RESPONSIVE MENU HAMBURGER === */
         @media (max-width: 900px) {
             .menu-toggle {
@@ -1130,7 +1146,7 @@
         </div>
         <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') checkAdminPassword()">
         <button class="admin-btn" onclick="checkAdminPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(pour accedé a la page admin i obligatoirement d'entre le mot de passe)</p>
+        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(pour accéder à la page admin il faut entrer le mot de passe)</p>
     </div>
 </div>
 
@@ -1139,6 +1155,19 @@
     <div class="admin-panel-header">
         <h3><i class="fas fa-cog"></i> Panneau d'administration</h3>
         <button class="close-panel" onclick="toggleAdminPanel()">&times;</button>
+    </div>
+    
+    <div class="admin-panel-section">
+        <h4><i class="fab fa-github"></i> Configuration GitHub</h4>
+        <button class="admin-panel-btn" onclick="configureGitHub()">
+            <i class="fab fa-github"></i> Configurer GitHub
+        </button>
+        <button class="admin-panel-btn" onclick="testGitHubConnection()">
+            <i class="fas fa-plug"></i> Tester la connexion
+        </button>
+        <p style="font-size: 0.8rem; color: #666; margin-top: 10px;">
+            <i class="fas fa-info-circle"></i> Configurez votre token GitHub pour sauvegarder les PDF et photos
+        </p>
     </div>
     
     <div class="admin-panel-section">
@@ -1173,6 +1202,9 @@
         <button class="admin-panel-btn" onclick="openAddLawyerModal()">
             <i class="fas fa-user-plus"></i> Ajouter un avocat
         </button>
+        <button class="admin-panel-btn" onclick="syncLawyersToGitHub()">
+            <i class="fab fa-github"></i> Synchroniser avocats avec GitHub
+        </button>
         <button class="admin-panel-btn" onclick="reorderLawyers()">
             <i class="fas fa-arrows-alt"></i> Réorganiser les avocats
         </button>
@@ -1182,6 +1214,9 @@
         <h4><i class="fas fa-file-pdf"></i> Gestion des dossiers</h4>
         <button class="admin-panel-btn" onclick="document.getElementById('uploadSection').classList.toggle('active')">
             <i class="fas fa-upload"></i> Publier un dossier
+        </button>
+        <button class="admin-panel-btn" onclick="syncDocumentsToGitHub()">
+            <i class="fab fa-github"></i> Synchroniser dossiers avec GitHub
         </button>
         <button class="admin-panel-btn danger" onclick="clearAllDocuments()">
             <i class="fas fa-trash"></i> Supprimer tous les dossiers
@@ -1531,6 +1566,38 @@
     // Configuration de PDF.js
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     
+    // Configuration GitHub
+    const GITHUB_CONFIG = {
+        username: 'jordan-lydia',
+        repo: 'bkr-documents',
+        branch: 'main',
+        getToken: function() {
+            let token = localStorage.getItem('github_token');
+            if (!token && window.isAdminLogged) {
+                token = prompt(
+                    '🔐 Configuration GitHub requise\n\n' +
+                    'Pour sauvegarder les documents sur GitHub :\n\n' +
+                    '1. Allez sur : https://github.com/settings/tokens\n' +
+                    '2. Générez un nouveau token (classique)\n' +
+                    '3. Cochez "repo" dans les permissions\n' +
+                    '4. Copiez le token et collez-le ici\n\n' +
+                    'Votre token :'
+                );
+                if (token && token.startsWith('ghp_')) {
+                    localStorage.setItem('github_token', token);
+                }
+            }
+            return token;
+        },
+        setToken: function(token) {
+            if (token && token.startsWith('ghp_')) {
+                localStorage.setItem('github_token', token);
+                return true;
+            }
+            return false;
+        }
+    };
+    
     // Variables globales
     let currentIndex = 0;
     let pdfDocuments = [];
@@ -1542,8 +1609,434 @@
     let lawyers = [];
     let currentEditLawyerId = null;
     
-    // Mot de passe admin (à changer selon vos besoins)
+    // Mot de passe admin
     const ADMIN_PASSWORD = "admin123";
+    
+    // ========== FONCTIONS GITHUB ==========
+    
+    // Lire un fichier en Base64
+    function readFileAsBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const base64 = reader.result.split(',')[1];
+                resolve(base64);
+            };
+            reader.onerror = reject;
+            reader.readAsDataURL(file);
+        });
+    }
+    
+    // Uploader un fichier sur GitHub
+    async function uploadToGitHub(file, path, message) {
+        const token = GITHUB_CONFIG.getToken();
+        if (!token) {
+            showToast('❌ Token GitHub requis. Configurez-le dans le panneau admin.');
+            return null;
+        }
+        
+        const content = await readFileAsBase64(file);
+        
+        try {
+            // Vérifier si le fichier existe déjà
+            const checkUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${path}`;
+            let sha = null;
+            
+            const checkResponse = await fetch(checkUrl, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            
+            if (checkResponse.ok) {
+                const existing = await checkResponse.json();
+                sha = existing.sha;
+            }
+            
+            const data = {
+                message: message,
+                content: content,
+                branch: GITHUB_CONFIG.branch
+            };
+            if (sha) data.sha = sha;
+            
+            const response = await fetch(checkUrl, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            if (!response.ok) {
+                if (response.status === 401) {
+                    localStorage.removeItem('github_token');
+                    showToast('❌ Token invalide. Veuillez en générer un nouveau.');
+                }
+                throw new Error(`Erreur ${response.status}`);
+            }
+            
+            const result = await response.json();
+            return result.content.download_url;
+            
+        } catch (error) {
+            console.error('Erreur upload GitHub:', error);
+            showToast('❌ Erreur lors de l\'upload sur GitHub');
+            return null;
+        }
+    }
+    
+    // Sauvegarder les métadonnées des documents
+    async function saveDocumentsMetadata() {
+        const token = GITHUB_CONFIG.getToken();
+        if (!token) return false;
+        
+        const content = btoa(JSON.stringify(pdfDocuments, null, 2));
+        const path = 'data.json';
+        
+        try {
+            const url = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${path}`;
+            let sha = null;
+            
+            const checkResponse = await fetch(url, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            
+            if (checkResponse.ok) {
+                const existing = await checkResponse.json();
+                sha = existing.sha;
+            }
+            
+            const data = {
+                message: 'Mise à jour des documents',
+                content: content,
+                branch: GITHUB_CONFIG.branch
+            };
+            if (sha) data.sha = sha;
+            
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            return response.ok;
+        } catch (error) {
+            console.error('Erreur sauvegarde métadonnées:', error);
+            return false;
+        }
+    }
+    
+    // Sauvegarder les avocats sur GitHub
+    async function saveLawyersToGitHub() {
+        const token = GITHUB_CONFIG.getToken();
+        if (!token) return false;
+        
+        const content = btoa(JSON.stringify(lawyers, null, 2));
+        const path = 'lawyers.json';
+        
+        try {
+            const url = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/${path}`;
+            let sha = null;
+            
+            const checkResponse = await fetch(url, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            
+            if (checkResponse.ok) {
+                const existing = await checkResponse.json();
+                sha = existing.sha;
+            }
+            
+            const data = {
+                message: 'Mise à jour des avocats',
+                content: content,
+                branch: GITHUB_CONFIG.branch
+            };
+            if (sha) data.sha = sha;
+            
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `token ${token}`,
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+            
+            return response.ok;
+        } catch (error) {
+            console.error('Erreur sauvegarde avocats:', error);
+            return false;
+        }
+    }
+    
+    // Charger les données depuis GitHub
+    async function loadFromGitHub() {
+        const token = GITHUB_CONFIG.getToken();
+        if (!token) return;
+        
+        try {
+            // Charger les documents
+            const docsUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/data.json`;
+            const docsResponse = await fetch(docsUrl, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            
+            if (docsResponse.ok) {
+                const docsData = await docsResponse.json();
+                const content = atob(docsData.content);
+                pdfDocuments = JSON.parse(content);
+                updateCarousel();
+                showToast('📁 Documents chargés depuis GitHub');
+            }
+            
+            // Charger les avocats
+            const lawyersUrl = `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}/contents/lawyers.json`;
+            const lawyersResponse = await fetch(lawyersUrl, {
+                headers: { 'Authorization': `token ${token}` }
+            });
+            
+            if (lawyersResponse.ok) {
+                const lawyersData = await lawyersResponse.json();
+                const content = atob(lawyersData.content);
+                lawyers = JSON.parse(content);
+                displayLawyers();
+                showToast('👥 Avocats chargés depuis GitHub');
+            }
+            
+        } catch (error) {
+            console.log('Aucune donnée sur GitHub, utilisation des données locales');
+        }
+    }
+    
+    // Configurer GitHub
+    function configureGitHub() {
+        if (!isAdminLogged) return;
+        
+        const token = prompt(
+            '🔐 Configuration GitHub\n\n' +
+            'Collez votre token GitHub (commence par ghp_) :\n\n' +
+            'Si vous n\'avez pas de token :\n' +
+            '1. Allez sur https://github.com/settings/tokens\n' +
+            '2. Générez un nouveau token (classique)\n' +
+            '3. Cochez "repo"\n' +
+            '4. Copiez le token ici'
+        );
+        
+        if (token && GITHUB_CONFIG.setToken(token)) {
+            showToast('✅ Token GitHub configuré avec succès');
+            loadFromGitHub();
+        } else if (token) {
+            showToast('❌ Token invalide. Il doit commencer par "ghp_"');
+        }
+    }
+    
+    // Tester la connexion GitHub
+    async function testGitHubConnection() {
+        if (!isAdminLogged) return;
+        
+        const token = GITHUB_CONFIG.getToken();
+        if (!token) {
+            showToast('❌ Aucun token configuré. Cliquez sur "Configurer GitHub"');
+            return;
+        }
+        
+        showToast('🔄 Test de connexion en cours...');
+        
+        try {
+            const response = await fetch(
+                `https://api.github.com/repos/${GITHUB_CONFIG.username}/${GITHUB_CONFIG.repo}`,
+                {
+                    headers: { 'Authorization': `token ${token}` }
+                }
+            );
+            
+            if (response.ok) {
+                showToast('✅ Connexion GitHub réussie !');
+            } else if (response.status === 404) {
+                showToast('❌ Repository non trouvé. Créez "bkr-documents" sur GitHub');
+            } else if (response.status === 401) {
+                showToast('❌ Token invalide. Générez-en un nouveau');
+                localStorage.removeItem('github_token');
+            } else {
+                showToast(`❌ Erreur ${response.status}`);
+            }
+        } catch (error) {
+            showToast('❌ Erreur de connexion');
+        }
+    }
+    
+    // Synchroniser les documents
+    async function syncDocumentsToGitHub() {
+        if (!isAdminLogged) return;
+        
+        showToast('🔄 Synchronisation des documents...');
+        const success = await saveDocumentsMetadata();
+        if (success) {
+            showToast('✅ Documents synchronisés avec GitHub');
+        } else {
+            showToast('❌ Erreur de synchronisation');
+        }
+    }
+    
+    // Synchroniser les avocats
+    async function syncLawyersToGitHub() {
+        if (!isAdminLogged) return;
+        
+        showToast('🔄 Synchronisation des avocats...');
+        const success = await saveLawyersToGitHub();
+        if (success) {
+            showToast('✅ Avocats synchronisés avec GitHub');
+        } else {
+            showToast('❌ Erreur de synchronisation');
+        }
+    }
+    
+    // ========== FONCTIONS EXISTANTES MODIFIÉES ==========
+    
+    // Fonction modifiée pour ajouter un PDF avec GitHub
+    async function addPdfToCarousel() {
+        if (!isAdminLogged) {
+            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
+            return;
+        }
+        
+        const fileInput = document.getElementById('pdfUpload');
+        const titleInput = document.getElementById('pdfTitle');
+        const descInput = document.getElementById('pdfDescription');
+        
+        if (!fileInput.files[0]) {
+            alert('Veuillez sélectionner un fichier PDF');
+            return;
+        }
+        
+        if (!titleInput.value || !descInput.value) {
+            alert('Veuillez remplir tous les champs');
+            return;
+        }
+        
+        showToast('📤 Publication en cours...');
+        
+        const file = fileInput.files[0];
+        const title = titleInput.value;
+        const description = descInput.value;
+        const timestamp = Date.now();
+        const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+        const path = `pdfs/${fileName}`;
+        
+        try {
+            // Uploader sur GitHub
+            const fileUrl = await uploadToGitHub(file, path, `Ajout: ${title}`);
+            
+            if (!fileUrl) {
+                throw new Error('Échec de l\'upload');
+            }
+            
+            // Créer le document
+            const doc = {
+                id: timestamp,
+                title: title,
+                description: description,
+                url: fileUrl,
+                fileName: fileName,
+                date: new Date().toLocaleDateString('fr-FR'),
+                timestamp: timestamp
+            };
+            
+            pdfDocuments.push(doc);
+            
+            // Sauvegarder les métadonnées
+            await saveDocumentsMetadata();
+            
+            // Mettre à jour l'affichage
+            updateCarousel();
+            
+            // Réinitialiser le formulaire
+            fileInput.value = '';
+            titleInput.value = '';
+            descInput.value = '';
+            
+            goToSlide(pdfDocuments.length - 1);
+            showToast('✅ Document publié avec succès sur GitHub !');
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            showToast('❌ Erreur lors de la publication');
+        }
+    }
+    
+    // Fonction modifiée pour supprimer un PDF
+    async function deletePdf(id) {
+        if (!isAdminLogged) return;
+        
+        if (confirm('Supprimer ce document ?')) {
+            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
+            await saveDocumentsMetadata();
+            updateCarousel();
+            showToast('Document supprimé');
+        }
+    }
+    
+    // Fonction modifiée pour ajouter un avocat
+    async function addLawyer() {
+        const photo = document.getElementById('lawyerPhoto').files[0];
+        const name = document.getElementById('lawyerName').value;
+        const role = document.getElementById('lawyerRole').value;
+        const desc = document.getElementById('lawyerDesc').value;
+        const phone = document.getElementById('lawyerPhone').value;
+        
+        if (!name || !role || !desc || !phone) {
+            alert('Veuillez remplir tous les champs');
+            return;
+        }
+        
+        showToast('📤 Upload de la photo en cours...');
+        
+        const newId = Math.max(...lawyers.map(l => l.id), 0) + 1;
+        
+        try {
+            let photoUrl = '';
+            
+            if (photo) {
+                const timestamp = Date.now();
+                const fileName = `${timestamp}_${photo.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+                const path = `photos/${fileName}`;
+                
+                photoUrl = await uploadToGitHub(photo, path, `Photo avocat: ${name}`);
+                
+                if (!photoUrl) {
+                    throw new Error('Échec upload photo');
+                }
+            } else {
+                photoUrl = 'https://via.placeholder.com/400x300?text=Photo';
+            }
+            
+            lawyers.push({
+                id: newId,
+                name: name,
+                role: role,
+                desc: desc,
+                phone: phone,
+                photo: photoUrl
+            });
+            
+            saveLawyersToStorage();
+            await saveLawyersToGitHub();
+            
+            displayLawyers();
+            closeAddLawyerModal();
+            showToast('✅ Avocat ajouté avec succès');
+            
+        } catch (error) {
+            console.error('Erreur:', error);
+            showToast('❌ Erreur lors de l\'ajout de l\'avocat');
+        }
+    }
+    
+    // ========== FONCTIONS EXISTANTES (garder tout le reste inchangé) ==========
     
     // Menu hamburger
     const menuToggle = document.getElementById('menuToggle');
@@ -1553,7 +2046,6 @@
         navLinks.classList.toggle('active');
     });
     
-    // Fermer le menu quand on clique sur un lien
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
@@ -1587,7 +2079,6 @@
         }
     });
     
-    // Formulaire rendez-vous
     document.getElementById('rdvForm').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('Demande de rendez-vous envoyée ! Nous vous contacterons dans les plus brefs délais.');
@@ -1595,7 +2086,6 @@
         this.reset();
     });
     
-    // Smooth scroll pour tous les liens
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             if(this.getAttribute('href') !== '#') {
@@ -1608,12 +2098,10 @@
         });
     });
     
-    // Fonctions admin
     function toggleAdminLogin() {
         if (!isAdminLogged) {
             document.getElementById('adminModal').classList.add('active');
         } else {
-            // Déconnexion
             isAdminLogged = false;
             editMode = false;
             document.body.classList.remove('admin-mode');
@@ -1622,7 +2110,6 @@
             document.getElementById('uploadSection').classList.remove('active');
             document.getElementById('adminPanel').classList.remove('active');
             showToast('Déconnexion réussie');
-            // Cacher tous les boutons admin
             document.querySelectorAll('.admin-delete-btn, .admin-edit-photo-btn').forEach(btn => btn.remove());
         }
     }
@@ -1663,10 +2150,8 @@
     
     function editText(element) {
         if (!editMode || !isAdminLogged) return;
-        
         const currentText = element.innerText;
         const newText = prompt('Modifier le texte :', currentText);
-        
         if (newText !== null && newText.trim() !== '') {
             element.innerText = newText;
             showToast('Texte modifié');
@@ -1674,28 +2159,8 @@
         }
     }
     
-    function changeImage(element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                element.src = event.target.result;
-                showToast('Image modifiée');
-                saveLawyersToStorage();
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-    
     function changeLogo(input) {
         if (!isAdminLogged) return;
-        
         const file = input.files[0];
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -1707,7 +2172,6 @@
     
     function changeHeroImage(input) {
         if (!isAdminLogged) return;
-        
         const file = input.files[0];
         const reader = new FileReader();
         reader.onload = function(event) {
@@ -1738,7 +2202,6 @@
                 changes[el.id] = el.innerText;
             }
         });
-        
         localStorage.setItem('bkrWebsiteData', JSON.stringify(changes));
         saveLawyersToStorage();
         showToast('Toutes les modifications ont été sauvegardées');
@@ -1752,7 +2215,6 @@
         }
     }
     
-    // Gestion des avocats
     function loadLawyers() {
         const saved = localStorage.getItem('bkrLawyers');
         if (saved) {
@@ -1762,7 +2224,6 @@
                 lawyers = [];
             }
         } else {
-            // Avocats par défaut
             lawyers = [
                 {
                     id: 1,
@@ -1841,7 +2302,6 @@
     
     function editLawyerField(id, field, element) {
         if (!editMode || !isAdminLogged) return;
-        
         const newValue = prompt(`Modifier ${field} :`, element.innerText);
         if (newValue && newValue.trim() !== '') {
             const lawyer = lawyers.find(l => l.id === id);
@@ -1856,18 +2316,27 @@
     
     function changeLawyerPhoto(id) {
         if (!editMode || !isAdminLogged) return;
-        
         const input = document.createElement('input');
         input.type = 'file';
         input.accept = 'image/*';
-        input.onchange = function(e) {
+        input.onchange = async function(e) {
             const file = e.target.files[0];
             const reader = new FileReader();
-            reader.onload = function(event) {
+            reader.onload = async function(event) {
                 const lawyer = lawyers.find(l => l.id === id);
                 if (lawyer) {
-                    lawyer.photo = event.target.result;
+                    const timestamp = Date.now();
+                    const fileName = `${timestamp}_${file.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+                    const path = `photos/${fileName}`;
+                    
+                    const photoUrl = await uploadToGitHub(file, path, `Photo avocat: ${lawyer.name}`);
+                    if (photoUrl) {
+                        lawyer.photo = photoUrl;
+                    } else {
+                        lawyer.photo = event.target.result;
+                    }
                     saveLawyersToStorage();
+                    await saveLawyersToGitHub();
                     displayLawyers();
                     showToast('Photo modifiée');
                 }
@@ -1891,56 +2360,8 @@
         document.getElementById('lawyerPhone').value = '';
     }
     
-    function addLawyer() {
-        const photo = document.getElementById('lawyerPhoto').files[0];
-        const name = document.getElementById('lawyerName').value;
-        const role = document.getElementById('lawyerRole').value;
-        const desc = document.getElementById('lawyerDesc').value;
-        const phone = document.getElementById('lawyerPhone').value;
-        
-        if (!name || !role || !desc || !phone) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const newId = Math.max(...lawyers.map(l => l.id), 0) + 1;
-        
-        if (photo) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                lawyers.push({
-                    id: newId,
-                    name: name,
-                    role: role,
-                    desc: desc,
-                    phone: phone,
-                    photo: event.target.result
-                });
-                saveLawyersToStorage();
-                displayLawyers();
-                closeAddLawyerModal();
-                showToast('Avocat ajouté avec succès');
-            };
-            reader.readAsDataURL(photo);
-        } else {
-            lawyers.push({
-                id: newId,
-                name: name,
-                role: role,
-                desc: desc,
-                phone: phone,
-                photo: 'https://via.placeholder.com/400x300?text=Photo'
-            });
-            saveLawyersToStorage();
-            displayLawyers();
-            closeAddLawyerModal();
-            showToast('Avocat ajouté avec succès');
-        }
-    }
-    
     function editLawyer(id) {
         if (!isAdminLogged) return;
-        
         const lawyer = lawyers.find(l => l.id === id);
         if (lawyer) {
             currentEditLawyerId = id;
@@ -1957,7 +2378,7 @@
         currentEditLawyerId = null;
     }
     
-    function saveLawyerEdit() {
+    async function saveLawyerEdit() {
         const lawyer = lawyers.find(l => l.id === currentEditLawyerId);
         if (lawyer) {
             const photo = document.getElementById('editLawyerPhoto').files[0];
@@ -1967,38 +2388,40 @@
             const phone = document.getElementById('editLawyerPhone').value;
             
             if (photo) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    lawyer.photo = event.target.result;
-                    lawyer.name = name;
-                    lawyer.role = role;
-                    lawyer.desc = desc;
-                    lawyer.phone = phone;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                    closeEditLawyerModal();
-                    showToast('Avocat modifié avec succès');
-                };
-                reader.readAsDataURL(photo);
-            } else {
-                lawyer.name = name;
-                lawyer.role = role;
-                lawyer.desc = desc;
-                lawyer.phone = phone;
-                saveLawyersToStorage();
-                displayLawyers();
-                closeEditLawyerModal();
-                showToast('Avocat modifié avec succès');
+                const timestamp = Date.now();
+                const fileName = `${timestamp}_${photo.name.replace(/[^a-zA-Z0-9.]/g, '_')}`;
+                const path = `photos/${fileName}`;
+                const photoUrl = await uploadToGitHub(photo, path, `Photo avocat: ${name}`);
+                if (photoUrl) {
+                    lawyer.photo = photoUrl;
+                } else {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        lawyer.photo = event.target.result;
+                    };
+                    reader.readAsDataURL(photo);
+                }
             }
+            
+            lawyer.name = name;
+            lawyer.role = role;
+            lawyer.desc = desc;
+            lawyer.phone = phone;
+            
+            saveLawyersToStorage();
+            await saveLawyersToGitHub();
+            displayLawyers();
+            closeEditLawyerModal();
+            showToast('Avocat modifié avec succès');
         }
     }
     
     function deleteLawyer(id) {
         if (!isAdminLogged) return;
-        
         if (confirm('Êtes-vous sûr de vouloir supprimer cet avocat ?')) {
             lawyers = lawyers.filter(l => l.id !== id);
             saveLawyersToStorage();
+            saveLawyersToGitHub();
             displayLawyers();
             showToast('Avocat supprimé');
         }
@@ -2006,11 +2429,9 @@
     
     function reorderLawyers() {
         if (!isAdminLogged) return;
-        
         new Sortable(document.getElementById('lawyersGrid'), {
             animation: 150,
             onEnd: function(evt) {
-                // Réorganiser le tableau lawyers selon le nouvel ordre
                 const newOrder = [];
                 document.querySelectorAll('.lawyer-card').forEach(card => {
                     const id = parseInt(card.dataset.lawyerId);
@@ -2037,7 +2458,6 @@
     
     function editStatistics() {
         if (!isAdminLogged) return;
-        
         const stats = document.querySelectorAll('.stat-item h3, .stat-item p');
         stats.forEach(stat => {
             stat.setAttribute('contenteditable', 'true');
@@ -2077,7 +2497,6 @@
             try {
                 const data = JSON.parse(e.target.result);
                 
-                // Restaurer les textes
                 if (data.texts) {
                     Object.keys(data.texts).forEach(id => {
                         const el = document.getElementById(id);
@@ -2085,7 +2504,6 @@
                     });
                 }
                 
-                // Restaurer les images
                 if (data.images) {
                     Object.keys(data.images).forEach(id => {
                         const el = document.getElementById(id);
@@ -2093,13 +2511,11 @@
                     });
                 }
                 
-                // Restaurer les PDFs
                 if (data.pdfDocuments) {
                     pdfDocuments = data.pdfDocuments;
                     updateCarousel();
                 }
                 
-                // Restaurer les avocats
                 if (data.lawyers) {
                     lawyers = data.lawyers;
                     saveLawyersToStorage();
@@ -2117,11 +2533,11 @@
     
     function clearAllDocuments() {
         if (!isAdminLogged) return;
-        
         if (confirm('Êtes-vous sûr de vouloir supprimer tous les dossiers ?')) {
             pdfDocuments = [];
             document.getElementById('carouselTrack').innerHTML = '';
             checkEmptyGallery();
+            saveDocumentsMetadata();
             showToast('Tous les dossiers ont été supprimés');
         }
     }
@@ -2171,100 +2587,6 @@
     nextBtn.addEventListener('click', nextSlide);
     prevBtn.addEventListener('click', prevSlide);
     
-    // Fonction pour ajouter un PDF au carrousel (admin seulement)
-    function addPdfToCarousel() {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
-            return;
-        }
-        
-        const fileInput = document.getElementById('pdfUpload');
-        const titleInput = document.getElementById('pdfTitle');
-        const descInput = document.getElementById('pdfDescription');
-        
-        if (!fileInput.files[0]) {
-            alert('Veuillez sélectionner un fichier PDF');
-            return;
-        }
-        
-        if (!titleInput.value || !descInput.value) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        const title = titleInput.value;
-        const description = descInput.value;
-        
-        // Créer l'URL du fichier
-        const fileUrl = URL.createObjectURL(file);
-        
-        // Ajouter le document à la liste
-        const doc = {
-            id: Date.now(),
-            title: title,
-            description: description,
-            url: fileUrl,
-            file: file,
-            date: new Date().toLocaleDateString('fr-FR')
-        };
-        
-        pdfDocuments.push(doc);
-        
-        // Supprimer le message "Aucun document" s'il existe
-        const emptyMessage = document.querySelector('.empty-gallery');
-        if (emptyMessage) {
-            emptyMessage.remove();
-        }
-        
-        // Créer la slide
-        const slide = document.createElement('div');
-        slide.className = 'carousel-slide';
-        slide.innerHTML = `
-            <div class="pdf-preview" onclick="openPdf(${pdfDocuments.length - 1})">
-                <i class="fas fa-file-pdf"></i>
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${doc.date}</p>
-                ${isAdminLogged ? `
-                    <div class="admin-delete-btn" onclick="deletePdf(${doc.id})">
-                        <i class="fas fa-trash"></i>
-                    </div>
-                ` : ''}
-            </div>
-            <div class="carousel-caption">
-                <h3>${title}</h3>
-                <p>${description}</p>
-                <p style="font-size: 0.9rem;"><i class="fas fa-calendar"></i> ${doc.date}</p>
-            </div>
-        `;
-        
-        track.appendChild(slide);
-        
-        // Mettre à jour les dots
-        updateDots();
-        
-        // Réinitialiser le formulaire
-        fileInput.value = '';
-        titleInput.value = '';
-        descInput.value = '';
-        
-        // Aller à la nouvelle slide
-        goToSlide(pdfDocuments.length - 1);
-        
-        showToast('Document publié avec succès !');
-    }
-    
-    function deletePdf(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Supprimer ce document ?')) {
-            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
-            updateCarousel();
-            showToast('Document supprimé');
-        }
-    }
-    
     function updateCarousel() {
         track.innerHTML = '';
         pdfDocuments.forEach((doc, index) => {
@@ -2291,9 +2613,20 @@
             track.appendChild(slide);
         });
         checkEmptyGallery();
+        
+        // Mettre à jour les dots
+        dotsContainer.innerHTML = '';
+        if (pdfDocuments.length > 0) {
+            for (let i = 0; i < pdfDocuments.length; i++) {
+                const dot = document.createElement('div');
+                dot.classList.add('carousel-dot');
+                if (i === currentIndex) dot.classList.add('active');
+                dot.addEventListener('click', () => goToSlide(i));
+                dotsContainer.appendChild(dot);
+            }
+        }
     }
     
-    // Fonction pour ouvrir un PDF
     async function openPdf(index) {
         const doc = pdfDocuments[index];
         if (!doc || !doc.url) {
@@ -2309,10 +2642,8 @@
         title.textContent = doc.title;
         modal.classList.add('active');
         
-        // Vider le viewer
         viewer.innerHTML = '';
         
-        // Charger le PDF
         try {
             const loadingTask = pdfjsLib.getDocument(doc.url);
             currentPdf = await loadingTask.promise;
@@ -2320,16 +2651,10 @@
             currentPage = 1;
             
             document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
-            
-            // Afficher la première page
             renderPage(currentPage);
             
-            // Configurer le bouton de téléchargement
             downloadBtn.onclick = () => {
-                const a = document.createElement('a');
-                a.href = doc.url;
-                a.download = doc.file ? doc.file.name : 'document.pdf';
-                a.click();
+                window.open(doc.url, '_blank');
             };
             
         } catch (error) {
@@ -2338,20 +2663,17 @@
         }
     }
     
-    // Fonction pour rendre une page PDF
     async function renderPage(pageNumber) {
         if (!currentPdf) return;
         
         const viewer = document.getElementById('pdfViewer');
         const page = await currentPdf.getPage(pageNumber);
         
-        // Déterminer l'échelle pour s'adapter à la largeur
         const containerWidth = viewer.clientWidth - 40;
         const viewport = page.getViewport({ scale: 1 });
         const scale = containerWidth / viewport.width;
         const scaledViewport = page.getViewport({ scale });
         
-        // Créer un canvas
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
         canvas.width = scaledViewport.width;
@@ -2360,7 +2682,6 @@
         viewer.innerHTML = '';
         viewer.appendChild(canvas);
         
-        // Rendre la page
         const renderContext = {
             canvasContext: context,
             viewport: scaledViewport
@@ -2369,7 +2690,6 @@
         await page.render(renderContext).promise;
     }
     
-    // Gestionnaire pour le modal PDF
     document.getElementById('closePdfModal').addEventListener('click', () => {
         document.getElementById('pdfModal').classList.remove('active');
         currentPdf = null;
@@ -2391,10 +2711,8 @@
         }
     });
     
-    // Auto-play optionnel
     setInterval(nextSlide, 5000);
     
-    // Ajouter un message si aucun document
     function checkEmptyGallery() {
         if (pdfDocuments.length === 0) {
             const emptyMessage = document.createElement('div');
@@ -2411,7 +2729,6 @@
         }
     }
     
-    // Charger les données sauvegardées
     function loadSavedData() {
         const saved = localStorage.getItem('bkrWebsiteData');
         if (saved) {
@@ -2428,22 +2745,12 @@
     }
     
     // Initialisation
-    window.onload = function() {
+    window.onload = async function() {
         loadSavedData();
         loadLawyers();
         checkEmptyGallery();
         updateLawyerSelect();
-        
-        // Créer les dots
-        if (pdfDocuments.length > 0) {
-            for (let i = 0; i < pdfDocuments.length; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('carousel-dot');
-                if (i === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(i));
-                dotsContainer.appendChild(dot);
-            }
-        }
+        await loadFromGitHub();
     };
 </script>
 </body>
