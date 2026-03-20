@@ -330,10 +330,10 @@
             color: #dbb86a;
         }
 
-        /* Profil des avocats */
+        /* ===== PROFIL DES AVOCATS - VERSION AMÉLIORÉE ===== */
         .lawyers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
             gap: 2.5rem;
         }
         
@@ -342,72 +342,221 @@
             border-radius: 24px;
             overflow: hidden;
             box-shadow: 0 15px 30px -12px rgba(0,0,0,0.15);
-            transition: 0.2s;
+            transition: all 0.3s ease;
             border: 1px solid #e2e8f0;
             position: relative;
         }
         
         .lawyer-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2);
+            transform: translateY(-8px);
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
         }
         
-        .lawyer-photo {
-            height: 280px;
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+        /* Container photo avec effet de zoom */
+        .lawyer-photo-container {
+            height: 300px;
+            overflow: hidden;
             position: relative;
             cursor: pointer;
         }
         
-        .photo-overlay {
-            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
-            width: 100%;
+        .lawyer-photo {
             height: 100%;
-            display: flex;
-            align-items: flex-end;
-            padding: 1.5rem;
+            width: 100%;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            transition: transform 0.5s ease;
+        }
+        
+        .lawyer-card:hover .lawyer-photo {
+            transform: scale(1.05);
+        }
+        
+        /* Overlay avec nom et boutons admin */
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(0deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            padding: 2rem 1.5rem 1.5rem;
             color: white;
-            font-weight: 600;
-            font-size: 1.2rem;
-            opacity: 0;
-            transition: 0.3s;
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
         }
         
         .lawyer-card:hover .photo-overlay {
-            opacity: 1;
+            transform: translateY(0);
         }
         
-        .lawyer-card .info {
-            padding: 1.5rem 1.2rem;
-        }
-        
-        .lawyer-card h4 {
-            font-size: 1.4rem;
+        .photo-overlay h3 {
+            font-size: 1.3rem;
             margin-bottom: 0.3rem;
+            color: #dbb86a;
         }
         
-        .lawyer-card .role {
+        .photo-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+        
+        /* Badge spécialisation */
+        .specialization-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: #c9a959;
+            color: #0a1a2f;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            z-index: 2;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        /* Informations de l'avocat */
+        .lawyer-info {
+            padding: 1.8rem 1.5rem;
+            background: white;
+        }
+        
+        .lawyer-info h4 {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #0a1a2f;
+            font-weight: 600;
+        }
+        
+        .lawyer-info .role {
             color: #b9912b;
             font-weight: 600;
-            margin-bottom: 0.5rem;
+            margin-bottom: 1rem;
             font-size: 0.95rem;
             text-transform: uppercase;
+            letter-spacing: 1px;
         }
         
-        .lawyer-card .contact-l {
-            margin-top: 1rem;
+        .lawyer-info .description {
+            color: #4a5568;
+            margin-bottom: 1.5rem;
             font-size: 0.95rem;
-            border-top: 1px solid #edf2f7;
-            padding-top: 0.8rem;
+            line-height: 1.6;
         }
         
-        .lawyer-card i {
-            width: 24px;
-            color: #0a1a2f;
+        .lawyer-contact {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding-top: 1rem;
+            border-top: 2px solid #edf2f7;
         }
-
+        
+        .lawyer-contact i {
+            width: 24px;
+            color: #c9a959;
+            font-size: 1.2rem;
+        }
+        
+        .lawyer-contact span {
+            color: #2d3748;
+            font-weight: 500;
+        }
+        
+        /* Icônes de contact supplémentaires */
+        .lawyer-social {
+            display: flex;
+            gap: 0.8rem;
+            margin-top: 1rem;
+        }
+        
+        .lawyer-social a {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: #edf2f7;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #0a1a2f;
+            transition: all 0.3s;
+        }
+        
+        .lawyer-social a:hover {
+            background: #c9a959;
+            color: white;
+        }
+        
+        /* Indicateur de chargement photo */
+        .photo-loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 2rem;
+            display: none;
+        }
+        
+        .lawyer-photo-container.loading .photo-loading {
+            display: block;
+        }
+        
+        /* === MODAL DE PRÉVISUALISATION PHOTO === */
+        .photo-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.95);
+            z-index: 9000;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .photo-modal.active {
+            display: flex;
+        }
+        
+        .photo-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+        
+        .photo-modal-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border-radius: 8px;
+            box-shadow: 0 5px 30px rgba(0,0,0,0.5);
+        }
+        
+        .close-photo-modal {
+            position: absolute;
+            top: -40px;
+            right: 0;
+            color: white;
+            font-size: 2rem;
+            cursor: pointer;
+            background: none;
+            border: none;
+        }
+        
+        .close-photo-modal:hover {
+            color: #c9a959;
+        }
+        
+        .photo-modal-caption {
+            position: absolute;
+            bottom: -40px;
+            left: 0;
+            color: white;
+            font-size: 1.1rem;
+        }
+        
         /* === GALERIE CARROUSEL AVEC PDF === */
         .carousel-container {
             position: relative;
@@ -840,7 +989,7 @@
             background: #dbb86a;
         }
 
-        /* Modal d'ajout d'avocat */
+        /* Modal d'ajout d'avocat AMÉLIORÉ */
         .lawyer-modal {
             display: none;
             position: fixed;
@@ -862,15 +1011,22 @@
             background: white;
             padding: 2.5rem;
             border-radius: 32px;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
-            max-height: 80vh;
+            max-height: 90vh;
             overflow-y: auto;
         }
 
         .lawyer-modal-content h3 {
             color: #0a1a2f;
             margin-bottom: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .lawyer-modal-content h3 i {
+            color: #c9a959;
         }
 
         .lawyer-form-group {
@@ -885,13 +1041,70 @@
         }
 
         .lawyer-form-group input,
-        .lawyer-form-group textarea {
+        .lawyer-form-group textarea,
+        .lawyer-form-group select {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: 0.2s;
         }
 
+        .lawyer-form-group input:focus,
+        .lawyer-form-group textarea:focus,
+        .lawyer-form-group select:focus {
+            border-color: #c9a959;
+            outline: none;
+        }
+
+        /* Prévisualisation photo */
+        .photo-preview {
+            margin-top: 1rem;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .photo-preview img {
+            max-width: 150px;
+            max-height: 150px;
+            border-radius: 50%;
+            border: 3px solid #c9a959;
+            object-fit: cover;
+        }
+
+        .photo-preview p {
+            margin-top: 0.5rem;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .photo-upload-area {
+            border: 2px dashed #c9a959;
+            border-radius: 12px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .photo-upload-area:hover {
+            background: #fef9e7;
+        }
+
+        .photo-upload-area i {
+            font-size: 3rem;
+            color: #c9a959;
+            margin-bottom: 1rem;
+        }
+
+        .photo-upload-area p {
+            color: #666;
+        }
+
+        /* Badge admin */
         .admin-badge {
             position: fixed;
             bottom: 20px;
@@ -1003,9 +1216,17 @@
         .form-group textarea {
             width: 100%;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
             font-size: 1rem;
+            transition: 0.2s;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: #c9a959;
+            outline: none;
         }
         
         .btn {
@@ -1124,9 +1345,15 @@
 
         .github-form-group input {
             width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
+            padding: 12px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+        }
+
+        .github-form-group input:focus {
+            border-color: #c9a959;
+            outline: none;
         }
 
         .github-status {
@@ -1191,6 +1418,10 @@
                 width: 100%;
                 right: -100%;
             }
+
+            .lawyers-grid {
+                grid-template-columns: 1fr;
+            }
         }
     </style>
 </head>
@@ -1222,7 +1453,7 @@
         </div>
         <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') checkAdminPassword()">
         <button class="admin-btn" onclick="checkAdminPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(pour accéder à la page admin il obligatoirement d'entrer le mot de passe)</p>
+        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(Mot de passe : admin123)</p>
     </div>
 </div>
 
@@ -1234,7 +1465,7 @@
         
         <div class="github-form-group">
             <label>Token GitHub</label>
-            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx">
+            <input type="password" id="githubToken" placeholder="ghp_xxxxxxxxxxxxxxxxxxxxxx">
             <small style="color: #666;">Créez un token sur GitHub > Settings > Developer settings > Personal access tokens</small>
         </div>
         
@@ -1260,6 +1491,15 @@
             <button class="admin-panel-btn" onclick="saveGithubConfig()">Sauvegarder</button>
             <button class="admin-panel-btn danger" onclick="closeGithubModal()">Fermer</button>
         </div>
+    </div>
+</div>
+
+<!-- ========== MODAL PRÉVISUALISATION PHOTO ========== -->
+<div class="photo-modal" id="photoModal">
+    <div class="photo-modal-content">
+        <button class="close-photo-modal" onclick="closePhotoModal()">&times;</button>
+        <img id="photoModalImg" src="" alt="Photo avocat">
+        <div class="photo-modal-caption" id="photoModalCaption"></div>
     </div>
 </div>
 
@@ -1365,30 +1605,68 @@
     </div>
 </div>
 
-<!-- ========== MODAL D'AJOUT D'AVOCAT ========== -->
+<!-- ========== MODAL D'AJOUT D'AVOCAT AMÉLIORÉ ========== -->
 <div class="lawyer-modal" id="addLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-user-plus"></i> Ajouter un avocat</h3>
+        
         <div class="lawyer-form-group">
             <label>Photo de l'avocat</label>
-            <input type="file" id="lawyerPhoto" accept="image/*">
+            <div class="photo-upload-area" onclick="document.getElementById('lawyerPhoto').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Cliquez pour sélectionner une photo</p>
+                <p style="font-size: 0.8rem;">Format recommandé : JPG, PNG (max 5 Mo)</p>
+            </div>
+            <input type="file" id="lawyerPhoto" accept="image/*" style="display:none" onchange="previewLawyerPhoto(this, 'addPreview')">
+            <div class="photo-preview" id="addPreview" style="display: none;">
+                <img src="" alt="Prévisualisation">
+                <p>Photo sélectionnée</p>
+            </div>
         </div>
+        
         <div class="lawyer-form-group">
             <label>Nom complet</label>
             <input type="text" id="lawyerName" placeholder="Maître Jean DUPONT">
         </div>
+        
         <div class="lawyer-form-group">
             <label>Titre / Rôle</label>
-            <input type="text" id="lawyerRole" placeholder="Avocat associé">
+            <input type="text" id="lawyerRole" placeholder="Avocat associé - Droit minier">
         </div>
+        
+        <div class="lawyer-form-group">
+            <label>Spécialisation</label>
+            <select id="lawyerSpecialization">
+                <option value="">Sélectionnez une spécialisation</option>
+                <option value="Droit des affaires">Droit des affaires</option>
+                <option value="Droit minier">Droit minier</option>
+                <option value="Droit fiscal">Droit fiscal</option>
+                <option value="Droit social">Droit social</option>
+                <option value="Contentieux">Contentieux</option>
+                <option value="Droit OHADA">Droit OHADA</option>
+            </select>
+        </div>
+        
         <div class="lawyer-form-group">
             <label>Description</label>
-            <textarea id="lawyerDesc" rows="3" placeholder="Spécialiste en..."></textarea>
+            <textarea id="lawyerDesc" rows="4" placeholder="Présentation de l'avocat, ses compétences, son expérience..."></textarea>
         </div>
+        
         <div class="lawyer-form-group">
             <label>Téléphone</label>
             <input type="text" id="lawyerPhone" placeholder="+243 000 000 000">
         </div>
+        
+        <div class="lawyer-form-group">
+            <label>Email (optionnel)</label>
+            <input type="email" id="lawyerEmail" placeholder="avocat@cabinetbkr.com">
+        </div>
+        
+        <div class="lawyer-form-group">
+            <label>Réseaux sociaux (optionnel)</label>
+            <input type="text" id="lawyerLinkedin" placeholder="LinkedIn URL">
+        </div>
+        
         <div class="lawyer-form-group">
             <button class="admin-panel-btn" onclick="addLawyer()">Ajouter l'avocat</button>
             <button class="admin-panel-btn danger" onclick="closeAddLawyerModal()">Annuler</button>
@@ -1396,32 +1674,69 @@
     </div>
 </div>
 
-<!-- ========== MODAL DE MODIFICATION D'AVOCAT ========== -->
+<!-- ========== MODAL DE MODIFICATION D'AVOCAT AMÉLIORÉ ========== -->
 <div class="lawyer-modal" id="editLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-edit"></i> Modifier l'avocat</h3>
+        
         <div class="lawyer-form-group">
             <label>Photo de l'avocat</label>
-            <input type="file" id="editLawyerPhoto" accept="image/*">
+            <div class="photo-upload-area" onclick="document.getElementById('editLawyerPhoto').click()">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <p>Cliquez pour changer la photo</p>
+            </div>
+            <input type="file" id="editLawyerPhoto" accept="image/*" style="display:none" onchange="previewLawyerPhoto(this, 'editPreview')">
+            <div class="photo-preview" id="editPreview" style="display: none;">
+                <img src="" alt="Prévisualisation">
+                <p>Nouvelle photo sélectionnée</p>
+            </div>
         </div>
+        
         <div class="lawyer-form-group">
             <label>Nom complet</label>
             <input type="text" id="editLawyerName">
         </div>
+        
         <div class="lawyer-form-group">
             <label>Titre / Rôle</label>
             <input type="text" id="editLawyerRole">
         </div>
+        
+        <div class="lawyer-form-group">
+            <label>Spécialisation</label>
+            <select id="editLawyerSpecialization">
+                <option value="">Sélectionnez une spécialisation</option>
+                <option value="Droit des affaires">Droit des affaires</option>
+                <option value="Droit minier">Droit minier</option>
+                <option value="Droit fiscal">Droit fiscal</option>
+                <option value="Droit social">Droit social</option>
+                <option value="Contentieux">Contentieux</option>
+                <option value="Droit OHADA">Droit OHADA</option>
+            </select>
+        </div>
+        
         <div class="lawyer-form-group">
             <label>Description</label>
-            <textarea id="editLawyerDesc" rows="3"></textarea>
+            <textarea id="editLawyerDesc" rows="4"></textarea>
         </div>
+        
         <div class="lawyer-form-group">
             <label>Téléphone</label>
             <input type="text" id="editLawyerPhone">
         </div>
+        
         <div class="lawyer-form-group">
-            <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer</button>
+            <label>Email</label>
+            <input type="email" id="editLawyerEmail">
+        </div>
+        
+        <div class="lawyer-form-group">
+            <label>LinkedIn</label>
+            <input type="text" id="editLawyerLinkedin">
+        </div>
+        
+        <div class="lawyer-form-group">
+            <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer les modifications</button>
             <button class="admin-panel-btn danger" onclick="closeEditLawyerModal()">Annuler</button>
         </div>
     </div>
@@ -1574,11 +1889,11 @@
     </div>
 </section>
 
-<!-- ========== PROFIL DES AVOCATS ========== -->
+<!-- ========== PROFIL DES AVOCATS - VERSION AMÉLIORÉE ========== -->
 <section id="avocats">
     <h2 class="section-title" id="avocatsTitle" ondblclick="if(window.editMode) editText(this)">Nos avocats</h2>
     <div class="lawyers-grid" id="lawyersGrid">
-        <!-- Les avocats seront chargés dynamiquement depuis GitHub -->
+        <!-- Les avocats seront chargés dynamiquement -->
     </div>
 </section>
 
@@ -1586,7 +1901,7 @@
 <section id="galerie">
     <h2 class="section-title" id="galerieTitle" ondblclick="if(window.editMode) editText(this)">Nos dossiers réussis</h2>
     
-    <!-- Section d'upload - UNIQUEMENT VISIBLE POUR L'ADMIN CONNECTÉ -->
+    <!-- Section d'upload -->
     <div class="upload-section" id="uploadSection">
         <h3><i class="fas fa-lock-open"></i> Mode Administrateur - Publier un nouveau dossier</h3>
         <div class="upload-form">
@@ -1599,10 +1914,9 @@
     
     <div class="carousel-container">
         <div class="carousel-track" id="carouselTrack">
-            <!-- Les slides seront ajoutés dynamiquement depuis GitHub -->
+            <!-- Les slides seront ajoutés dynamiquement -->
         </div>
         
-        <!-- Boutons de navigation -->
         <div class="carousel-btn prev" id="prevBtn">
             <i class="fas fa-chevron-left"></i>
         </div>
@@ -1610,7 +1924,6 @@
             <i class="fas fa-chevron-right"></i>
         </div>
         
-        <!-- Indicateurs -->
         <div class="carousel-dots" id="carouselDots"></div>
     </div>
 </section>
@@ -1711,7 +2024,6 @@
         navLinks.classList.toggle('active');
     });
     
-    // Fermer le menu quand on clique sur un lien
     document.querySelectorAll('.nav-links a').forEach(link => {
         link.addEventListener('click', () => {
             navLinks.classList.remove('active');
@@ -1745,7 +2057,6 @@
         }
     });
     
-    // Formulaire rendez-vous
     document.getElementById('rdvForm').addEventListener('submit', function(e) {
         e.preventDefault();
         alert('Demande de rendez-vous envoyée ! Nous vous contacterons dans les plus brefs délais.');
@@ -1753,7 +2064,6 @@
         this.reset();
     });
     
-    // Smooth scroll pour tous les liens
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             if(this.getAttribute('href') !== '#') {
@@ -1768,7 +2078,6 @@
     
     // ========== FONCTIONS GITHUB ==========
     
-    // Charger la configuration GitHub
     function loadGithubConfig() {
         const saved = localStorage.getItem(GITHUB_CONFIG_KEY);
         if (saved) {
@@ -1781,7 +2090,6 @@
         }
     }
     
-    // Sauvegarder la configuration GitHub
     function saveGithubConfig() {
         githubConfig = {
             token: document.getElementById('githubToken').value,
@@ -1796,7 +2104,6 @@
         showToast('Configuration GitHub sauvegardée');
     }
     
-    // Mettre à jour le statut de connexion GitHub
     function updateGithubConnectionStatus() {
         const status = document.getElementById('githubConnectionStatus');
         if (githubConfig.token && githubConfig.username && githubConfig.repo) {
@@ -1808,7 +2115,6 @@
         }
     }
     
-    // Ouvrir le modal GitHub
     function openGithubModal() {
         document.getElementById('githubToken').value = githubConfig.token || '';
         document.getElementById('githubUsername').value = githubConfig.username || '';
@@ -1817,12 +2123,10 @@
         document.getElementById('githubModal').classList.add('active');
     }
     
-    // Fermer le modal GitHub
     function closeGithubModal() {
         document.getElementById('githubModal').classList.remove('active');
     }
     
-    // Tester la connexion GitHub
     async function testGithubConnection() {
         const token = document.getElementById('githubToken').value;
         const username = document.getElementById('githubUsername').value;
@@ -1855,14 +2159,12 @@
         }
     }
     
-    // Afficher le statut dans le modal GitHub
     function showGithubStatus(message, type) {
         const status = document.getElementById('githubStatus');
         status.className = `github-status ${type}`;
         status.textContent = message;
     }
     
-    // Synchroniser avec GitHub
     async function syncWithGithub() {
         if (!githubConfig.token || !githubConfig.username || !githubConfig.repo) {
             alert('Veuillez d\'abord configurer GitHub');
@@ -1873,7 +2175,6 @@
         showLoading(true);
         
         try {
-            // Récupérer les données actuelles
             const data = {
                 lawyers: lawyers,
                 pdfs: pdfDocuments,
@@ -1886,10 +2187,8 @@
                 lastUpdate: new Date().toISOString()
             };
             
-            // Convertir en JSON
             const jsonData = JSON.stringify(data, null, 2);
             
-            // Vérifier si le fichier existe déjà
             const fileResponse = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json?ref=${githubConfig.branch}`, {
                 headers: {
                     'Authorization': `token ${githubConfig.token}`,
@@ -1903,7 +2202,6 @@
                 sha = fileData.sha;
             }
             
-            // Préparer la requête
             const requestBody = {
                 message: `Mise à jour des données - ${new Date().toLocaleString()}`,
                 content: btoa(unescape(encodeURIComponent(jsonData))),
@@ -1914,7 +2212,6 @@
                 requestBody.sha = sha;
             }
             
-            // Envoyer à GitHub
             const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json`, {
                 method: 'PUT',
                 headers: {
@@ -1940,78 +2237,8 @@
         }
     }
     
-    // Charger les données depuis GitHub
-    async function loadFromGithub() {
-        if (!githubConfig.token || !githubConfig.username || !githubConfig.repo) {
-            loadFromLocalStorage();
-            return;
-        }
-        
-        showLoading(true);
-        
-        try {
-            const response = await fetch(`https://api.github.com/repos/${githubConfig.username}/${githubConfig.repo}/contents/data.json?ref=${githubConfig.branch}`, {
-                headers: {
-                    'Authorization': `token ${githubConfig.token}`,
-                    'Accept': 'application/vnd.github.v3+json'
-                }
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                const content = JSON.parse(decodeURIComponent(escape(atob(data.content))));
-                
-                // Charger les avocats
-                if (content.lawyers) {
-                    lawyers = content.lawyers;
-                }
-                
-                // Charger les PDFs
-                if (content.pdfs) {
-                    pdfDocuments = content.pdfs;
-                }
-                
-                // Charger les textes
-                if (content.texts) {
-                    applyTexts(content.texts);
-                }
-                
-                // Charger les images
-                if (content.images) {
-                    applyImages(content.images);
-                }
-                
-                // Charger les couleurs
-                if (content.colors) {
-                    if (content.colors.primary) {
-                        document.getElementById('primaryColor').value = content.colors.primary;
-                        changePrimaryColor(content.colors.primary);
-                    }
-                    if (content.colors.secondary) {
-                        document.getElementById('secondaryColor').value = content.colors.secondary;
-                        changeSecondaryColor(content.colors.secondary);
-                    }
-                }
-                
-                showToast('Données chargées depuis GitHub');
-            } else {
-                loadFromLocalStorage();
-            }
-            
-        } catch (error) {
-            console.error('Erreur chargement GitHub:', error);
-            loadFromLocalStorage();
-        } finally {
-            showLoading(false);
-            displayLawyers();
-            updateCarousel();
-            updateLawyerSelect();
-        }
-    }
-    
     // ========== FONCTIONS DE STOCKAGE LOCAL ==========
     
-    // Sauvegarder dans le localStorage
     function saveToLocalStorage() {
         const data = {
             lawyers: lawyers,
@@ -2027,7 +2254,6 @@
         localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
     }
     
-    // Charger depuis le localStorage
     function loadFromLocalStorage() {
         const saved = localStorage.getItem(STORAGE_KEY);
         if (saved) {
@@ -2052,13 +2278,11 @@
             }
         }
         
-        // Si pas d'avocats, charger les avocats par défaut
         if (!lawyers || lawyers.length === 0) {
             loadDefaultLawyers();
         }
     }
     
-    // Récupérer tous les textes
     function getAllTexts() {
         const texts = {};
         document.querySelectorAll('[id]').forEach(el => {
@@ -2069,7 +2293,6 @@
         return texts;
     }
     
-    // Appliquer les textes
     function applyTexts(texts) {
         Object.keys(texts).forEach(id => {
             const el = document.getElementById(id);
@@ -2079,7 +2302,6 @@
         });
     }
     
-    // Récupérer toutes les images
     async function getAllImages() {
         const images = {};
         const imageElements = document.querySelectorAll('img[id]');
@@ -2091,49 +2313,50 @@
         return images;
     }
     
-    // Appliquer les images
-    function applyImages(images) {
-        Object.keys(images).forEach(id => {
-            const el = document.getElementById(id);
-            if (el && el.tagName === 'IMG') {
-                el.src = images[id];
-            }
-        });
-    }
-    
-    // Charger les avocats par défaut
     function loadDefaultLawyers() {
         lawyers = [
             {
                 id: 1,
                 name: "Maître bivens KITUNGWA",
                 role: "Administrateur du cabinet",
-                desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.",
+                specialization: "Droit minier",
+                desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet. Plus de 15 ans d'expérience dans le secteur minier congolais.",
                 phone: "+243 977 219 423",
+                email: "b.kitungwa@cabinetbkr.com",
+                linkedin: "https://linkedin.com/in/bivens-kitungwa",
                 photo: "Maitre bivens kitungwa.jpeg"
             },
             {
                 id: 2,
                 name: "Maître Jonathan KASHAMA",
                 role: "Membre du cabinet",
-                desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.",
+                specialization: "Droit fiscal",
+                desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes de fiscalité des entreprises et d'optimisation fiscale.",
                 phone: "+243 813 535 315",
+                email: "j.kashama@cabinetbkr.com",
+                linkedin: "https://linkedin.com/in/jonathan-kashama",
                 photo: "maitre jonathan kashama de cabinet.jpeg"
             },
             {
                 id: 3,
                 name: "Maître Jealuc KANDA",
                 role: "Chargé d'exécution",
-                desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires.",
+                specialization: "Contentieux",
+                desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires. Expert en droit procédural et en exécution des décisions de justice.",
                 phone: "+243 975 886 336",
+                email: "jl.kanda@cabinetbkr.com",
+                linkedin: "https://linkedin.com/in/jealuc-kanda",
                 photo: "jeanluc.jpeg"
             },
             {
                 id: 4,
                 name: "Maître Jonathan NSHIMBA",
                 role: "Chargé de relations et affaires",
-                desc: "Gestion des partenariats, relations clients et développement des affaires juridiques.",
+                specialization: "Droit des affaires",
+                desc: "Gestion des partenariats, relations clients et développement des affaires juridiques. Spécialiste en négociations commerciales et contrats d'affaires.",
                 phone: "+243 999 816 551",
+                email: "j.nshimba@cabinetbkr.com",
+                linkedin: "https://linkedin.com/in/jonathan-nshimba",
                 photo: "Maitre jonathan nshima charger des relation et des affaire.jpeg"
             }
         ];
@@ -2145,7 +2368,6 @@
         if (!isAdminLogged) {
             document.getElementById('adminModal').classList.add('active');
         } else {
-            // Déconnexion
             isAdminLogged = false;
             editMode = false;
             document.body.classList.remove('admin-mode');
@@ -2168,7 +2390,7 @@
             document.getElementById('adminPassword').value = '';
             showToast('Connexion réussie');
             toggleAdminPanel();
-            displayLawyers(); // Reafficher pour montrer les boutons admin
+            displayLawyers();
         } else {
             alert('Mot de passe incorrect !');
         }
@@ -2218,7 +2440,35 @@
         }
     }
     
-    // ========== GESTION DES AVOCATS ==========
+    // ========== GESTION DES PHOTOS ==========
+    
+    function previewLawyerPhoto(input, previewId) {
+        const preview = document.getElementById(previewId);
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.style.display = 'block';
+                preview.querySelector('img').src = e.target.result;
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+    
+    function openPhotoModal(photoUrl, caption) {
+        const modal = document.getElementById('photoModal');
+        const img = document.getElementById('photoModalImg');
+        const captionEl = document.getElementById('photoModalCaption');
+        
+        img.src = photoUrl;
+        captionEl.textContent = caption;
+        modal.classList.add('active');
+    }
+    
+    function closePhotoModal() {
+        document.getElementById('photoModal').classList.remove('active');
+    }
+    
+    // ========== GESTION DES AVOCATS AMÉLIORÉE ==========
     
     function displayLawyers() {
         const grid = document.getElementById('lawyersGrid');
@@ -2229,12 +2479,19 @@
             card.className = 'lawyer-card';
             card.dataset.lawyerId = lawyer.id || index;
             
-            const photoUrl = lawyer.photo && lawyer.photo.startsWith('data:') ? lawyer.photo : lawyer.photo;
+            const photoUrl = lawyer.photo && (lawyer.photo.startsWith('data:') || lawyer.photo.startsWith('http')) 
+                ? lawyer.photo 
+                : 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(lawyer.name);
             
             card.innerHTML = `
-                <div class="lawyer-photo" style="background-image: url('${photoUrl || 'https://via.placeholder.com/400x300?text=Photo'}');" 
-                     onclick="if(window.isAdminLogged && window.editMode) changeLawyerPhoto(${lawyer.id || index})">
-                    <div class="photo-overlay">${lawyer.name}</div>
+                <div class="lawyer-photo-container">
+                    <div class="lawyer-photo" style="background-image: url('${photoUrl}');" 
+                         onclick="openPhotoModal('${photoUrl}', '${lawyer.name}')"></div>
+                    ${lawyer.specialization ? `<span class="specialization-badge">${lawyer.specialization}</span>` : ''}
+                    <div class="photo-overlay">
+                        <h3>${lawyer.name}</h3>
+                        <p>${lawyer.role}</p>
+                    </div>
                     ${isAdminLogged ? `
                         <div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id || index})">
                             <i class="fas fa-trash"></i>
@@ -2244,11 +2501,25 @@
                         </div>
                     ` : ''}
                 </div>
-                <div class="info">
+                <div class="lawyer-info">
                     <h4 ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'name', this)">${lawyer.name}</h4>
                     <div class="role" ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'role', this)">${lawyer.role}</div>
-                    <p ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'desc', this)">${lawyer.desc}</p>
-                    <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'phone', this)">${lawyer.phone}</span></div>
+                    <p class="description" ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'desc', this)">${lawyer.desc}</p>
+                    <div class="lawyer-contact">
+                        <i class="fas fa-phone"></i>
+                        <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'phone', this)">${lawyer.phone}</span>
+                    </div>
+                    ${lawyer.email ? `
+                        <div class="lawyer-contact">
+                            <i class="fas fa-envelope"></i>
+                            <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id || index}, 'email', this)">${lawyer.email}</span>
+                        </div>
+                    ` : ''}
+                    ${lawyer.linkedin ? `
+                        <div class="lawyer-social">
+                            <a href="${lawyer.linkedin}" target="_blank"><i class="fab fa-linkedin-in"></i></a>
+                        </div>
+                    ` : ''}
                 </div>
             `;
             
@@ -2271,29 +2542,6 @@
         }
     }
     
-    function changeLawyerPhoto(id) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === id);
-                if (lawyer) {
-                    lawyer.photo = event.target.result;
-                    saveToLocalStorage();
-                    displayLawyers();
-                    showToast('Photo modifiée');
-                }
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-    
     function openAddLawyerModal() {
         if (!isAdminLogged) return;
         document.getElementById('addLawyerModal').classList.add('active');
@@ -2304,19 +2552,26 @@
         document.getElementById('lawyerPhoto').value = '';
         document.getElementById('lawyerName').value = '';
         document.getElementById('lawyerRole').value = '';
+        document.getElementById('lawyerSpecialization').value = '';
         document.getElementById('lawyerDesc').value = '';
         document.getElementById('lawyerPhone').value = '';
+        document.getElementById('lawyerEmail').value = '';
+        document.getElementById('lawyerLinkedin').value = '';
+        document.getElementById('addPreview').style.display = 'none';
     }
     
     function addLawyer() {
         const photo = document.getElementById('lawyerPhoto').files[0];
         const name = document.getElementById('lawyerName').value;
         const role = document.getElementById('lawyerRole').value;
+        const specialization = document.getElementById('lawyerSpecialization').value;
         const desc = document.getElementById('lawyerDesc').value;
         const phone = document.getElementById('lawyerPhone').value;
+        const email = document.getElementById('lawyerEmail').value;
+        const linkedin = document.getElementById('lawyerLinkedin').value;
         
         if (!name || !role || !desc || !phone) {
-            alert('Veuillez remplir tous les champs');
+            alert('Veuillez remplir tous les champs obligatoires');
             return;
         }
         
@@ -2329,12 +2584,16 @@
                     id: newId,
                     name: name,
                     role: role,
+                    specialization: specialization,
                     desc: desc,
                     phone: phone,
+                    email: email,
+                    linkedin: linkedin,
                     photo: event.target.result
                 });
                 saveToLocalStorage();
                 displayLawyers();
+                updateLawyerSelect();
                 closeAddLawyerModal();
                 showToast('Avocat ajouté avec succès');
             };
@@ -2344,12 +2603,16 @@
                 id: newId,
                 name: name,
                 role: role,
+                specialization: specialization,
                 desc: desc,
                 phone: phone,
-                photo: 'https://via.placeholder.com/400x300?text=Photo'
+                email: email,
+                linkedin: linkedin,
+                photo: 'https://via.placeholder.com/400x300?text=' + encodeURIComponent(name)
             });
             saveToLocalStorage();
             displayLawyers();
+            updateLawyerSelect();
             closeAddLawyerModal();
             showToast('Avocat ajouté avec succès');
         }
@@ -2361,16 +2624,20 @@
         const lawyer = lawyers.find(l => (l.id || lawyers.indexOf(l)) === id);
         if (lawyer) {
             currentEditLawyerId = id;
-            document.getElementById('editLawyerName').value = lawyer.name;
-            document.getElementById('editLawyerRole').value = lawyer.role;
-            document.getElementById('editLawyerDesc').value = lawyer.desc;
-            document.getElementById('editLawyerPhone').value = lawyer.phone;
+            document.getElementById('editLawyerName').value = lawyer.name || '';
+            document.getElementById('editLawyerRole').value = lawyer.role || '';
+            document.getElementById('editLawyerSpecialization').value = lawyer.specialization || '';
+            document.getElementById('editLawyerDesc').value = lawyer.desc || '';
+            document.getElementById('editLawyerPhone').value = lawyer.phone || '';
+            document.getElementById('editLawyerEmail').value = lawyer.email || '';
+            document.getElementById('editLawyerLinkedin').value = lawyer.linkedin || '';
             document.getElementById('editLawyerModal').classList.add('active');
         }
     }
     
     function closeEditLawyerModal() {
         document.getElementById('editLawyerModal').classList.remove('active');
+        document.getElementById('editPreview').style.display = 'none';
         currentEditLawyerId = null;
     }
     
@@ -2380,8 +2647,11 @@
             const photo = document.getElementById('editLawyerPhoto').files[0];
             const name = document.getElementById('editLawyerName').value;
             const role = document.getElementById('editLawyerRole').value;
+            const specialization = document.getElementById('editLawyerSpecialization').value;
             const desc = document.getElementById('editLawyerDesc').value;
             const phone = document.getElementById('editLawyerPhone').value;
+            const email = document.getElementById('editLawyerEmail').value;
+            const linkedin = document.getElementById('editLawyerLinkedin').value;
             
             if (photo) {
                 const reader = new FileReader();
@@ -2389,10 +2659,14 @@
                     lawyer.photo = event.target.result;
                     lawyer.name = name;
                     lawyer.role = role;
+                    lawyer.specialization = specialization;
                     lawyer.desc = desc;
                     lawyer.phone = phone;
+                    lawyer.email = email;
+                    lawyer.linkedin = linkedin;
                     saveToLocalStorage();
                     displayLawyers();
+                    updateLawyerSelect();
                     closeEditLawyerModal();
                     showToast('Avocat modifié avec succès');
                 };
@@ -2400,10 +2674,14 @@
             } else {
                 lawyer.name = name;
                 lawyer.role = role;
+                lawyer.specialization = specialization;
                 lawyer.desc = desc;
                 lawyer.phone = phone;
+                lawyer.email = email;
+                lawyer.linkedin = linkedin;
                 saveToLocalStorage();
                 displayLawyers();
+                updateLawyerSelect();
                 closeEditLawyerModal();
                 showToast('Avocat modifié avec succès');
             }
@@ -2417,6 +2695,7 @@
             lawyers = lawyers.filter(l => (l.id || lawyers.indexOf(l)) !== id);
             saveToLocalStorage();
             displayLawyers();
+            updateLawyerSelect();
             showToast('Avocat supprimé');
         }
     }
@@ -2428,6 +2707,7 @@
             loadDefaultLawyers();
             saveToLocalStorage();
             displayLawyers();
+            updateLawyerSelect();
             showToast('Avocats restaurés par défaut');
         }
     }
@@ -2438,7 +2718,6 @@
         new Sortable(document.getElementById('lawyersGrid'), {
             animation: 150,
             onEnd: function() {
-                // Réorganiser le tableau
                 const newOrder = [];
                 document.querySelectorAll('.lawyer-card').forEach(card => {
                     const index = Array.from(card.parentNode.children).indexOf(card);
@@ -2479,25 +2758,6 @@
     }
     
     // ========== GESTION DES IMAGES ==========
-    
-    function changeImage(element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                element.src = event.target.result;
-                saveToLocalStorage();
-                showToast('Image modifiée');
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
     
     function changeLogo(input) {
         if (!isAdminLogged) return;
@@ -2584,7 +2844,6 @@
             saveToLocalStorage();
             updateCarousel();
             
-            // Réinitialiser le formulaire
             fileInput.value = '';
             titleInput.value = '';
             descInput.value = '';
@@ -2907,7 +3166,6 @@
         updateLawyerSelect();
         updateGithubConnectionStatus();
         
-        // Créer les dots du carrousel
         if (pdfDocuments.length > 0) {
             for (let i = 0; i < pdfDocuments.length; i++) {
                 const dot = document.createElement('div');
