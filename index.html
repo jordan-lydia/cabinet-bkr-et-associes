@@ -4,9 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cabinet BKR & Associés · Avocats à Kolwezi</title>
-    <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <!-- PDF.js pour l'affichage des PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <style>
         * {
@@ -113,11 +111,6 @@
             padding: 8px 16px;
             border-radius: 30px;
             font-weight: 600;
-            border-bottom: none !important;
-        }
-
-        .rdv-btn a:hover {
-            background: #dbb86a;
             border-bottom: none !important;
         }
 
@@ -344,28 +337,53 @@
             position: relative;
         }
         
-        .delete-pdf-btn {
+        .pdf-actions {
             position: absolute;
             top: 20px;
             right: 20px;
-            background: #dc2626;
-            color: white;
+            display: flex;
+            gap: 10px;
+            z-index: 20;
+        }
+        
+        .download-pdf-btn, .delete-pdf-btn {
             width: 40px;
             height: 40px;
             border-radius: 50%;
-            display: none;
+            display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            z-index: 20;
             border: none;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.6);
+            color: white;
+        }
+        
+        .download-pdf-btn:hover {
+            background: #10b981;
+            transform: scale(1.1);
+        }
+        
+        .delete-pdf-btn {
+            background: rgba(220,38,38,0.8);
+            display: none;
+        }
+        
+        .delete-pdf-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
         }
         
         .pdf-preview.admin-mode:hover .delete-pdf-btn {
             display: flex;
         }
+        
+        .pdf-preview:hover .download-pdf-btn {
+            background: #10b981;
+        }
 
-        .pdf-preview i {
+        .pdf-preview i:first-of-type {
             font-size: 5rem;
             color: #c9a959;
             margin-bottom: 1rem;
@@ -374,6 +392,12 @@
         .pdf-preview h3 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
+        }
+
+        .pdf-preview p {
+            opacity: 0.9;
+            text-align: center;
+            max-width: 80%;
         }
 
         .carousel-caption {
@@ -393,6 +417,12 @@
             color: #dbb86a;
         }
 
+        .carousel-caption p {
+            font-size: 1rem;
+            opacity: 0.9;
+            max-width: 600px;
+        }
+
         .carousel-btn {
             position: absolute;
             top: 50%;
@@ -408,6 +438,7 @@
             justify-content: center;
             cursor: pointer;
             z-index: 10;
+            transition: 0.3s;
         }
 
         .carousel-btn:hover {
@@ -430,6 +461,7 @@
             border-radius: 50%;
             background: #ccc;
             cursor: pointer;
+            transition: 0.3s;
         }
 
         .carousel-dot.active { background: #c9a959; transform: scale(1.2); }
@@ -455,6 +487,8 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
+            display: flex;
+            flex-direction: column;
         }
 
         .pdf-modal-header {
@@ -464,6 +498,13 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .pdf-modal-header h3 {
+            color: #c9a959;
+            margin: 0;
         }
 
         .close-pdf-modal {
@@ -472,18 +513,24 @@
             color: white;
             font-size: 2rem;
             cursor: pointer;
+            padding: 0 1rem;
+        }
+
+        .close-pdf-modal:hover {
+            color: #c9a959;
         }
 
         .pdf-viewer {
-            width: 100%;
-            height: calc(100% - 70px);
+            flex: 1;
             overflow: auto;
             background: #525659;
+            padding: 20px;
         }
 
         .pdf-viewer canvas {
             display: block;
             margin: 0 auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .pdf-controls {
@@ -498,6 +545,11 @@
             padding: 0.5rem 1rem;
             border-radius: 4px;
             cursor: pointer;
+            font-weight: 600;
+        }
+
+        .pdf-controls button:hover {
+            background: #dbb86a;
         }
 
         .admin-modal {
@@ -683,6 +735,7 @@
             }
             .nav-links.active { right: 0; }
             .hero { flex-direction: column; text-align: center; }
+            .pdf-controls { flex-wrap: wrap; }
         }
     </style>
 </head>
@@ -695,7 +748,7 @@
 
 <div class="admin-modal" id="adminModal">
     <div class="admin-modal-content">
-        <div class="admin-lock" style="text-align:center">
+        <div style="text-align:center">
             <i class="fas fa-lock" style="font-size:3rem; color:#c9a959"></i>
             <h2>Espace Administrateur</h2>
         </div>
@@ -758,6 +811,7 @@
                 <button id="pdfPrevPage"><i class="fas fa-chevron-left"></i> Précédent</button>
                 <span id="pdfPageInfo">Page 1 / 1</span>
                 <button id="pdfNextPage">Suivant <i class="fas fa-chevron-right"></i></button>
+                <button id="pdfDownloadModalBtn"><i class="fas fa-download"></i> Télécharger</button>
             </div>
             <button class="close-pdf-modal" id="closePdfModal">&times;</button>
         </div>
@@ -816,12 +870,12 @@
 <section id="galerie">
     <h2 class="section-title">Nos dossiers réussis</h2>
     <div class="upload-section" id="uploadSection">
-        <h3><i class="fas fa-upload"></i> Publier un dossier</h3>
+        <h3><i class="fas fa-upload"></i> Publier un nouveau dossier</h3>
         <div class="upload-form">
             <input type="file" id="pdfUpload" accept=".pdf">
-            <input type="text" id="pdfTitle" placeholder="Titre">
-            <textarea id="pdfDescription" placeholder="Description" rows="2"></textarea>
-            <button onclick="addPdfToCarousel()">Publier</button>
+            <input type="text" id="pdfTitle" placeholder="Titre du document">
+            <textarea id="pdfDescription" placeholder="Description du dossier" rows="2"></textarea>
+            <button onclick="addPdfToCarousel()"><i class="fas fa-cloud-upload-alt"></i> Publier</button>
         </div>
     </div>
     <div class="carousel-container">
@@ -861,6 +915,7 @@
     let currentPdf = null;
     let currentPage = 1;
     let totalPages = 1;
+    let currentPdfUrl = null;
     let isAdminLogged = false;
     const ADMIN_PASSWORD = "admin123";
     
@@ -872,7 +927,7 @@
         { name: "Maître Jonathan NSHIMBA", role: "Chargé de relations", bio: "Gestion des partenariats et relations clients.", phone: "+243 999 816 551", photoUrl: "" }
     ];
     
-    // Dossiers PDF par défaut (contenu embed)
+    // Dossiers PDF par défaut
     const defaultDocuments = [
         {
             title: "Plainte N°002 - Conflit d'exploitation minière",
@@ -906,7 +961,7 @@ Pour le cabinet BKR & ASSOCIES`
         },
         {
             title: "Modèle de Contrat de Partenariat",
-            description: "Modèle de contrat de partenariat commercial avec clauses standard.",
+            description: "Modèle de contrat de partenariat commercial avec clauses standard pour les entreprises.",
             content: `CONTRAT DE PARTENARIAT
 
 Entre: [Première Partie], [Société], [Adresse]
@@ -1011,6 +1066,77 @@ Fait à Kolwezi, le 17/02/2026`
         } else alert('Mot de passe incorrect !');
     }
     
+    // Fonction de téléchargement PDF
+    function downloadPdf(index, event) {
+        event.stopPropagation();
+        const doc = pdfDocuments[index];
+        if (!doc) return;
+        
+        let content = doc.content;
+        let blob;
+        
+        // Si c'est déjà un fichier PDF uploadé
+        if (doc.fileData) {
+            blob = dataURLtoBlob(doc.fileData);
+        } else {
+            // Créer un PDF simple à partir du texte
+            const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 100 >> stream
+BT /F1 12 Tf 50 750 Td (${doc.title.replace(/[()]/g, '\\(').replace(/[()]/g, '\\)')}) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000110 00000 n 
+0000000200 00000 n 
+0000000300 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+400
+%%EOF`;
+            blob = new Blob([pdfContent], { type: 'application/pdf' });
+        }
+        
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = `${doc.title.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+    
+    function dataURLtoBlob(dataURL) {
+        const arr = dataURL.split(',');
+        const mime = arr[0].match(/:(.*?);/)[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new Blob([u8arr], { type: mime });
+    }
+    
     // Carousel functions
     const track = document.getElementById('carouselTrack');
     const prevBtn = document.getElementById('prevBtn');
@@ -1035,17 +1161,19 @@ Fait à Kolwezi, le 17/02/2026`
     prevBtn.onclick = prevSlide;
     setInterval(() => { if (pdfDocuments.length) nextSlide(); }, 5000);
     
-    function deletePdf(index) {
-        if (!isAdminLogged) return alert('Admin uniquement');
-        if (confirm('Supprimer ce dossier ?')) {
+    function deletePdf(index, event) {
+        event.stopPropagation();
+        if (!isAdminLogged) return alert('Seul l\'administrateur peut supprimer des documents.');
+        if (confirm('Supprimer définitivement ce dossier ?')) {
             pdfDocuments.splice(index, 1);
             renderCarousel();
+            alert('Document supprimé avec succès !');
         }
     }
     
     function renderCarousel() {
         if (!pdfDocuments.length) {
-            track.innerHTML = `<div class="carousel-slide"><div class="pdf-preview"><i class="fas fa-folder-open"></i><h3>Aucun dossier</h3><p>Connectez-vous en admin pour publier</p></div></div>`;
+            track.innerHTML = `<div class="carousel-slide"><div class="pdf-preview"><i class="fas fa-folder-open"></i><h3>Aucun dossier</h3><p>Connectez-vous en admin pour publier des documents</p></div></div>`;
             dotsContainer.innerHTML = '';
             return;
         }
@@ -1055,10 +1183,17 @@ Fait à Kolwezi, le 17/02/2026`
             slide.className = 'carousel-slide';
             slide.innerHTML = `
                 <div class="pdf-preview ${isAdminLogged ? 'admin-mode' : ''}" onclick="openPdf(${i})">
-                    ${isAdminLogged ? `<button class="delete-pdf-btn" onclick="event.stopPropagation(); deletePdf(${i})"><i class="fas fa-trash"></i></button>` : ''}
+                    <div class="pdf-actions">
+                        <button class="download-pdf-btn" onclick="downloadPdf(${i}, event)" title="Télécharger">
+                            <i class="fas fa-download"></i>
+                        </button>
+                        ${isAdminLogged ? `<button class="delete-pdf-btn" onclick="deletePdf(${i}, event)" title="Supprimer">
+                            <i class="fas fa-trash"></i>
+                        </button>` : ''}
+                    </div>
                     <i class="fas fa-file-pdf"></i>
                     <h3>${escapeHtml(doc.title)}</h3>
-                    <p>${escapeHtml(doc.description.substring(0, 100))}...</p>
+                    <p>${escapeHtml(doc.description.substring(0, 100))}${doc.description.length > 100 ? '...' : ''}</p>
                 </div>
                 <div class="carousel-caption">
                     <h3>${escapeHtml(doc.title)}</h3>
@@ -1082,12 +1217,109 @@ Fait à Kolwezi, le 17/02/2026`
         const doc = pdfDocuments[index];
         const modal = document.getElementById('pdfModal');
         const viewer = document.getElementById('pdfViewer');
-        document.getElementById('pdfModalTitle').textContent = doc.title;
+        const titleEl = document.getElementById('pdfModalTitle');
+        const downloadModalBtn = document.getElementById('pdfDownloadModalBtn');
+        
+        titleEl.textContent = doc.title;
         modal.classList.add('active');
-        viewer.innerHTML = '';
+        viewer.innerHTML = '<div style="color:white; text-align:center; padding:2rem"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>';
+        
+        // Configurer le bouton de téléchargement dans le modal
+        downloadModalBtn.onclick = () => {
+            if (doc.fileData) {
+                const blob = dataURLtoBlob(doc.fileData);
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${doc.title.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+                a.click();
+                URL.revokeObjectURL(url);
+            } else {
+                // Télécharger le texte en PDF
+                const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 200 >> stream
+BT /F1 12 Tf 50 750 Td (${doc.title.replace(/[()]/g, '\\(').replace(/[()]/g, '\\)')}) Tj
+/F1 10 Tf 50 700 Td (${doc.content.substring(0, 200).replace(/[()]/g, '\\(').replace(/[()]/g, '\\)')}) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000110 00000 n 
+0000000200 00000 n 
+0000000300 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+400
+%%EOF`;
+                const blob = new Blob([pdfContent], { type: 'application/pdf' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${doc.title.replace(/[^a-z0-9]/gi, '_')}.pdf`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
+        };
         
         try {
-            const blob = new Blob([doc.content], { type: 'application/pdf' });
+            let blob;
+            if (doc.fileData) {
+                blob = dataURLtoBlob(doc.fileData);
+            } else {
+                // Créer un PDF simple
+                const pdfContent = `%PDF-1.4
+1 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [3 0 R] /Count 1 >>
+endobj
+3 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 612 792] /Contents 4 0 R /Resources << /Font << /F1 5 0 R >> >> >>
+endobj
+4 0 obj
+<< /Length 500 >> stream
+BT /F1 12 Tf 50 750 Td (${doc.title.replace(/[()]/g, '\\(').replace(/[()]/g, '\\)')}) Tj
+/F1 10 Tf 50 720 Td (${doc.content.substring(0, 500).replace(/[()]/g, '\\(').replace(/[()]/g, '\\)').replace(/\n/g, ' ) Tj 0 -15 Td (')}) Tj
+ET
+endstream
+endobj
+5 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+xref
+0 6
+0000000000 65535 f 
+0000000010 00000 n 
+0000000060 00000 n 
+0000000110 00000 n 
+0000000200 00000 n 
+0000000300 00000 n 
+trailer
+<< /Size 6 /Root 1 0 R >>
+startxref
+500
+%%EOF`;
+                blob = new Blob([pdfContent], { type: 'application/pdf' });
+            }
             const url = URL.createObjectURL(blob);
             const loadingTask = pdfjsLib.getDocument(url);
             currentPdf = await loadingTask.promise;
@@ -1096,7 +1328,7 @@ Fait à Kolwezi, le 17/02/2026`
             document.getElementById('pdfPageInfo').textContent = `Page 1 / ${totalPages}`;
             renderPage(1);
         } catch (error) {
-            viewer.innerHTML = `<div style="color:white; padding:2rem; text-align:center">${escapeHtml(doc.content)}</div>`;
+            viewer.innerHTML = `<div style="color:white; padding:2rem; text-align:center; white-space:pre-wrap">${escapeHtml(doc.content)}</div>`;
         }
     }
     
@@ -1104,15 +1336,17 @@ Fait à Kolwezi, le 17/02/2026`
         if (!currentPdf) return;
         const page = await currentPdf.getPage(pageNum);
         const viewer = document.getElementById('pdfViewer');
-        const scale = 1.5;
-        const viewport = page.getViewport({ scale });
+        const containerWidth = viewer.clientWidth - 40;
+        const viewport = page.getViewport({ scale: 1 });
+        const scale = containerWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale });
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        canvas.width = viewport.width;
-        canvas.height = viewport.height;
+        canvas.width = scaledViewport.width;
+        canvas.height = scaledViewport.height;
         viewer.innerHTML = '';
         viewer.appendChild(canvas);
-        await page.render({ canvasContext: context, viewport }).promise;
+        await page.render({ canvasContext: context, viewport: scaledViewport }).promise;
     }
     
     document.getElementById('closePdfModal').onclick = () => {
@@ -1135,21 +1369,26 @@ Fait à Kolwezi, le 17/02/2026`
     };
     
     function addPdfToCarousel() {
-        if (!isAdminLogged) return alert('Admin uniquement');
+        if (!isAdminLogged) return alert('Seul l\'administrateur peut publier des documents.');
         const file = document.getElementById('pdfUpload').files[0];
         const title = document.getElementById('pdfTitle').value;
         const desc = document.getElementById('pdfDescription').value;
-        if (!title || !desc) return alert('Remplissez tous les champs');
+        if (!title || !desc) return alert('Veuillez remplir tous les champs');
         
         if (file) {
             const reader = new FileReader();
             reader.onload = (e) => {
-                pdfDocuments.push({ title, description: desc, content: e.target.result });
+                pdfDocuments.push({ 
+                    title, 
+                    description: desc, 
+                    content: `Document PDF: ${title}\n${desc}`,
+                    fileData: e.target.result 
+                });
                 renderCarousel();
                 document.getElementById('pdfUpload').value = '';
                 document.getElementById('pdfTitle').value = '';
                 document.getElementById('pdfDescription').value = '';
-                alert('Dossier publié !');
+                alert('Document publié avec succès !');
             };
             reader.readAsDataURL(file);
         } else {
@@ -1157,7 +1396,7 @@ Fait à Kolwezi, le 17/02/2026`
             renderCarousel();
             document.getElementById('pdfTitle').value = '';
             document.getElementById('pdfDescription').value = '';
-            alert('Dossier publié !');
+            alert('Document publié avec succès !');
         }
     }
     
@@ -1186,12 +1425,12 @@ Fait à Kolwezi, le 17/02/2026`
     }
     
     function addLawyer() {
-        if (!isAdminLogged) return alert('Admin uniquement');
+        if (!isAdminLogged) return alert('Seul l\'administrateur peut ajouter des avocats.');
         const name = document.getElementById('lawyerName').value;
         const role = document.getElementById('lawyerRole').value;
         const bio = document.getElementById('lawyerBio').value;
         const phone = document.getElementById('lawyerPhone').value;
-        if (!name || !role || !bio || !phone) return alert('Remplissez tous les champs');
+        if (!name || !role || !bio || !phone) return alert('Veuillez remplir tous les champs');
         
         const lawyers = JSON.parse(localStorage.getItem('bkr_lawyers')) || defaultLawyers;
         lawyers.push({ name, role, bio, phone, photoUrl: '' });
@@ -1201,16 +1440,17 @@ Fait à Kolwezi, le 17/02/2026`
         document.getElementById('lawyerRole').value = '';
         document.getElementById('lawyerBio').value = '';
         document.getElementById('lawyerPhone').value = '';
-        alert('Avocat ajouté !');
+        alert('Avocat ajouté avec succès !');
     }
     
     function deleteLawyer(index) {
-        if (!isAdminLogged) return alert('Admin uniquement');
+        if (!isAdminLogged) return alert('Seul l\'administrateur peut supprimer des avocats.');
         if (confirm('Supprimer cet avocat ?')) {
             const lawyers = JSON.parse(localStorage.getItem('bkr_lawyers')) || defaultLawyers;
             lawyers.splice(index, 1);
             localStorage.setItem('bkr_lawyers', JSON.stringify(lawyers));
             renderLawyers();
+            alert('Avocat supprimé avec succès !');
         }
     }
     
@@ -1225,8 +1465,10 @@ Fait à Kolwezi, le 17/02/2026`
     renderCarousel();
     renderLawyers();
     
+    // Rendre les fonctions accessibles globalement
     window.openPdf = openPdf;
     window.deletePdf = deletePdf;
+    window.downloadPdf = downloadPdf;
     window.addPdfToCarousel = addPdfToCarousel;
     window.addLawyer = addLawyer;
     window.deleteLawyer = deleteLawyer;
