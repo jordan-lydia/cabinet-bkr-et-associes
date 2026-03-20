@@ -8,10 +8,6 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <!-- PDF.js pour l'affichage des PDF -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
-    <!-- Firebase SDK -->
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-firestore-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-storage-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -26,7 +22,6 @@
             line-height: 1.6;
         }
 
-        /* === NAVIGATION AVEC MENU HAMBURGER === */
         nav {
             background: #0a1a2f;
             padding: 1rem 6%;
@@ -73,7 +68,6 @@
             margin-left: 5px;
         }
 
-        /* Menu hamburger - bouton */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -90,7 +84,6 @@
             transition: 0.3s;
         }
 
-        /* Navigation links */
         .nav-links {
             display: flex;
             gap: 1.5rem;
@@ -114,7 +107,6 @@
             color: #ffffff;
         }
 
-        /* Bouton rendez-vous spécial */
         .rdv-btn a {
             background: #c9a959;
             color: #0a1a2f;
@@ -129,7 +121,6 @@
             border-bottom: none !important;
         }
 
-        /* === HERO SECTION === */
         .hero {
             background: linear-gradient(105deg, #102b42 0%, #1b3a5c 100%);
             color: white;
@@ -170,12 +161,6 @@
             font-size: 1.1rem;
         }
 
-        .contact-hero a {
-            color: white;
-            text-decoration: none;
-        }
-
-        /* === SECTIONS === */
         section {
             padding: 4rem 6%;
         }
@@ -198,7 +183,6 @@
             border-radius: 4px;
         }
 
-        /* Cartes services */
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -220,7 +204,6 @@
             box-shadow: 0 20px 30px -8px rgba(0,20,40,0.2); 
         }
 
-        /* Statistiques */
         .stats-container {
             display: flex;
             flex-wrap: wrap;
@@ -239,7 +222,6 @@
             color: #dbb86a;
         }
 
-        /* Profil des avocats - avec images GitHub */
         .lawyers-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -275,12 +257,6 @@
             cursor: pointer;
             z-index: 10;
             border: none;
-            transition: 0.3s;
-        }
-        
-        .delete-lawyer-btn:hover {
-            background: #b91c1c;
-            transform: scale(1.1);
         }
         
         .lawyer-photo {
@@ -333,12 +309,6 @@
             padding-top: 0.8rem;
         }
         
-        .lawyer-card i {
-            width: 24px;
-            color: #0a1a2f;
-        }
-
-        /* === GALERIE CARROUSEL AVEC PDF === */
         .carousel-container {
             position: relative;
             max-width: 1200px;
@@ -358,13 +328,6 @@
             position: relative;
             height: 500px;
             background: #102b42;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            display: block;
         }
 
         .pdf-preview {
@@ -396,20 +359,10 @@
             cursor: pointer;
             z-index: 20;
             border: none;
-            transition: 0.3s;
-        }
-        
-        .delete-pdf-btn:hover {
-            background: #b91c1c;
-            transform: scale(1.1);
         }
         
         .pdf-preview.admin-mode:hover .delete-pdf-btn {
             display: flex;
-        }
-
-        .pdf-preview:hover {
-            transform: scale(1.02);
         }
 
         .pdf-preview i {
@@ -421,10 +374,6 @@
         .pdf-preview h3 {
             font-size: 1.8rem;
             margin-bottom: 0.5rem;
-        }
-
-        .pdf-preview p {
-            opacity: 0.9;
         }
 
         .carousel-caption {
@@ -444,12 +393,6 @@
             color: #dbb86a;
         }
 
-        .carousel-caption p {
-            font-size: 1rem;
-            opacity: 0.9;
-            max-width: 600px;
-        }
-
         .carousel-btn {
             position: absolute;
             top: 50%;
@@ -464,23 +407,15 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            border: 2px solid rgba(255,255,255,0.3);
-            transition: 0.3s;
             z-index: 10;
         }
 
         .carousel-btn:hover {
             background: #c9a959;
-            border-color: #c9a959;
         }
 
-        .carousel-btn.prev {
-            left: 20px;
-        }
-
-        .carousel-btn.next {
-            right: 20px;
-        }
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
 
         .carousel-dots {
             display: flex;
@@ -495,15 +430,10 @@
             border-radius: 50%;
             background: #ccc;
             cursor: pointer;
-            transition: 0.3s;
         }
 
-        .carousel-dot.active {
-            background: #c9a959;
-            transform: scale(1.2);
-        }
+        .carousel-dot.active { background: #c9a959; transform: scale(1.2); }
 
-        /* Modal pour afficher le PDF */
         .pdf-modal {
             display: none;
             position: fixed;
@@ -517,9 +447,7 @@
             align-items: center;
         }
 
-        .pdf-modal.active {
-            display: flex;
-        }
+        .pdf-modal.active { display: flex; }
 
         .pdf-modal-content {
             width: 90%;
@@ -527,7 +455,6 @@
             background: white;
             border-radius: 16px;
             overflow: hidden;
-            position: relative;
         }
 
         .pdf-modal-header {
@@ -539,21 +466,12 @@
             align-items: center;
         }
 
-        .pdf-modal-header h3 {
-            color: #c9a959;
-        }
-
         .close-pdf-modal {
             background: none;
             border: none;
             color: white;
             font-size: 2rem;
             cursor: pointer;
-            padding: 0 1rem;
-        }
-
-        .close-pdf-modal:hover {
-            color: #c9a959;
         }
 
         .pdf-viewer {
@@ -566,7 +484,6 @@
         .pdf-viewer canvas {
             display: block;
             margin: 0 auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
         }
 
         .pdf-controls {
@@ -581,18 +498,8 @@
             padding: 0.5rem 1rem;
             border-radius: 4px;
             cursor: pointer;
-            font-weight: 600;
         }
 
-        .pdf-controls button:hover {
-            background: #dbb86a;
-        }
-
-        .pdf-controls span {
-            color: white;
-        }
-
-        /* Admin Login Modal */
         .admin-modal {
             display: none;
             position: fixed;
@@ -606,9 +513,7 @@
             align-items: center;
         }
 
-        .admin-modal.active {
-            display: flex;
-        }
+        .admin-modal.active { display: flex; }
 
         .admin-modal-content {
             background: white;
@@ -616,17 +521,6 @@
             border-radius: 32px;
             max-width: 400px;
             width: 90%;
-            position: relative;
-        }
-
-        .admin-lock {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        .admin-lock i {
-            font-size: 3rem;
-            color: #c9a959;
         }
 
         .admin-input {
@@ -635,7 +529,6 @@
             margin: 10px 0;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
         }
 
         .admin-btn {
@@ -646,40 +539,18 @@
             border-radius: 8px;
             cursor: pointer;
             width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
         }
 
-        .admin-btn:hover {
-            background: #1b3a5c;
-        }
-
-        /* Section d'upload (visible uniquement pour admin connecté) */
         .upload-section {
             display: none;
             margin-bottom: 2rem;
             padding: 1.5rem;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             border: 2px solid #c9a959;
         }
 
-        .upload-section.active {
-            display: block;
-        }
-
-        .upload-section h3 {
-            color: #0a1a2f;
-            margin-bottom: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .upload-section h3 i {
-            color: #c9a959;
-        }
+        .upload-section.active { display: block; }
 
         .upload-form {
             display: flex;
@@ -687,27 +558,19 @@
             gap: 1rem;
         }
 
-        .upload-form input,
-        .upload-form textarea {
+        .upload-form input, .upload-form textarea {
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
         }
 
         .upload-form button {
             background: #c9a959;
-            color: #0a1a2f;
             border: none;
             padding: 12px;
             border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            font-size: 1rem;
-        }
-
-        .upload-form button:hover {
-            background: #dbb86a;
         }
 
         .admin-badge {
@@ -720,39 +583,23 @@
             border-radius: 40px;
             cursor: pointer;
             z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             display: flex;
             align-items: center;
             gap: 8px;
         }
 
-        .admin-badge i {
-            color: #c9a959;
-        }
+        .admin-badge.logged { background: #c9a959; color: #0a1a2f; }
 
-        .admin-badge.logged {
-            background: #c9a959;
-            color: #0a1a2f;
-        }
-
-        .admin-badge.logged i {
-            color: #0a1a2f;
-        }
-
-        /* Contact */
         .contact-block {
             background: white;
             border-radius: 32px;
             padding: 2.5rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
             display: flex;
             flex-wrap: wrap;
             gap: 3rem;
         }
         
-        .contact-info {
-            flex: 1 1 300px;
-        }
+        .contact-info { flex: 1 1 300px; }
         
         .info-line {
             display: flex;
@@ -761,22 +608,8 @@
             margin: 1rem 0;
         }
         
-        .info-line i {
-            font-size: 1.4rem;
-            color: #c9a959;
-            width: 30px;
-        }
+        .info-line i { color: #c9a959; width: 30px; }
 
-        .map-placeholder {
-            flex: 1 1 300px;
-            background: #eef2f6;
-            border-radius: 24px;
-            padding: 2rem;
-            text-align: center;
-            border: 1px dashed #a0b3c9;
-        }
-
-        /* Rendez-vous modal (simplifié) */
         .modal {
             display: none;
             position: fixed;
@@ -790,9 +623,7 @@
             align-items: center;
         }
         
-        .modal.active {
-            display: flex;
-        }
+        .modal.active { display: flex; }
         
         .modal-content {
             background: white;
@@ -809,21 +640,15 @@
             right: 1.5rem;
             font-size: 2rem;
             cursor: pointer;
-            color: #666;
         }
         
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
+        .form-group { margin-bottom: 1.5rem; }
         
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
+        .form-group input, .form-group select, .form-group textarea {
             width: 100%;
             padding: 12px;
             border: 1px solid #ddd;
             border-radius: 8px;
-            font-size: 1rem;
         }
         
         .btn {
@@ -832,17 +657,8 @@
             padding: 12px 32px;
             border-radius: 40px;
             font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
             border: none;
             cursor: pointer;
-            transition: 0.2s;
-            font-size: 1rem;
-        }
-        
-        .btn:hover { 
-            background: #dbb86a; 
-            transform: scale(1.02);
         }
 
         footer {
@@ -850,21 +666,10 @@
             color: #adb7c3;
             text-align: center;
             padding: 2rem;
-            font-size: 0.9rem;
-        }
-        
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #c9a959;
         }
 
-        /* === RESPONSIVE MENU HAMBURGER === */
         @media (max-width: 900px) {
-            .menu-toggle {
-                display: flex;
-            }
-
+            .menu-toggle { display: flex; }
             .nav-links {
                 position: fixed;
                 top: 0;
@@ -874,127 +679,85 @@
                 background: #0a1a2f;
                 flex-direction: column;
                 padding: 100px 2rem 2rem;
-                box-shadow: -5px 0 20px rgba(0,0,0,0.3);
                 transition: 0.3s;
-                gap: 1.8rem;
             }
-
-            .nav-links.active {
-                right: 0;
-            }
-
-            .nav-links a {
-                font-size: 1.2rem;
-            }
-
-            .rdv-btn a {
-                display: inline-block;
-                width: 100%;
-                text-align: center;
-            }
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
-            }
+            .nav-links.active { right: 0; }
+            .hero { flex-direction: column; text-align: center; }
         }
     </style>
 </head>
 <body>
 
-<!-- ========== ADMIN BADGE ========== -->
 <div class="admin-badge" id="adminBadge" onclick="openAdminLogin()">
     <i class="fas fa-lock"></i>
     <span>Admin</span>
 </div>
 
-<!-- ========== ADMIN LOGIN MODAL ========== -->
 <div class="admin-modal" id="adminModal">
     <div class="admin-modal-content">
-        <div class="admin-lock">
-            <i class="fas fa-lock"></i>
-            <h2 style="margin: 1rem 0;">Espace Administrateur</h2>
+        <div class="admin-lock" style="text-align:center">
+            <i class="fas fa-lock" style="font-size:3rem; color:#c9a959"></i>
+            <h2>Espace Administrateur</h2>
         </div>
-        <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') checkAdminPassword()">
+        <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin">
         <button class="admin-btn" onclick="checkAdminPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(Mot de passe par défaut : admin123)</p>
+        <p style="text-align:center; margin-top:1rem;">(Mot de passe: admin123)</p>
     </div>
 </div>
 
-<!-- ========== NAVIGATION AVEC MENU HAMBURGER ========== -->
 <nav>
     <div class="logo-container">
         <div class="logo-placeholder">
-            <img src="logo bkr1.png" 
-                 alt="logo bkr" 
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'40\' viewBox=\'0 0 100 80\'%3E%3Crect width=\'100\' height=\'80\' fill=\'%23c9a959\'/%3E%3Ctext x=\'15\' y=\'55\' font-size=\'42\' fill=\'%230a1a2f\' font-weight=\'bold\'%3EBKR%3C/text%3E%3C/svg%3E'">
+            <img src="logo bkr1.png" alt="logo" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'40\'%3E%3Crect width=\'100\' height=\'80\' fill=\'%23c9a959\'/%3E%3Ctext x=\'15\' y=\'55\' fill=\'%230a1a2f\'%3EBKR%3C/text%3E%3C/svg%3E'">
         </div>
         <span class="logo-text">& ASSOCIÉS</span>
     </div>
-    
     <div class="menu-toggle" id="menuToggle">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
     </div>
-    
     <ul class="nav-links" id="navLinks">
         <li><a href="#accueil">Accueil</a></li>
         <li><a href="#apropos">À propos</a></li>
-        <li><a href="#services">Nos services</a></li>
+        <li><a href="#services">Services</a></li>
         <li><a href="#avocats">Avocats</a></li>
         <li><a href="#galerie">Galerie</a></li>
-        <li><a href="#statistiques">Statistiques</a></li>
         <li><a href="#contact">Contact</a></li>
-        <li class="rdv-btn"><a href="#" id="openRdv">Prendre rendez-vous</a></li>
+        <li class="rdv-btn"><a href="#" id="openRdv">Rendez-vous</a></li>
     </ul>
 </nav>
 
-<!-- ========== MODAL RENDEZ-VOUS ========== -->
 <div class="modal" id="rdvModal">
     <div class="modal-content">
         <span class="close-modal" id="closeModal">&times;</span>
-        <h2 style="margin-bottom: 1.5rem; color: #0a1a2f;">Prendre rendez-vous</h2>
+        <h2>Prendre rendez-vous</h2>
         <form id="rdvForm">
-            <div class="form-group">
-                <input type="text" placeholder="Votre nom complet" required>
-            </div>
-            <div class="form-group">
-                <input type="email" placeholder="Votre email" required>
-            </div>
-            <div class="form-group">
-                <input type="tel" placeholder="Votre téléphone" required>
-            </div>
+            <div class="form-group"><input type="text" placeholder="Nom complet" required></div>
+            <div class="form-group"><input type="email" placeholder="Email" required></div>
+            <div class="form-group"><input type="tel" placeholder="Téléphone" required></div>
             <div class="form-group">
                 <select required>
                     <option value="">Choisissez un avocat</option>
-                    <option>Maître biens KITUNGWA</option>
+                    <option>Maître Biens KITUNGWA</option>
                     <option>Maître Jonathan KASHAMA</option>
                     <option>Maître Jealuc KANDA</option>
                     <option>Maître Jonathan NSHIMBA</option>
                 </select>
             </div>
-            <div class="form-group">
-                <input type="date" required>
-            </div>
-            <div class="form-group">
-                <textarea rows="3" placeholder="Motif du rendez-vous"></textarea>
-            </div>
-            <button type="submit" class="btn" style="width: 100%;">Confirmer le rendez-vous</button>
+            <div class="form-group"><input type="date" required></div>
+            <div class="form-group"><textarea rows="3" placeholder="Motif"></textarea></div>
+            <button type="submit" class="btn" style="width:100%">Confirmer</button>
         </form>
     </div>
 </div>
 
-<!-- ========== MODAL PDF ========== -->
 <div class="pdf-modal" id="pdfModal">
     <div class="pdf-modal-content">
         <div class="pdf-modal-header">
-            <h3 id="pdfModalTitle">Document BKR & Associés</h3>
+            <h3 id="pdfModalTitle">Document BKR</h3>
             <div class="pdf-controls">
                 <button id="pdfPrevPage"><i class="fas fa-chevron-left"></i> Précédent</button>
                 <span id="pdfPageInfo">Page 1 / 1</span>
                 <button id="pdfNextPage">Suivant <i class="fas fa-chevron-right"></i></button>
-                <button id="pdfDownloadBtn"><i class="fas fa-download"></i> Télécharger</button>
             </div>
             <button class="close-pdf-modal" id="closePdfModal">&times;</button>
         </div>
@@ -1002,195 +765,202 @@
     </div>
 </div>
 
-<!-- ========== ACCUEIL ========== -->
-<section id="accueil" style="padding-top: 1rem;">
+<section id="accueil" style="padding-top:1rem">
     <div class="hero">
         <div class="hero-text">
-            <h1>CABINET B K R & ASSOCIES<br><span style="font-size: 1.4rem; color: #dbb86a;">Ordre National des Avocats · RDC</span></h1>
-            <p>Consultation et assistance juridique de haut niveau<br>à Kolwezi et à Partout dans la ville de la RDC.</p>
+            <h1>CABINET BKR & ASSOCIES<br><span style="color:#dbb86a">Ordre National des Avocats · RDC</span></h1>
+            <p>Consultation et assistance juridique de haut niveau à Kolwezi et dans toute la RDC.</p>
             <a href="#" class="btn" id="heroRdvBtn">Prendre rendez-vous</a>
         </div>
         <div class="contact-hero">
             <div><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
             <div><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
             <div><i class="fas fa-phone-alt"></i> +243 903 551 255</div>
-            <div><i class="fas fa-phone-alt"></i> +243 975 886 336</div>
             <div><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
         </div>
     </div>
 </section>
 
-<!-- ========== À PROPOS ========== -->
 <section id="apropos">
-    <h2 class="section-title">À propos du cabinet</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; background: white; padding: 2rem; border-radius: 32px; box-shadow: 0 5px 15px rgba(0,0,0,0.03);">
-        <div style="flex: 2; min-width: 280px;">
-            <p style="font-size: 1.2rem;">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.</p>
-            <p style="margin-top: 1.5rem;">Notre devise : <em>rigueur, disponibilité et efficacité.</em> Nous accompagnons nos clients avec une stratégie sur mesure, que ce soit en conseil ou en représentation devant les juridictions nationales et internationales.</p>
-        </div>
-        <div style="flex: 1; background: #e9eff7; border-radius: 2rem; padding: 2rem; text-align: center;">
-            <i class="fas fa-gavel" style="font-size: 3rem; color: #0a1a2f;"></i>
-            <p style="font-weight: 600; margin-top: 1rem;">Plus de 15 ans d'expérience collective</p>
-        </div>
+    <h2 class="section-title">À propos</h2>
+    <div style="background:white; padding:2rem; border-radius:32px">
+        <p>Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux.</p>
+        <p style="margin-top:1rem">Notre devise : <em>rigueur, disponibilité et efficacité.</em></p>
     </div>
 </section>
 
-<!-- ========== SERVICES ========== -->
 <section id="services">
     <h2 class="section-title">Nos services</h2>
     <div class="cards-grid">
-        <div class="card"><i class="fas fa-balance-scale" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Droit des affaires</h3><p>Création de sociétés, fusions/acquisitions, contrats commerciaux, due diligence.</p></div>
-        <div class="card"><i class="fas fa-hard-hat" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Droit minier</h3><p>Assistance dans le secteur extractif, permis, conformité, partenariats.</p></div>
-        <div class="card"><i class="fas fa-hand-holding-usd" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Fiscalité & douanes</h3><p>Conseil fiscal, contentieux, optimisation et contrôle douanier.</p></div>
-        <div class="card"><i class="fas fa-users" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Droit social</h3><p>Contrats de travail, procédures disciplinaires, négociations collectives.</p></div>
-        <div class="card"><i class="fas fa-gavel" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Contentieux & arbitrage</h3><p>Représentation devant toutes les juridictions, médiation et arbitrage OHADA.</p></div>
-        <div class="card"><i class="fas fa-file-signature" style="font-size: 2.5rem; color:#c9a959;"></i><h3 style="margin: 1rem 0;">Conseil & rédaction</h3><p>Contrats, statuts, accords de confidentialité, avis juridiques.</p></div>
+        <div class="card"><i class="fas fa-balance-scale" style="font-size:2.5rem; color:#c9a959"></i><h3>Droit des affaires</h3><p>Création de sociétés, contrats commerciaux</p></div>
+        <div class="card"><i class="fas fa-hard-hat" style="font-size:2.5rem; color:#c9a959"></i><h3>Droit minier</h3><p>Assistance secteur extractif, permis</p></div>
+        <div class="card"><i class="fas fa-gavel" style="font-size:2.5rem; color:#c9a959"></i><h3>Contentieux & arbitrage</h3><p>Représentation devant les juridictions</p></div>
     </div>
 </section>
 
-<!-- ========== PROFIL DES AVOCATS ========== -->
 <section id="avocats">
     <h2 class="section-title">Nos avocats</h2>
-    <div id="lawyersContainer" class="lawyers-grid">
-        <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des avocats...</div>
-    </div>
-    
-    <!-- Formulaire d'ajout d'avocat (admin seulement) -->
+    <div id="lawyersContainer" class="lawyers-grid"></div>
     <div class="upload-section" id="addLawyerSection">
-        <h3><i class="fas fa-user-plus"></i> Ajouter un nouvel avocat</h3>
+        <h3><i class="fas fa-user-plus"></i> Ajouter un avocat</h3>
         <div class="upload-form">
-            <input type="text" id="lawyerName" placeholder="Nom complet" required>
-            <input type="text" id="lawyerRole" placeholder="Rôle / Spécialité" required>
-            <textarea id="lawyerBio" placeholder="Biographie" rows="2" required></textarea>
-            <input type="text" id="lawyerPhone" placeholder="Téléphone" required>
-            <input type="file" id="lawyerPhoto" accept="image/*" required>
-            <button onclick="addLawyer()"><i class="fas fa-upload"></i> Ajouter l'avocat</button>
+            <input type="text" id="lawyerName" placeholder="Nom complet">
+            <input type="text" id="lawyerRole" placeholder="Rôle">
+            <textarea id="lawyerBio" placeholder="Biographie" rows="2"></textarea>
+            <input type="text" id="lawyerPhone" placeholder="Téléphone">
+            <button onclick="addLawyer()"><i class="fas fa-plus"></i> Ajouter</button>
         </div>
     </div>
 </section>
 
-<!-- ========== GALERIE CARROUSEL AVEC PDF ========== -->
 <section id="galerie">
     <h2 class="section-title">Nos dossiers réussis</h2>
-    
-    <!-- Section d'upload (visible uniquement pour admin connecté) -->
     <div class="upload-section" id="uploadSection">
-        <h3><i class="fas fa-lock-open"></i> Mode Administrateur - Publier un nouveau dossier</h3>
+        <h3><i class="fas fa-upload"></i> Publier un dossier</h3>
         <div class="upload-form">
-            <input type="file" id="pdfUpload" accept=".pdf" required>
-            <input type="text" id="pdfTitle" placeholder="Titre du document" required>
-            <textarea id="pdfDescription" placeholder="Description du dossier" rows="3" required></textarea>
-            <button onclick="addPdfToCarousel()"><i class="fas fa-upload"></i> Publier le dossier</button>
+            <input type="file" id="pdfUpload" accept=".pdf">
+            <input type="text" id="pdfTitle" placeholder="Titre">
+            <textarea id="pdfDescription" placeholder="Description" rows="2"></textarea>
+            <button onclick="addPdfToCarousel()">Publier</button>
         </div>
     </div>
-    
     <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-            <div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des documents...</div>
-        </div>
-        
-        <!-- Boutons de navigation -->
-        <div class="carousel-btn prev" id="prevBtn">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="carousel-btn next" id="nextBtn">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-        
-        <!-- Indicateurs -->
+        <div class="carousel-track" id="carouselTrack"></div>
+        <div class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
+        <div class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
         <div class="carousel-dots" id="carouselDots"></div>
     </div>
 </section>
 
-<!-- ========== STATISTIQUES ========== -->
-<section id="statistiques">
-    <h2 class="section-title">Statistiques & victoires</h2>
-    <div class="stats-container">
-        <div class="stat-item"><h3>95%</h3><p>Dossiers contentieux gagnés</p></div>
-        <div class="stat-item"><h3>+350</h3><p>Clients accompagnés</p></div>
-        <div class="stat-item"><h3>120</h3><p>Affaires miniers traitées</p></div>
-        <div class="stat-item"><h3>98%</h3><p>Médiations réussies</p></div>
-    </div>
-</section>
-
-<!-- ========== CONTACT ========== -->
 <section id="contact">
     <h2 class="section-title">Contact</h2>
     <div class="contact-block">
         <div class="contact-info">
-            <p><strong>Cabinet BKR & Associés</strong><br>Ordre National des Avocats, RDC</p>
             <div class="info-line"><i class="fas fa-map-marker-alt"></i> 634 Av. du Manguier Q. Dilala / Kolwezi</div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 977 219 423 </div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
             <div class="info-line"><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 903 551 255</div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 975 886 336</div>
             <div class="info-line"><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
-            <div class="info-line"><i class="fas fa-clock"></i> Lun-Ven 8h30 – 17h30</div>
-            <button class="btn" id="contactRdvBtn" style="margin-top: 1.5rem;">Prendre rendez-vous en ligne</button>
+            <button class="btn" id="contactRdvBtn">Prendre rendez-vous</button>
         </div>
-        <div class="map-placeholder">
-            <i class="fas fa-map" style="font-size: 3rem; color: #6883a5;"></i>
-            <p style="margin: 1rem 0;">Gombe, Kinshasa<br> (Plan d'accès interactif bientôt disponible)</p>
-            <div style="background: #cfddee; padding: 1rem; border-radius: 1rem;">
-                <img src="logo bkr2.png" style="max-width: 100px;">
-                <p>RD Congo</p>
-            </div>
+        <div class="map-placeholder" style="background:#eef2f6; border-radius:24px; padding:2rem; text-align:center">
+            <i class="fas fa-map" style="font-size:3rem"></i>
+            <p>Kolwezi, RDC</p>
         </div>
     </div>
 </section>
 
 <footer>
     <p>© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
-    <p style="margin-top: 1rem;">
-        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;">
-        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;">
-    </p>
 </footer>
 
 <script>
-    // Configuration Firebase
-    const firebaseConfig = {
-        apiKey: "VOTRE_API_KEY",
-        authDomain: "VOTRE_AUTH_DOMAIN",
-        projectId: "VOTRE_PROJECT_ID",
-        storageBucket: "VOTRE_STORAGE_BUCKET",
-        messagingSenderId: "VOTRE_SENDER_ID",
-        appId: "VOTRE_APP_ID"
-    };
-    
-    // Initialisation Firebase
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
-    const storage = firebase.storage();
-    
-    // Configuration de PDF.js
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     
-    // Variables globales
-    let currentIndex = 0;
     let pdfDocuments = [];
+    let currentIndex = 0;
     let currentPdf = null;
     let currentPage = 1;
     let totalPages = 1;
     let isAdminLogged = false;
-    let currentPdfUrl = null;
-    
-    // Mot de passe admin (à changer selon vos besoins)
     const ADMIN_PASSWORD = "admin123";
+    
+    // Avocats par défaut
+    const defaultLawyers = [
+        { name: "Maître Biens KITUNGWA", role: "Administrateur du cabinet", bio: "Expert en droit minier et corporate, pilotage stratégique du cabinet.", phone: "+243 977 219 423", photoUrl: "" },
+        { name: "Maître Jonathan KASHAMA", role: "Membre du cabinet", bio: "Spécialiste en contentieux des affaires et droit fiscal.", phone: "+243 813 535 315", photoUrl: "" },
+        { name: "Maître Jealuc KANDA", role: "Chargé d'exécution", bio: "Responsable du suivi opérationnel des dossiers.", phone: "+243 975 886 336", photoUrl: "" },
+        { name: "Maître Jonathan NSHIMBA", role: "Chargé de relations", bio: "Gestion des partenariats et relations clients.", phone: "+243 999 816 551", photoUrl: "" }
+    ];
+    
+    // Dossiers PDF par défaut (contenu embed)
+    const defaultDocuments = [
+        {
+            title: "Plainte N°002 - Conflit d'exploitation minière",
+            description: "Plainte déposée auprès de l'auditeur militaire concernant un conflit d'exploitation de puits à Tshipuki.",
+            content: `PLAINTE N°002/BKR/KOL/2026
+Objet: Plainte contre Guy propriétaire de la parcelle et Guy le sponsor du puits
+
+Monsieur l'auditeur militaire de garnison de KOLWEZI,
+
+Notre client KABANGU MULUMBA Augustin, propriétaire d'un puits d'exploitation artisanale à Tshipuki, subit des menaces de mort de la part des précités qui l'empêchent d'exploiter son puits après des investissements considérables. Ces menaces sont accompagnées par des militaires.
+
+Nous sollicitons votre autorité pour que tous les puits soient fermés en attendant que la SAEMAPE puisse départager les parties.
+
+Fait à Kolwezi, le 26/01/2026
+Pour le cabinet BKR & ASSOCIES`
+        },
+        {
+            title: "Plainte N°003 - Demande de SIM blanche",
+            description: "Demande de rétablissement des lignes téléphoniques suspendues après cambriolage.",
+            content: `PLAINTE N°003/BKR/KOL/2026
+Objet: Demande de SIM blanche et levée de suspension
+
+Monsieur l'auditeur militaire de garnison de Kolwezi,
+
+Après le cambriolage et l'agression ayant conduit au décès du mari de notre cliente KABANGA KABASELE CORNELLA le 29 novembre 2025, les SIM ont été suspendues par mesure de prudence.
+
+Nous sollicitons l'autorisation de rétablir les numéros afin d'éviter leur réattribution après 90 jours.
+
+Fait à Kolwezi, le 28/01/2026
+Pour le cabinet BKR & ASSOCIES`
+        },
+        {
+            title: "Modèle de Contrat de Partenariat",
+            description: "Modèle de contrat de partenariat commercial avec clauses standard.",
+            content: `CONTRAT DE PARTENARIAT
+
+Entre: [Première Partie], [Société], [Adresse]
+Et: [Deuxième Partie], [Société], [Adresse]
+
+Article 1: Objet - Collaboration dans le cadre du projet défini par les parties.
+Article 2: Droits et obligations - Chaque partie s'engage à fournir les contributions définies.
+Article 3: Contributions financières - À déterminer selon les besoins du projet.
+Article 4: Propriété intellectuelle - À définir selon les créations développées.
+Article 5: Confidentialité - Engagement de confidentialité des informations échangées.
+Article 6: Durée - À définir, renouvelable par accord écrit.
+Article 7: Égalité de genre - Engagement pour un environnement inclusif.
+Article 8: Résiliation - En cas de manquement grave après mise en demeure.
+Article 9: Litiges - Compétence des tribunaux du lieu.
+Article 10: Dispositions diverses - Modification par avenant, droit applicable.
+
+Fait à [Lieu], le [Date]`
+        },
+        {
+            title: "CV - Jordan YUMBA MUKALAMUSI",
+            description: "Candidature pour le poste d'IT Assistant - Ingénieur en génie informatique.",
+            content: `JORDAN YUMBA MUKALAMUSI
+Ingénieur en Génie Informatique
+Tél: +243 977173339 | Email: jordanyumba1212@gmail.com
+
+FORMATION:
+- Licence en Sciences de l'Ingénierie (Génie Informatique)
+- Diplôme d'Etat en Technique Commerciale
+
+EXPÉRIENCE:
+- Stage Vodacom (3 mois): Configuration et maintenance réseaux
+- Medisoft Services (4 mois): Développement logiciel
+- Comus SA (2024): Échantillonneur cathode
+
+COMPÉTENCES:
+- Administration systèmes et réseaux
+- Développement et programmation
+- Base de données
+- Virtualisation et Cloud
+- Cyber sécurité
+
+LANGUES: Français, Swahili, Lingala, Anglais
+
+"Je certifie sur mon honneur que les renseignements fournis sont sincères et exacts."
+Fait à Kolwezi, le 17/02/2026`
+        }
+    ];
     
     // Menu hamburger
     const menuToggle = document.getElementById('menuToggle');
     const navLinks = document.getElementById('navLinks');
-    
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
-    
-    // Fermer le menu quand on clique sur un lien
+    menuToggle.addEventListener('click', () => navLinks.classList.toggle('active'));
     document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-        });
+        link.addEventListener('click', () => navLinks.classList.remove('active'));
     });
     
     // Modal rendez-vous
@@ -1200,82 +970,48 @@
     const contactRdvBtn = document.getElementById('contactRdvBtn');
     const closeModal = document.getElementById('closeModal');
     
-    function openModal(e) {
+    openRdv.onclick = (e) => { e.preventDefault(); modal.classList.add('active'); };
+    heroRdvBtn.onclick = (e) => { e.preventDefault(); modal.classList.add('active'); };
+    contactRdvBtn.onclick = (e) => { e.preventDefault(); modal.classList.add('active'); };
+    closeModal.onclick = () => modal.classList.remove('active');
+    window.onclick = (e) => { if (e.target === modal) modal.classList.remove('active'); };
+    
+    document.getElementById('rdvForm').addEventListener('submit', (e) => {
         e.preventDefault();
-        modal.classList.add('active');
-    }
-    
-    openRdv.addEventListener('click', openModal);
-    heroRdvBtn.addEventListener('click', openModal);
-    contactRdvBtn.addEventListener('click', openModal);
-    
-    closeModal.addEventListener('click', () => {
+        alert('Demande envoyée ! Nous vous contacterons.');
         modal.classList.remove('active');
+        e.target.reset();
     });
     
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-    
-    // Formulaire rendez-vous
-    document.getElementById('rdvForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Demande de rendez-vous envoyée ! Nous vous contacterons dans les plus brefs délais.');
-        modal.classList.remove('active');
-        this.reset();
-    });
-    
-    // Smooth scroll pour tous les liens
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            if(this.getAttribute('href') !== '#') {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({behavior: 'smooth'});
-                }
-            }
-        });
-    });
-    
-    // Fonctions admin
+    // Admin functions
     function openAdminLogin() {
-        if (!isAdminLogged) {
-            document.getElementById('adminModal').classList.add('active');
-        } else {
-            // Déconnexion
+        if (!isAdminLogged) document.getElementById('adminModal').classList.add('active');
+        else {
             isAdminLogged = false;
             document.getElementById('adminBadge').classList.remove('logged');
             document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock"></i><span>Admin</span>';
             document.getElementById('uploadSection').classList.remove('active');
             document.getElementById('addLawyerSection').classList.remove('active');
-            // Retirer la classe admin-mode des éléments
             document.querySelectorAll('.pdf-preview').forEach(el => el.classList.remove('admin-mode'));
             document.querySelectorAll('.lawyer-card').forEach(el => el.classList.remove('admin-mode'));
         }
     }
     
     function checkAdminPassword() {
-        const password = document.getElementById('adminPassword').value;
-        if (password === ADMIN_PASSWORD) {
+        const pwd = document.getElementById('adminPassword').value;
+        if (pwd === ADMIN_PASSWORD) {
             isAdminLogged = true;
             document.getElementById('adminModal').classList.remove('active');
             document.getElementById('adminBadge').classList.add('logged');
-            document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock-open"></i><span>Admin connecté</span>';
+            document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock-open"></i><span>Admin</span>';
             document.getElementById('uploadSection').classList.add('active');
             document.getElementById('addLawyerSection').classList.add('active');
-            // Ajouter la classe admin-mode aux éléments
             document.querySelectorAll('.pdf-preview').forEach(el => el.classList.add('admin-mode'));
             document.querySelectorAll('.lawyer-card').forEach(el => el.classList.add('admin-mode'));
-            document.getElementById('adminPassword').value = '';
-        } else {
-            alert('Mot de passe incorrect !');
-        }
+        } else alert('Mot de passe incorrect !');
     }
     
-    // Fonctions du carrousel
+    // Carousel functions
     const track = document.getElementById('carouselTrack');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
@@ -1283,9 +1019,7 @@
     
     function updateDots() {
         const dots = document.querySelectorAll('.carousel-dot');
-        dots.forEach((dot, index) => {
-            dot.classList.toggle('active', index === currentIndex);
-        });
+        dots.forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
     }
     
     function goToSlide(index) {
@@ -1294,404 +1028,192 @@
         updateDots();
     }
     
-    function nextSlide() {
-        if (pdfDocuments.length > 0) {
-            currentIndex = (currentIndex + 1) % pdfDocuments.length;
-            goToSlide(currentIndex);
+    function nextSlide() { if (pdfDocuments.length) currentIndex = (currentIndex + 1) % pdfDocuments.length; goToSlide(currentIndex); }
+    function prevSlide() { if (pdfDocuments.length) currentIndex = (currentIndex - 1 + pdfDocuments.length) % pdfDocuments.length; goToSlide(currentIndex); }
+    
+    nextBtn.onclick = nextSlide;
+    prevBtn.onclick = prevSlide;
+    setInterval(() => { if (pdfDocuments.length) nextSlide(); }, 5000);
+    
+    function deletePdf(index) {
+        if (!isAdminLogged) return alert('Admin uniquement');
+        if (confirm('Supprimer ce dossier ?')) {
+            pdfDocuments.splice(index, 1);
+            renderCarousel();
         }
     }
     
-    function prevSlide() {
-        if (pdfDocuments.length > 0) {
-            currentIndex = (currentIndex - 1 + pdfDocuments.length) % pdfDocuments.length;
-            goToSlide(currentIndex);
-        }
-    }
-    
-    nextBtn.addEventListener('click', nextSlide);
-    prevBtn.addEventListener('click', prevSlide);
-    
-    // Auto-play
-    setInterval(() => {
-        if (pdfDocuments.length > 0) {
-            nextSlide();
-        }
-    }, 5000);
-    
-    // Fonction pour ajouter un PDF au carrousel (admin seulement)
-    async function addPdfToCarousel() {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
-            return;
-        }
-        
-        const fileInput = document.getElementById('pdfUpload');
-        const titleInput = document.getElementById('pdfTitle');
-        const descInput = document.getElementById('pdfDescription');
-        
-        if (!fileInput.files[0]) {
-            alert('Veuillez sélectionner un fichier PDF');
-            return;
-        }
-        
-        if (!titleInput.value || !descInput.value) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const file = fileInput.files[0];
-        const title = titleInput.value;
-        const description = descInput.value;
-        
-        try {
-            // Upload du fichier vers Firebase Storage
-            const storageRef = storage.ref();
-            const fileRef = storageRef.child(`documents/${Date.now()}_${file.name}`);
-            const uploadTask = await fileRef.put(file);
-            const downloadUrl = await uploadTask.ref.getDownloadURL();
-            
-            // Enregistrement dans Firestore
-            const docData = {
-                title: title,
-                description: description,
-                url: downloadUrl,
-                fileName: file.name,
-                date: new Date().toISOString()
-            };
-            
-            const docRef = await db.collection('documents').add(docData);
-            docData.id = docRef.id;
-            
-            // Ajouter à la liste locale
-            pdfDocuments.push(docData);
-            
-            // Recharger le carrousel
-            loadCarousel();
-            
-            // Réinitialiser le formulaire
-            fileInput.value = '';
-            titleInput.value = '';
-            descInput.value = '';
-            
-            alert('Document publié avec succès !');
-        } catch (error) {
-            console.error('Erreur lors de l\'upload:', error);
-            alert('Erreur lors de la publication du document');
-        }
-    }
-    
-    // Fonction pour supprimer un PDF
-    async function deletePdf(docId, index) {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour supprimer des documents.');
-            return;
-        }
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
-            try {
-                // Supprimer de Firestore
-                await db.collection('documents').doc(docId).delete();
-                
-                // Supprimer de la liste locale
-                pdfDocuments.splice(index, 1);
-                
-                // Recharger le carrousel
-                loadCarousel();
-                
-                alert('Document supprimé avec succès !');
-            } catch (error) {
-                console.error('Erreur lors de la suppression:', error);
-                alert('Erreur lors de la suppression du document');
-            }
-        }
-    }
-    
-    // Charger les documents depuis Firestore
-    async function loadCarousel() {
-        track.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des documents...</div>';
-        
-        try {
-            const snapshot = await db.collection('documents').orderBy('date', 'desc').get();
-            pdfDocuments = [];
-            
-            snapshot.forEach(doc => {
-                pdfDocuments.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            
-            if (pdfDocuments.length === 0) {
-                track.innerHTML = `
-                    <div class="carousel-slide">
-                        <div class="pdf-preview" style="cursor: default;">
-                            <i class="fas fa-images" style="font-size: 5rem; color: #c9a959;"></i>
-                            <h3>Galerie de dossiers</h3>
-                            <p>Aucun dossier publié pour le moment</p>
-                            <p style="margin-top: 1rem; font-size: 0.9rem;">Connectez-vous en tant qu'admin pour publier des documents</p>
-                        </div>
-                    </div>
-                `;
-                dotsContainer.innerHTML = '';
-                return;
-            }
-            
-            // Créer les slides
-            track.innerHTML = '';
-            pdfDocuments.forEach((doc, index) => {
-                const slide = document.createElement('div');
-                slide.className = 'carousel-slide';
-                slide.innerHTML = `
-                    <div class="pdf-preview ${isAdminLogged ? 'admin-mode' : ''}" onclick="openPdf('${doc.url}', '${doc.title}')">
-                        ${isAdminLogged ? `<button class="delete-pdf-btn" onclick="event.stopPropagation(); deletePdf('${doc.id}', ${index})"><i class="fas fa-trash"></i></button>` : ''}
-                        <i class="fas fa-file-pdf"></i>
-                        <h3>${escapeHtml(doc.title)}</h3>
-                        <p>${escapeHtml(doc.description)}</p>
-                        <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${new Date(doc.date).toLocaleDateString('fr-FR')}</p>
-                    </div>
-                    <div class="carousel-caption">
-                        <h3>${escapeHtml(doc.title)}</h3>
-                        <p>${escapeHtml(doc.description)}</p>
-                        <p style="font-size: 0.9rem;"><i class="fas fa-calendar"></i> ${new Date(doc.date).toLocaleDateString('fr-FR')}</p>
-                    </div>
-                `;
-                track.appendChild(slide);
-            });
-            
-            // Créer les dots
+    function renderCarousel() {
+        if (!pdfDocuments.length) {
+            track.innerHTML = `<div class="carousel-slide"><div class="pdf-preview"><i class="fas fa-folder-open"></i><h3>Aucun dossier</h3><p>Connectez-vous en admin pour publier</p></div></div>`;
             dotsContainer.innerHTML = '';
-            for (let i = 0; i < pdfDocuments.length; i++) {
-                const dot = document.createElement('div');
-                dot.classList.add('carousel-dot');
-                if (i === 0) dot.classList.add('active');
-                dot.addEventListener('click', () => goToSlide(i));
-                dotsContainer.appendChild(dot);
-            }
-            
-            currentIndex = 0;
-            goToSlide(0);
-        } catch (error) {
-            console.error('Erreur lors du chargement des documents:', error);
-            track.innerHTML = '<div class="loading">Erreur lors du chargement des documents</div>';
+            return;
         }
+        track.innerHTML = '';
+        pdfDocuments.forEach((doc, i) => {
+            const slide = document.createElement('div');
+            slide.className = 'carousel-slide';
+            slide.innerHTML = `
+                <div class="pdf-preview ${isAdminLogged ? 'admin-mode' : ''}" onclick="openPdf(${i})">
+                    ${isAdminLogged ? `<button class="delete-pdf-btn" onclick="event.stopPropagation(); deletePdf(${i})"><i class="fas fa-trash"></i></button>` : ''}
+                    <i class="fas fa-file-pdf"></i>
+                    <h3>${escapeHtml(doc.title)}</h3>
+                    <p>${escapeHtml(doc.description.substring(0, 100))}...</p>
+                </div>
+                <div class="carousel-caption">
+                    <h3>${escapeHtml(doc.title)}</h3>
+                    <p>${escapeHtml(doc.description)}</p>
+                </div>
+            `;
+            track.appendChild(slide);
+        });
+        dotsContainer.innerHTML = '';
+        for (let i = 0; i < pdfDocuments.length; i++) {
+            const dot = document.createElement('div');
+            dot.classList.add('carousel-dot');
+            if (i === 0) dot.classList.add('active');
+            dot.onclick = () => goToSlide(i);
+            dotsContainer.appendChild(dot);
+        }
+        goToSlide(0);
     }
     
-    // Fonction pour ouvrir un PDF
-    async function openPdf(url, title) {
+    async function openPdf(index) {
+        const doc = pdfDocuments[index];
         const modal = document.getElementById('pdfModal');
-        const titleEl = document.getElementById('pdfModalTitle');
         const viewer = document.getElementById('pdfViewer');
-        const downloadBtn = document.getElementById('pdfDownloadBtn');
-        
-        titleEl.textContent = title;
+        document.getElementById('pdfModalTitle').textContent = doc.title;
         modal.classList.add('active');
-        currentPdfUrl = url;
-        
-        // Vider le viewer
         viewer.innerHTML = '';
         
-        // Charger le PDF
         try {
+            const blob = new Blob([doc.content], { type: 'application/pdf' });
+            const url = URL.createObjectURL(blob);
             const loadingTask = pdfjsLib.getDocument(url);
             currentPdf = await loadingTask.promise;
             totalPages = currentPdf.numPages;
             currentPage = 1;
-            
-            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
-            
-            // Afficher la première page
-            renderPage(currentPage);
-            
-            // Configurer le bouton de téléchargement
-            downloadBtn.onclick = () => {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'document.pdf';
-                a.click();
-            };
-            
+            document.getElementById('pdfPageInfo').textContent = `Page 1 / ${totalPages}`;
+            renderPage(1);
         } catch (error) {
-            console.error('Erreur lors du chargement du PDF:', error);
-            viewer.innerHTML = '<p style="color: white; text-align: center; padding: 2rem;">Erreur lors du chargement du PDF</p>';
+            viewer.innerHTML = `<div style="color:white; padding:2rem; text-align:center">${escapeHtml(doc.content)}</div>`;
         }
     }
     
-    // Fonction pour rendre une page PDF
-    async function renderPage(pageNumber) {
+    async function renderPage(pageNum) {
         if (!currentPdf) return;
-        
+        const page = await currentPdf.getPage(pageNum);
         const viewer = document.getElementById('pdfViewer');
-        const page = await currentPdf.getPage(pageNumber);
-        
-        // Déterminer l'échelle pour s'adapter à la largeur
-        const containerWidth = viewer.clientWidth - 40;
-        const viewport = page.getViewport({ scale: 1 });
-        const scale = containerWidth / viewport.width;
-        const scaledViewport = page.getViewport({ scale });
-        
-        // Créer un canvas
+        const scale = 1.5;
+        const viewport = page.getViewport({ scale });
         const canvas = document.createElement('canvas');
         const context = canvas.getContext('2d');
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
-        
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
         viewer.innerHTML = '';
         viewer.appendChild(canvas);
-        
-        // Rendre la page
-        const renderContext = {
-            canvasContext: context,
-            viewport: scaledViewport
-        };
-        
-        await page.render(renderContext).promise;
+        await page.render({ canvasContext: context, viewport }).promise;
     }
     
-    // Gestionnaire pour le modal PDF
-    document.getElementById('closePdfModal').addEventListener('click', () => {
+    document.getElementById('closePdfModal').onclick = () => {
         document.getElementById('pdfModal').classList.remove('active');
         currentPdf = null;
-    });
-    
-    document.getElementById('pdfPrevPage').addEventListener('click', () => {
+    };
+    document.getElementById('pdfPrevPage').onclick = () => {
         if (currentPdf && currentPage > 1) {
             currentPage--;
             renderPage(currentPage);
             document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
         }
-    });
-    
-    document.getElementById('pdfNextPage').addEventListener('click', () => {
+    };
+    document.getElementById('pdfNextPage').onclick = () => {
         if (currentPdf && currentPage < totalPages) {
             currentPage++;
             renderPage(currentPage);
             document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
         }
-    });
+    };
     
-    // Fonctions pour les avocats
-    async function loadLawyers() {
-        const container = document.getElementById('lawyersContainer');
-        container.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Chargement des avocats...</div>';
+    function addPdfToCarousel() {
+        if (!isAdminLogged) return alert('Admin uniquement');
+        const file = document.getElementById('pdfUpload').files[0];
+        const title = document.getElementById('pdfTitle').value;
+        const desc = document.getElementById('pdfDescription').value;
+        if (!title || !desc) return alert('Remplissez tous les champs');
         
-        try {
-            const snapshot = await db.collection('lawyers').orderBy('name').get();
-            const lawyers = [];
-            
-            snapshot.forEach(doc => {
-                lawyers.push({
-                    id: doc.id,
-                    ...doc.data()
-                });
-            });
-            
-            if (lawyers.length === 0) {
-                container.innerHTML = '<p>Aucun avocat enregistré pour le moment.</p>';
-                return;
-            }
-            
-            container.innerHTML = '';
-            lawyers.forEach(lawyer => {
-                const card = document.createElement('div');
-                card.className = `lawyer-card ${isAdminLogged ? 'admin-mode' : ''}`;
-                card.innerHTML = `
-                    ${isAdminLogged ? `<button class="delete-lawyer-btn" onclick="deleteLawyer('${lawyer.id}')"><i class="fas fa-trash"></i></button>` : ''}
-                    <div class="lawyer-photo" style="background-image: url('${lawyer.photoUrl || 'https://via.placeholder.com/280x280?text=Photo'}');">
-                        <div class="photo-overlay">${escapeHtml(lawyer.name)}</div>
-                    </div>
-                    <div class="info">
-                        <h4>${escapeHtml(lawyer.name)}</h4>
-                        <div class="role">${escapeHtml(lawyer.role)}</div>
-                        <p>${escapeHtml(lawyer.bio)}</p>
-                        <div class="contact-l"><i class="fas fa-phone"></i> ${escapeHtml(lawyer.phone)}</div>
-                    </div>
-                `;
-                container.appendChild(card);
-            });
-        } catch (error) {
-            console.error('Erreur lors du chargement des avocats:', error);
-            container.innerHTML = '<p>Erreur lors du chargement des avocats</p>';
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                pdfDocuments.push({ title, description: desc, content: e.target.result });
+                renderCarousel();
+                document.getElementById('pdfUpload').value = '';
+                document.getElementById('pdfTitle').value = '';
+                document.getElementById('pdfDescription').value = '';
+                alert('Dossier publié !');
+            };
+            reader.readAsDataURL(file);
+        } else {
+            pdfDocuments.push({ title, description: desc, content: `Document: ${title}\n${desc}` });
+            renderCarousel();
+            document.getElementById('pdfTitle').value = '';
+            document.getElementById('pdfDescription').value = '';
+            alert('Dossier publié !');
         }
     }
     
-    // Ajouter un avocat
-    async function addLawyer() {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour ajouter des avocats.');
-            return;
-        }
-        
+    // Lawyers functions
+    function renderLawyers() {
+        const container = document.getElementById('lawyersContainer');
+        const lawyers = JSON.parse(localStorage.getItem('bkr_lawyers')) || defaultLawyers;
+        container.innerHTML = '';
+        lawyers.forEach((lawyer, i) => {
+            const card = document.createElement('div');
+            card.className = `lawyer-card ${isAdminLogged ? 'admin-mode' : ''}`;
+            card.innerHTML = `
+                ${isAdminLogged ? `<button class="delete-lawyer-btn" onclick="deleteLawyer(${i})"><i class="fas fa-trash"></i></button>` : ''}
+                <div class="lawyer-photo" style="background-image: url('${lawyer.photoUrl || 'https://via.placeholder.com/280x280?text=' + lawyer.name.charAt(0)}')">
+                    <div class="photo-overlay">${escapeHtml(lawyer.name)}</div>
+                </div>
+                <div class="info">
+                    <h4>${escapeHtml(lawyer.name)}</h4>
+                    <div class="role">${escapeHtml(lawyer.role)}</div>
+                    <p>${escapeHtml(lawyer.bio)}</p>
+                    <div class="contact-l"><i class="fas fa-phone"></i> ${escapeHtml(lawyer.phone)}</div>
+                </div>
+            `;
+            container.appendChild(card);
+        });
+    }
+    
+    function addLawyer() {
+        if (!isAdminLogged) return alert('Admin uniquement');
         const name = document.getElementById('lawyerName').value;
         const role = document.getElementById('lawyerRole').value;
         const bio = document.getElementById('lawyerBio').value;
         const phone = document.getElementById('lawyerPhone').value;
-        const photoFile = document.getElementById('lawyerPhoto').files[0];
+        if (!name || !role || !bio || !phone) return alert('Remplissez tous les champs');
         
-        if (!name || !role || !bio || !phone) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        try {
-            let photoUrl = '';
-            
-            if (photoFile) {
-                // Upload de la photo
-                const storageRef = storage.ref();
-                const photoRef = storageRef.child(`lawyers/${Date.now()}_${photoFile.name}`);
-                const uploadTask = await photoRef.put(photoFile);
-                photoUrl = await uploadTask.ref.getDownloadURL();
-            }
-            
-            // Enregistrement dans Firestore
-            const lawyerData = {
-                name: name,
-                role: role,
-                bio: bio,
-                phone: phone,
-                photoUrl: photoUrl,
-                date: new Date().toISOString()
-            };
-            
-            await db.collection('lawyers').add(lawyerData);
-            
-            // Réinitialiser le formulaire
-            document.getElementById('lawyerName').value = '';
-            document.getElementById('lawyerRole').value = '';
-            document.getElementById('lawyerBio').value = '';
-            document.getElementById('lawyerPhone').value = '';
-            document.getElementById('lawyerPhoto').value = '';
-            
-            // Recharger la liste
-            loadLawyers();
-            
-            alert('Avocat ajouté avec succès !');
-        } catch (error) {
-            console.error('Erreur lors de l\'ajout:', error);
-            alert('Erreur lors de l\'ajout de l\'avocat');
+        const lawyers = JSON.parse(localStorage.getItem('bkr_lawyers')) || defaultLawyers;
+        lawyers.push({ name, role, bio, phone, photoUrl: '' });
+        localStorage.setItem('bkr_lawyers', JSON.stringify(lawyers));
+        renderLawyers();
+        document.getElementById('lawyerName').value = '';
+        document.getElementById('lawyerRole').value = '';
+        document.getElementById('lawyerBio').value = '';
+        document.getElementById('lawyerPhone').value = '';
+        alert('Avocat ajouté !');
+    }
+    
+    function deleteLawyer(index) {
+        if (!isAdminLogged) return alert('Admin uniquement');
+        if (confirm('Supprimer cet avocat ?')) {
+            const lawyers = JSON.parse(localStorage.getItem('bkr_lawyers')) || defaultLawyers;
+            lawyers.splice(index, 1);
+            localStorage.setItem('bkr_lawyers', JSON.stringify(lawyers));
+            renderLawyers();
         }
     }
     
-    // Supprimer un avocat
-    async function deleteLawyer(lawyerId) {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour supprimer des avocats.');
-            return;
-        }
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet avocat ?')) {
-            try {
-                await db.collection('lawyers').doc(lawyerId).delete();
-                loadLawyers();
-                alert('Avocat supprimé avec succès !');
-            } catch (error) {
-                console.error('Erreur lors de la suppression:', error);
-                alert('Erreur lors de la suppression de l\'avocat');
-            }
-        }
-    }
-    
-    // Fonction utilitaire pour échapper les caractères HTML
     function escapeHtml(text) {
         const div = document.createElement('div');
         div.textContent = text;
@@ -1699,12 +1221,10 @@
     }
     
     // Initialisation
-    window.onload = function() {
-        loadCarousel();
-        loadLawyers();
-    };
+    pdfDocuments.push(...defaultDocuments);
+    renderCarousel();
+    renderLawyers();
     
-    // Rendre les fonctions accessibles globalement
     window.openPdf = openPdf;
     window.deletePdf = deletePdf;
     window.addPdfToCarousel = addPdfToCarousel;
