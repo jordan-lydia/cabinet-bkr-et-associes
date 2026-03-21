@@ -1148,32 +1148,34 @@
 </div>
 
 <!-- ========== ACCUEIL ========== -->
-<section id="accueil">
-    <div class="hero">
+<section id="accueil" style="padding-top: 1rem;">
+    <div class="hero" id="hero">
         <div class="hero-text">
-            <h1>CABINET B K R & ASSOCIES<br><span style="font-size:1.4rem; color:#dbb86a;">Ordre National des Avocats · RDC</span></h1>
-            <p>Consultation et assistance juridique de haut niveau<br>à Kolwezi et dans toute la RDC.</p>
-            <a href="#" class="btn" id="heroRdvBtn">Prendre rendez-vous</a>
+            <h1 id="heroTitle" ondblclick="if(window.editMode) editText(this)">CABINET B K R & ASSOCIES<br><span style="font-size: 1.4rem; color: #dbb86a;" id="heroSubtitle" ondblclick="if(window.editMode) editText(this)">Ordre National des Avocats · RDC</span></h1>
+            <p id="heroText" ondblclick="if(window.editMode) editText(this)">Consultation et assistance juridique de haut niveau<br>à Kolwezi et à Partout dans la ville de la RDC.</p>
+            <a href="#" class="btn" id="heroRdvBtn" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</a>
         </div>
-        <div class="contact-hero">
-            <div><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
-            <div><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
-            <div><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
+        <div class="contact-hero" id="heroContact">
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
+            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 999 816 551</span></div>
+            <div><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
         </div>
     </div>
 </section>
 
 <!-- ========== À PROPOS ========== -->
 <section id="apropos">
-    <h2 class="section-title">À propos du cabinet</h2>
-    <div style="display:flex; flex-wrap:wrap; gap:2rem; background:white; padding:2rem; border-radius:32px;">
-        <div style="flex:2;">
-            <p style="font-size:1.1rem;">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux.</p>
-            <p style="margin-top:1rem;">Notre devise : <em>rigueur, disponibilité et efficacité.</em></p>
+    <h2 class="section-title" id="aproposTitle" ondblclick="if(window.editMode) editText(this)">À propos du cabinet</h2>
+    <div style="display: flex; flex-wrap: wrap; gap: 2rem; background: white; padding: 2rem; border-radius: 32px; box-shadow: 0 5px 15px rgba(0,0,0,0.03);">
+        <div style="flex: 2; min-width: 280px;">
+            <p style="font-size: 1.2rem;" id="aproposText1" ondblclick="if(window.editMode) editText(this)">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.</p>
+             <p style="margin-top: 1.5rem;" id="aproposText2" ondblclick="if(window.editMode) editText(this)">Notre devise : <em>rigueur, disponibilité et efficacité.</em> Nous accompagnons nos clients avec une stratégie sur mesure, que ce soit en conseil ou en représentation devant les juridictions nationales et internationales.</p>
         </div>
-        <div style="flex:1; background:#e9eff7; border-radius:24px; padding:2rem; text-align:center;">
-            <i class="fas fa-gavel" style="font-size:3rem; color:#c9a959;"></i>
-            <p style="font-weight:600; margin-top:1rem;">Plus de 15 ans d'expérience</p>
+        <div style="flex: 1; background: #e9eff7; border-radius: 2rem; padding: 2rem; text-align: center;">
+            <i class="fas fa-gavel" style="font-size: 3rem; color: #0a1a2f;"></i>
+            <p style="font-weight: 600; margin-top: 1rem;" id="aproposStat" ondblclick="if(window.editMode) editText(this)">Plus de 15 ans d'expérience collective</p>
         </div>
     </div>
 </section>
@@ -1239,7 +1241,18 @@
 </section>
 
 <footer>
-    <p>© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
+    <p>© 2026 Cabinet BKR & Associés · Tous droits réservés</p>
+    <div style="margin-top: 1.5rem; display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+        <a href="https://jordan-lydia.github.io/medisoft-services/" 
+           target="_blank" 
+           style="display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a2c3e, #0f1f30); color: #c9a959; padding: 8px 20px; border-radius: 50px; text-decoration: none; font-size: 0.85rem; font-weight: 500; transition: all 0.3s ease; border: 1px solid rgba(201, 169, 89, 0.3);"
+           onmouseover="this.style.transform='translateY(-2px)'; this.style.background='linear-gradient(135deg, #c9a959, #b88d3a)'; this.style.color='#0a1a2f';"
+           onmouseout="this.style.transform='translateY(0)'; this.style.background='linear-gradient(135deg, #1a2c3e, #0f1f30)'; this.style.color='#c9a959';">
+            <i class="fas fa-code" style="font-size: 0.9rem;"></i>
+            <span>Développé par Medisoft Services</span>
+            <i class="fas fa-external-link-alt" style="font-size: 0.7rem;"></i>
+        </a>
+    </div>
 </footer>
 
 <script>
