@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>Cabinet BKR & Associés · Avocats à Kolwezi</title>
     <!-- Font Awesome pour les icônes -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
@@ -15,13 +15,18 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+            font-family: 'Segoe UI', 'Poppins', Roboto, system-ui, sans-serif;
         }
 
         body {
-            background-color: #f9fafc;
-            color: #1e293b;
+            background: linear-gradient(135deg, #f5f7fc 0%, #eef2f9 100%);
+            color: #1a2c3e;
             line-height: 1.6;
+        }
+
+        /* Smooth scroll */
+        html {
+            scroll-behavior: smooth;
         }
 
         /* === MODE ADMIN === */
@@ -29,7 +34,7 @@
             position: absolute;
             top: 10px;
             right: 10px;
-            background: #c9a959;
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
             color: #0a1a2f;
             width: 40px;
             height: 40px;
@@ -40,13 +45,13 @@
             cursor: pointer;
             z-index: 100;
             border: 2px solid white;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-            transition: 0.3s;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
 
         .admin-edit-btn:hover {
-            transform: scale(1.1);
-            background: #dbb86a;
+            transform: scale(1.1) rotate(5deg);
+            background: linear-gradient(135deg, #dbb86a, #c9a959);
         }
 
         body.admin-mode .admin-edit-btn {
@@ -56,25 +61,24 @@
         body.admin-mode [contenteditable="true"] {
             outline: 2px dashed #c9a959;
             padding: 8px;
-            border-radius: 8px;
-            background: rgba(201, 169, 89, 0.05);
+            border-radius: 12px;
+            background: rgba(201, 169, 89, 0.08);
             transition: 0.2s;
         }
 
         body.admin-mode [contenteditable="true"]:hover {
             outline: 2px solid #c9a959;
-            background: rgba(201, 169, 89, 0.1);
+            background: rgba(201, 169, 89, 0.15);
         }
 
-        /* Boutons admin sur les éléments */
         .admin-delete-btn {
             position: absolute;
             top: 10px;
             left: 10px;
-            background: #dc3545;
+            background: linear-gradient(135deg, #dc3545, #c82333);
             color: white;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: none;
             align-items: center;
@@ -82,7 +86,13 @@
             cursor: pointer;
             z-index: 101;
             border: 2px solid white;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-delete-btn:hover {
+            transform: scale(1.1);
+            background: linear-gradient(135deg, #c82333, #a71d2a);
         }
 
         body.admin-mode .admin-delete-btn {
@@ -93,10 +103,10 @@
             position: absolute;
             bottom: 10px;
             right: 10px;
-            background: #c9a959;
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
             color: #0a1a2f;
-            width: 30px;
-            height: 30px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
             display: none;
             align-items: center;
@@ -104,16 +114,21 @@
             cursor: pointer;
             z-index: 101;
             border: 2px solid white;
-            font-size: 0.9rem;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .admin-edit-photo-btn:hover {
+            transform: scale(1.1);
         }
 
         body.admin-mode .admin-edit-photo-btn {
             display: flex;
         }
 
-        /* === NAVIGATION AVEC MENU HAMBURGER === */
+        /* === NAVIGATION PROFESSIONNELLE === */
         nav {
-            background: #0a1a2f;
+            background: linear-gradient(135deg, #0a1a2f 0%, #0e243e 100%);
             padding: 1rem 6%;
             display: flex;
             align-items: center;
@@ -122,46 +137,56 @@
             position: sticky;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+            backdrop-filter: blur(10px);
         }
 
         .logo-container {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             z-index: 1001;
             position: relative;
         }
 
         .logo-placeholder {
-            height: 50px;
+            height: 55px;
             width: auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            background: #fff;
-            padding: 5px 12px;
-            border-radius: 8px;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
+            padding: 5px 15px;
+            border-radius: 12px;
             position: relative;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
         .logo-placeholder img {
             max-height: 45px;
             width: auto;
             cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .logo-placeholder img:hover {
+            transform: scale(1.05);
         }
 
         .logo-text {
-            font-weight: 700;
+            font-weight: 800;
             color: white;
-            font-size: 1.3rem;
-            letter-spacing: 1px;
-            border-left: 2px solid #c9a959;
-            padding-left: 12px;
+            font-size: 1.4rem;
+            letter-spacing: 1.5px;
+            border-left: 3px solid #c9a959;
+            padding-left: 15px;
             margin-left: 5px;
+            background: linear-gradient(135deg, #fff, #e0e4e8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
-        /* Menu hamburger - bouton */
         .menu-toggle {
             display: none;
             flex-direction: column;
@@ -170,18 +195,17 @@
         }
 
         .menu-toggle span {
-            width: 28px;
+            width: 30px;
             height: 3px;
             background: white;
-            margin: 3px 0;
+            margin: 4px 0;
             border-radius: 3px;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
-        /* Navigation links */
         .nav-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 2rem;
             list-style: none;
             transition: 0.3s;
         }
@@ -191,124 +215,184 @@
             text-decoration: none;
             font-weight: 500;
             font-size: 1rem;
-            transition: 0.2s;
-            padding: 6px 0;
+            transition: all 0.3s ease;
+            padding: 8px 0;
             border-bottom: 2px solid transparent;
-            white-space: nowrap;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #c9a959;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
         }
 
         .nav-links a:hover {
-            border-bottom-color: #c9a959;
-            color: #ffffff;
+            color: #c9a959;
         }
 
-        /* Bouton rendez-vous spécial */
         .rdv-btn a {
-            background: #c9a959;
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
             color: #0a1a2f;
-            padding: 8px 16px;
-            border-radius: 30px;
-            font-weight: 600;
+            padding: 10px 24px;
+            border-radius: 50px;
+            font-weight: 700;
             border-bottom: none !important;
+            box-shadow: 0 4px 12px rgba(201, 169, 89, 0.3);
         }
 
         .rdv-btn a:hover {
-            background: #dbb86a;
-            border-bottom: none !important;
+            background: linear-gradient(135deg, #dbb86a, #c9a959);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(201, 169, 89, 0.4);
         }
 
-        /* === HERO SECTION === */
+        .rdv-btn a::after {
+            display: none;
+        }
+
+        /* === HERO SECTION AVEC OVERLAY === */
         .hero {
-            background: linear-gradient(105deg, #102b42 0%, #1b3a5c 100%);
+            background: linear-gradient(135deg, #0f2b44 0%, #1a3f62 100%);
             color: white;
-            padding: 3rem 6%;
+            padding: 4rem 6%;
             display: flex;
             flex-wrap: wrap;
             align-items: center;
             justify-content: space-between;
             position: relative;
+            border-radius: 0 0 40px 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><text x="10" y="30" fill="rgba(255,255,255,0.03)" font-size="12">⚖️</text></svg>') repeat;
+            opacity: 0.3;
+            pointer-events: none;
         }
 
         .hero-text h1 {
-            font-size: 2.5rem;
-            font-weight: 600;
+            font-size: 2.8rem;
+            font-weight: 800;
             line-height: 1.2;
+            background: linear-gradient(135deg, #fff, #e0b354);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .hero-text p {
             font-size: 1.2rem;
-            margin: 1rem 0 1.5rem;
-            opacity: 0.9;
+            margin: 1.5rem 0 2rem;
+            opacity: 0.95;
         }
 
         .contact-hero {
-            background: rgba(255,255,255,0.08);
-            padding: 1.2rem 2rem;
-            border-radius: 24px;
-            backdrop-filter: blur(4px);
-            border-left: 5px solid #c9a959;
+            background: rgba(255,255,255,0.12);
+            backdrop-filter: blur(10px);
+            padding: 1.5rem 2rem;
+            border-radius: 28px;
+            border-left: 4px solid #c9a959;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
 
         .contact-hero i {
             color: #dbb86a;
-            width: 30px;
+            width: 32px;
+            font-size: 1.2rem;
         }
 
         .contact-hero div {
-            margin: 8px 0;
-            font-size: 1.1rem;
-        }
-
-        .contact-hero a {
-            color: white;
-            text-decoration: none;
+            margin: 10px 0;
+            font-size: 1rem;
         }
 
         /* === SECTIONS === */
         section {
-            padding: 4rem 6%;
+            padding: 5rem 6%;
             position: relative;
         }
 
         .section-title {
-            font-size: 2rem;
-            font-weight: 600;
-            margin-bottom: 2.5rem;
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 3rem;
             position: relative;
             display: inline-block;
+            color: #1a2c3e;
         }
         
         .section-title:after {
             content: '';
             display: block;
-            width: 70%;
+            width: 60%;
             height: 4px;
-            background: #c9a959;
-            margin-top: 8px;
+            background: linear-gradient(90deg, #c9a959, #e0b354);
+            margin-top: 12px;
             border-radius: 4px;
         }
 
         /* Cartes services */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2rem;
             margin-top: 2rem;
         }
 
         .card {
             background: white;
-            padding: 1.8rem 1.5rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 25px -8px rgba(0,0,0,0.1);
-            transition: 0.2s;
-            border: 1px solid #e9eef3;
+            padding: 2rem 1.8rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(201, 169, 89, 0.2);
             position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, #c9a959, #e0b354);
+            transform: scaleX(0);
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover::before {
+            transform: scaleX(1);
         }
         
         .card:hover { 
-            transform: translateY(-5px); 
-            box-shadow: 0 20px 30px -8px rgba(0,20,40,0.2); 
+            transform: translateY(-8px); 
+            box-shadow: 0 20px 40px rgba(0,0,0,0.12); 
+        }
+
+        .card i {
+            transition: transform 0.3s ease;
+        }
+        
+        .card:hover i {
+            transform: scale(1.1);
         }
 
         /* Statistiques */
@@ -318,42 +402,47 @@
             justify-content: space-around;
             text-align: center;
             gap: 2rem;
-            background: #102b42;
+            background: linear-gradient(135deg, #0f2b44, #1a3f62);
             color: white;
-            padding: 3rem 2rem;
-            border-radius: 48px;
+            padding: 4rem 2rem;
+            border-radius: 60px;
             margin-top: 1rem;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
         }
         
         .stat-item h3 {
-            font-size: 2.8rem;
-            color: #dbb86a;
+            font-size: 3rem;
+            background: linear-gradient(135deg, #dbb86a, #c9a959);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 800;
         }
 
-        /* Profil des avocats - avec images GitHub */
+        /* Profil des avocats */
         .lawyers-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
             gap: 2.5rem;
         }
         
         .lawyer-card {
             background: white;
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
-            box-shadow: 0 15px 30px -12px rgba(0,0,0,0.15);
-            transition: 0.2s;
-            border: 1px solid #e2e8f0;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0,0,0,0.05);
             position: relative;
         }
         
         .lawyer-card:hover { 
-            transform: translateY(-5px);
-            box-shadow: 0 20px 40px -12px rgba(0,0,0,0.2);
+            transform: translateY(-10px);
+            box-shadow: 0 25px 45px rgba(0,0,0,0.15);
         }
         
         .lawyer-photo {
-            height: 280px;
+            height: 320px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -362,17 +451,17 @@
         }
         
         .photo-overlay {
-            background: linear-gradient(0deg, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            background: linear-gradient(0deg, rgba(10,26,47,0.9) 0%, rgba(10,26,47,0) 100%);
             width: 100%;
             height: 100%;
             display: flex;
             align-items: flex-end;
-            padding: 1.5rem;
+            padding: 1.8rem;
             color: white;
-            font-weight: 600;
+            font-weight: 700;
             font-size: 1.2rem;
             opacity: 0;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
         
         .lawyer-card:hover .photo-overlay {
@@ -380,61 +469,44 @@
         }
         
         .lawyer-card .info {
-            padding: 1.5rem 1.2rem;
+            padding: 1.8rem;
         }
         
         .lawyer-card h4 {
-            font-size: 1.4rem;
-            margin-bottom: 0.3rem;
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+            color: #1a2c3e;
         }
         
         .lawyer-card .role {
-            color: #b9912b;
-            font-weight: 600;
-            margin-bottom: 0.5rem;
-            font-size: 0.95rem;
+            color: #c9a959;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
             text-transform: uppercase;
-        }
-        
-        .lawyer-card .contact-l {
-            margin-top: 1rem;
-            font-size: 0.95rem;
-            border-top: 1px solid #edf2f7;
-            padding-top: 0.8rem;
-        }
-        
-        .lawyer-card i {
-            width: 24px;
-            color: #0a1a2f;
+            letter-spacing: 1px;
         }
 
-        /* === GALERIE CARROUSEL AVEC PDF === */
+        /* === GALERIE CARROUSEL === */
         .carousel-container {
             position: relative;
             max-width: 1200px;
             margin: 0 auto;
             overflow: hidden;
-            border-radius: 24px;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.2);
+            border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
         }
 
         .carousel-track {
             display: flex;
-            transition: transform 0.5s ease-in-out;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .carousel-slide {
             min-width: 100%;
             position: relative;
             height: 500px;
-            background: #102b42;
-        }
-
-        .carousel-slide img {
-            width: 100%;
-            height: 500px;
-            object-fit: cover;
-            display: block;
+            background: linear-gradient(135deg, #0f2b44, #1a3f62);
         }
 
         .pdf-preview {
@@ -444,10 +516,10 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            background: linear-gradient(135deg, #102b42, #1b3a5c);
+            background: linear-gradient(135deg, #0f2b44, #1a3f62);
             color: white;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
             position: relative;
         }
 
@@ -458,16 +530,13 @@
         .pdf-preview i {
             font-size: 5rem;
             color: #c9a959;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
         }
 
         .pdf-preview h3 {
-            font-size: 1.8rem;
-            margin-bottom: 0.5rem;
-        }
-
-        .pdf-preview p {
-            opacity: 0.9;
+            font-size: 2rem;
+            margin-bottom: 0.8rem;
         }
 
         .carousel-caption {
@@ -475,7 +544,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            background: linear-gradient(transparent, rgba(10, 26, 47, 0.9));
+            background: linear-gradient(transparent, rgba(10, 26, 47, 0.95));
             color: white;
             padding: 2rem;
             text-align: left;
@@ -487,18 +556,12 @@
             color: #dbb86a;
         }
 
-        .carousel-caption p {
-            font-size: 1rem;
-            opacity: 0.9;
-            max-width: 600px;
-        }
-
         .carousel-btn {
             position: absolute;
             top: 50%;
             transform: translateY(-50%);
             background: rgba(255,255,255,0.2);
-            backdrop-filter: blur(4px);
+            backdrop-filter: blur(8px);
             color: white;
             width: 50px;
             height: 50px;
@@ -508,22 +571,18 @@
             justify-content: center;
             cursor: pointer;
             border: 2px solid rgba(255,255,255,0.3);
-            transition: 0.3s;
+            transition: all 0.3s ease;
             z-index: 10;
         }
 
         .carousel-btn:hover {
             background: #c9a959;
             border-color: #c9a959;
+            transform: translateY(-50%) scale(1.1);
         }
 
-        .carousel-btn.prev {
-            left: 20px;
-        }
-
-        .carousel-btn.next {
-            right: 20px;
-        }
+        .carousel-btn.prev { left: 20px; }
+        .carousel-btn.next { right: 20px; }
 
         .carousel-dots {
             display: flex;
@@ -538,15 +597,15 @@
             border-radius: 50%;
             background: #ccc;
             cursor: pointer;
-            transition: 0.3s;
+            transition: all 0.3s ease;
         }
 
         .carousel-dot.active {
             background: #c9a959;
-            transform: scale(1.2);
+            transform: scale(1.3);
         }
 
-        /* Modal pour afficher le PDF */
+        /* === MODAL PDF PROFESSIONNEL AVEC BOUTON MOBILE === */
         .pdf-modal {
             display: none;
             position: fixed;
@@ -562,28 +621,42 @@
 
         .pdf-modal.active {
             display: flex;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         .pdf-modal-content {
-            width: 90%;
-            height: 90%;
-            background: white;
-            border-radius: 16px;
+            width: 95%;
+            height: 92%;
+            background: #1e2a3a;
+            border-radius: 28px;
             overflow: hidden;
             position: relative;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.5);
         }
 
         .pdf-modal-header {
-            background: #0a1a2f;
+            background: linear-gradient(135deg, #0a1a2f, #0e243e);
             color: white;
-            padding: 1rem;
+            padding: 1rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            flex-shrink: 0;
         }
 
         .pdf-modal-header h3 {
             color: #c9a959;
+            font-size: 1.1rem;
+            margin: 0;
+            flex: 1;
+            font-weight: 600;
         }
 
         .close-pdf-modal {
@@ -592,7 +665,9 @@
             color: white;
             font-size: 2rem;
             cursor: pointer;
-            padding: 0 1rem;
+            padding: 0 0.5rem;
+            line-height: 1;
+            transition: color 0.3s ease;
         }
 
         .close-pdf-modal:hover {
@@ -600,114 +675,159 @@
         }
 
         .pdf-viewer {
-            width: 100%;
-            height: calc(100% - 70px);
+            flex: 1;
             overflow: auto;
             background: #525659;
+            padding: 20px;
         }
 
         .pdf-viewer canvas {
             display: block;
             margin: 0 auto;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            border-radius: 8px;
         }
 
-        .pdf-controls {
+        /* Barre de contrôle mobile-friendly avec bouton téléchargement bien visible */
+        .pdf-controls-bottom {
+            background: linear-gradient(135deg, #0a1a2f, #0e243e);
+            padding: 1rem 1.5rem;
+            border-top: 2px solid #c9a959;
             display: flex;
+            flex-direction: column;
             gap: 1rem;
+            flex-shrink: 0;
+        }
+
+        .pdf-nav-buttons {
+            display: flex;
+            justify-content: space-between;
             align-items: center;
+            gap: 1rem;
         }
 
-        .pdf-controls button {
-            background: #c9a959;
+        .pdf-nav-btn {
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
+            color: #0a1a2f;
             border: none;
-            padding: 0.5rem 1rem;
-            border-radius: 4px;
+            padding: 0.8rem 1.2rem;
+            border-radius: 50px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
         }
 
-        .pdf-controls button:hover {
-            background: #dbb86a;
+        .pdf-nav-btn:hover {
+            background: linear-gradient(135deg, #dbb86a, #c9a959);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(201, 169, 89, 0.3);
         }
 
-        .pdf-controls span {
+        .pdf-nav-btn:active {
+            transform: translateY(0);
+        }
+
+        .pdf-page-info {
             color: white;
+            font-size: 0.95rem;
+            font-weight: 600;
+            background: rgba(255,255,255,0.15);
+            padding: 0.6rem 1.2rem;
+            border-radius: 50px;
+            text-align: center;
+            min-width: 100px;
+            backdrop-filter: blur(4px);
         }
 
-        /* Admin Login Modal */
-        .admin-modal {
+        .pdf-download-btn-bottom {
+            background: linear-gradient(135deg, #28a745, #218838);
+            color: white;
+            border: none;
+            padding: 1rem 1.5rem;
+            border-radius: 60px;
+            cursor: pointer;
+            font-weight: 800;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.8rem;
+            width: 100%;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+        }
+
+        .pdf-download-btn-bottom:hover {
+            background: linear-gradient(135deg, #34ce57, #28a745);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+
+        .pdf-download-btn-bottom:active {
+            transform: translateY(0);
+        }
+
+        .pdf-download-btn-bottom i {
+            font-size: 1.2rem;
+        }
+
+        /* Admin Panel et autres modales */
+        .admin-modal, .lawyer-modal, .modal {
             display: none;
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             z-index: 4000;
             justify-content: center;
             align-items: center;
+            backdrop-filter: blur(8px);
         }
 
-        .admin-modal.active {
+        .admin-modal.active, .lawyer-modal.active, .modal.active {
             display: flex;
         }
 
-        .admin-modal-content {
+        .admin-modal-content, .lawyer-modal-content, .modal-content {
             background: white;
             padding: 2.5rem;
             border-radius: 32px;
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
             position: relative;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+            animation: slideUp 0.3s ease;
         }
 
-        .admin-lock {
-            text-align: center;
-            margin-bottom: 2rem;
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .admin-lock i {
-            font-size: 3rem;
-            color: #c9a959;
-        }
-
-        .admin-input {
-            width: 100%;
-            padding: 12px;
-            margin: 10px 0;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .admin-btn {
-            background: #0a1a2f;
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 1rem;
-            font-weight: 600;
-        }
-
-        .admin-btn:hover {
-            background: #1b3a5c;
-        }
-
-        /* Panneau d'administration */
         .admin-panel {
             position: fixed;
             top: 0;
-            right: -400px;
-            width: 400px;
+            right: -420px;
+            width: 420px;
             height: 100vh;
-            background: white;
+            background: linear-gradient(135deg, #fff, #f8f9fa);
             z-index: 5000;
             box-shadow: -5px 0 30px rgba(0,0,0,0.3);
-            transition: 0.3s;
+            transition: 0.3s ease;
             overflow-y: auto;
             padding: 2rem;
         }
@@ -716,224 +836,62 @@
             right: 0;
         }
 
-        .admin-panel-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2rem;
-            padding-bottom: 1rem;
-            border-bottom: 2px solid #c9a959;
-        }
-
-        .admin-panel-header h3 {
-            color: #0a1a2f;
-            font-size: 1.5rem;
-        }
-
-        .close-panel {
-            background: none;
-            border: none;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #666;
-        }
-
-        .admin-panel-section {
-            margin-bottom: 2rem;
-            padding: 1rem;
-            background: #f8f9fa;
-            border-radius: 12px;
-        }
-
-        .admin-panel-section h4 {
-            margin-bottom: 1rem;
-            color: #0a1a2f;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .admin-panel-section h4 i {
-            color: #c9a959;
-        }
-
-        .admin-panel-btn {
-            background: #c9a959;
-            color: #0a1a2f;
-            border: none;
-            padding: 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            width: 100%;
-            margin: 5px 0;
-            font-weight: 600;
-            transition: 0.2s;
-        }
-
-        .admin-panel-btn:hover {
-            background: #dbb86a;
-        }
-
-        .admin-panel-btn.danger {
-            background: #dc3545;
+        .admin-badge {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: linear-gradient(135deg, #0a1a2f, #0e243e);
             color: white;
-        }
-
-        .admin-panel-btn.danger:hover {
-            background: #c82333;
-        }
-
-        /* Section d'upload - UNIQUEMENT VISIBLE POUR L'ADMIN */
-        .upload-section {
-            display: none;
-            margin-bottom: 2rem;
-            padding: 1.5rem;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            border: 2px solid #c9a959;
-        }
-
-        .upload-section.active {
-            display: block;
-        }
-
-        .upload-section h3 {
-            color: #0a1a2f;
-            margin-bottom: 1rem;
+            padding: 12px 24px;
+            border-radius: 60px;
+            cursor: pointer;
+            z-index: 1000;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             display: flex;
             align-items: center;
             gap: 10px;
-        }
-
-        .upload-section h3 i {
-            color: #c9a959;
-        }
-
-        .upload-form {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-        }
-
-        .upload-form input,
-        .upload-form textarea,
-        .upload-form select {
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-
-        .upload-form button {
-            background: #c9a959;
-            color: #0a1a2f;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            cursor: pointer;
             font-weight: 600;
-            font-size: 1rem;
+            transition: all 0.3s ease;
         }
 
-        .upload-form button:hover {
-            background: #dbb86a;
-        }
-
-        /* Modal d'ajout d'avocat */
-        .lawyer-modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.8);
-            z-index: 5500;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .lawyer-modal.active {
-            display: flex;
-        }
-
-        .lawyer-modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 32px;
-            max-width: 500px;
-            width: 90%;
-            max-height: 80vh;
-            overflow-y: auto;
-        }
-
-        .lawyer-modal-content h3 {
-            color: #0a1a2f;
-            margin-bottom: 1.5rem;
-        }
-
-        .lawyer-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .lawyer-form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-            color: #0a1a2f;
-        }
-
-        .lawyer-form-group input,
-        .lawyer-form-group textarea {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-        }
-
-        .admin-badge {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: #0a1a2f;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 40px;
-            cursor: pointer;
-            z-index: 1000;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .admin-badge i {
-            color: #c9a959;
+        .admin-badge:hover {
+            transform: scale(1.05);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
         }
 
         .admin-badge.logged {
-            background: #c9a959;
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
             color: #0a1a2f;
         }
 
-        .admin-badge.logged i {
+        .btn {
+            background: linear-gradient(135deg, #c9a959, #b88d3a);
             color: #0a1a2f;
+            padding: 12px 32px;
+            border-radius: 60px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-block;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+            box-shadow: 0 4px 12px rgba(201, 169, 89, 0.3);
+        }
+        
+        .btn:hover { 
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(201, 169, 89, 0.4);
         }
 
-        /* Contact */
         .contact-block {
             background: white;
             border-radius: 32px;
             padding: 2.5rem;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.05);
             display: flex;
             flex-wrap: wrap;
             gap: 3rem;
-        }
-        
-        .contact-info {
-            flex: 1 1 300px;
         }
         
         .info-line {
@@ -946,122 +904,45 @@
         .info-line i {
             font-size: 1.4rem;
             color: #c9a959;
-            width: 30px;
-        }
-
-        .map-placeholder {
-            flex: 1 1 300px;
-            background: #eef2f6;
-            border-radius: 24px;
-            padding: 2rem;
-            text-align: center;
-            border: 1px dashed #a0b3c9;
-        }
-
-        /* Rendez-vous modal (simplifié) */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.7);
-            z-index: 2000;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        .modal.active {
-            display: flex;
-        }
-        
-        .modal-content {
-            background: white;
-            padding: 2.5rem;
-            border-radius: 32px;
-            max-width: 500px;
-            width: 90%;
-            position: relative;
-        }
-        
-        .close-modal {
-            position: absolute;
-            top: 1rem;
-            right: 1.5rem;
-            font-size: 2rem;
-            cursor: pointer;
-            color: #666;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-        }
-        
-        .btn {
-            background: #c9a959;
-            color: #0a1a2f;
-            padding: 12px 32px;
-            border-radius: 40px;
-            font-weight: 600;
-            text-decoration: none;
-            display: inline-block;
-            border: none;
-            cursor: pointer;
-            transition: 0.2s;
-            font-size: 1rem;
-        }
-        
-        .btn:hover { 
-            background: #dbb86a; 
-            transform: scale(1.02);
+            width: 35px;
         }
 
         footer {
-            background: #0f1f30;
+            background: linear-gradient(135deg, #0a1a2f, #0e243e);
             color: #adb7c3;
             text-align: center;
-            padding: 2rem;
+            padding: 3rem;
             font-size: 0.9rem;
-            position: relative;
         }
 
-        /* Toast notification */
         .toast {
             position: fixed;
-            bottom: 20px;
+            bottom: 100px;
             left: 50%;
             transform: translateX(-50%);
-            background: #0a1a2f;
+            background: linear-gradient(135deg, #0a1a2f, #0e243e);
             color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+            padding: 12px 28px;
+            border-radius: 60px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
             z-index: 6000;
             display: none;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-weight: 500;
         }
 
         .toast.show {
             display: flex;
+            animation: slideUp 0.3s ease;
         }
 
         .toast i {
             color: #c9a959;
+            font-size: 1.2rem;
         }
 
-        /* === RESPONSIVE MENU HAMBURGER === */
+        /* Responsive */
         @media (max-width: 900px) {
             .menu-toggle {
                 display: flex;
@@ -1073,36 +954,62 @@
                 right: -100%;
                 width: 280px;
                 height: 100vh;
-                background: #0a1a2f;
+                background: linear-gradient(135deg, #0a1a2f, #0e243e);
                 flex-direction: column;
                 padding: 100px 2rem 2rem;
-                box-shadow: -5px 0 20px rgba(0,0,0,0.3);
-                transition: 0.3s;
-                gap: 1.8rem;
+                transition: 0.3s ease;
+                gap: 2rem;
             }
 
             .nav-links.active {
                 right: 0;
             }
 
-            .nav-links a {
-                font-size: 1.2rem;
+            .hero-text h1 {
+                font-size: 2rem;
             }
-
-            .rdv-btn a {
-                display: inline-block;
-                width: 100%;
-                text-align: center;
+            
+            .section-title {
+                font-size: 1.8rem;
             }
-
-            .hero {
-                flex-direction: column;
-                text-align: center;
+            
+            .pdf-controls-bottom {
+                padding: 0.8rem 1rem;
             }
-
+            
+            .pdf-nav-btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.85rem;
+            }
+            
+            .pdf-page-info {
+                font-size: 0.85rem;
+                padding: 0.5rem 0.8rem;
+                min-width: 80px;
+            }
+            
+            .pdf-download-btn-bottom {
+                padding: 0.8rem 1.2rem;
+                font-size: 0.9rem;
+            }
+            
             .admin-panel {
                 width: 100%;
                 right: -100%;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-text h1 {
+                font-size: 1.6rem;
+            }
+            
+            .carousel-slide, .pdf-preview {
+                height: 400px;
+            }
+            
+            .carousel-caption h3 {
+                font-size: 1.2rem;
             }
         }
     </style>
@@ -1124,98 +1031,34 @@
 <!-- ========== ADMIN LOGIN MODAL ========== -->
 <div class="admin-modal" id="adminModal">
     <div class="admin-modal-content">
-        <div class="admin-lock">
-            <i class="fas fa-lock"></i>
+        <div class="admin-lock" style="text-align: center;">
+            <i class="fas fa-shield-alt" style="font-size: 3rem; color: #c9a959;"></i>
             <h2 style="margin: 1rem 0;">Espace Administrateur</h2>
         </div>
-        <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" onkeypress="if(event.key==='Enter') checkAdminPassword()">
-        <button class="admin-btn" onclick="checkAdminPassword()">Se connecter</button>
-        <p style="text-align: center; margin-top: 1rem; color: #666; font-size: 0.9rem;">(pour accéder à la page admin il faut entrer le mot de passe)</p>
+        <input type="password" id="adminPassword" class="admin-input" placeholder="Mot de passe admin" style="width:100%; padding:12px; margin:10px 0; border:1px solid #ddd; border-radius:12px;" onkeypress="if(event.key==='Enter') checkAdminPassword()">
+        <button class="admin-btn" onclick="checkAdminPassword()" style="background:#0a1a2f; color:white; padding:12px; border-radius:12px; width:100%; font-weight:600;">Se connecter</button>
     </div>
 </div>
 
 <!-- ========== PANEL ADMIN ========== -->
 <div class="admin-panel" id="adminPanel">
-    <div class="admin-panel-header">
-        <h3><i class="fas fa-cog"></i> Panneau d'administration</h3>
-        <button class="close-panel" onclick="toggleAdminPanel()">&times;</button>
+    <div class="admin-panel-header" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem; border-bottom:2px solid #c9a959; padding-bottom:1rem;">
+        <h3><i class="fas fa-cog"></i> Panneau admin</h3>
+        <button class="close-panel" onclick="toggleAdminPanel()" style="background:none; border:none; font-size:2rem; cursor:pointer;">&times;</button>
     </div>
-    
-    <div class="admin-panel-section">
+    <div class="admin-panel-section" style="margin-bottom:2rem; padding:1rem; background:#f8f9fa; border-radius:16px;">
         <h4><i class="fas fa-edit"></i> Mode édition</h4>
-        <p style="font-size: 0.9rem; color: #666; margin-bottom: 10px;">Double-cliquez sur n'importe quel texte pour le modifier</p>
-        <button class="admin-panel-btn" onclick="enableEditMode()">
-            <i class="fas fa-pencil-alt"></i> Activer le mode édition
-        </button>
-        <button class="admin-panel-btn" onclick="saveAllChanges()">
-            <i class="fas fa-save"></i> Sauvegarder toutes les modifications
-        </button>
-        <button class="admin-panel-btn" onclick="resetChanges()">
-            <i class="fas fa-undo"></i> Annuler les modifications
-        </button>
+        <button class="admin-panel-btn" onclick="enableEditMode()" style="width:100%; padding:10px; margin:5px 0; background:#c9a959; border:none; border-radius:8px; font-weight:600;">Activer mode édition</button>
+        <button class="admin-panel-btn" onclick="saveAllChanges()" style="width:100%; padding:10px; margin:5px 0; background:#c9a959; border:none; border-radius:8px;">Sauvegarder</button>
     </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-images"></i> Gestion des médias</h4>
-        <button class="admin-panel-btn" onclick="document.getElementById('logoUpload').click()">
-            <i class="fas fa-image"></i> Changer le logo
-        </button>
-        <input type="file" id="logoUpload" accept="image/*" style="display:none" onchange="changeLogo(this)">
-        
-        <button class="admin-panel-btn" onclick="document.getElementById('heroUpload').click()">
-            <i class="fas fa-image"></i> Changer l'image d'arrière-plan
-        </button>
-        <input type="file" id="heroUpload" accept="image/*" style="display:none" onchange="changeHeroImage(this)">
+    <div class="admin-panel-section" style="margin-bottom:2rem; padding:1rem; background:#f8f9fa; border-radius:16px;">
+        <h4><i class="fas fa-file-pdf"></i> Gestion PDF</h4>
+        <button class="admin-panel-btn" onclick="showPdfUploadForm()" style="width:100%; padding:10px; margin:5px 0; background:#c9a959; border:none; border-radius:8px;">📄 Publier un dossier</button>
+        <button class="admin-panel-btn danger" onclick="clearAllDocuments()" style="width:100%; padding:10px; margin:5px 0; background:#dc3545; color:white; border:none; border-radius:8px;">🗑️ Supprimer tous</button>
     </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-users"></i> Gestion des avocats</h4>
-        <button class="admin-panel-btn" onclick="openAddLawyerModal()">
-            <i class="fas fa-user-plus"></i> Ajouter un avocat
-        </button>
-        <button class="admin-panel-btn" onclick="reorderLawyers()">
-            <i class="fas fa-arrows-alt"></i> Réorganiser les avocats
-        </button>
-    </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-file-pdf"></i> Gestion des dossiers</h4>
-        <button class="admin-panel-btn" onclick="showPdfUploadForm()">
-            <i class="fas fa-upload"></i> Publier un dossier (PDF)
-        </button>
-        <button class="admin-panel-btn danger" onclick="clearAllDocuments()">
-            <i class="fas fa-trash"></i> Supprimer tous les dossiers
-        </button>
-    </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-palette"></i> Personnalisation</h4>
-        <label style="display: block; margin-bottom: 10px;">
-            Couleur principale :
-            <input type="color" id="primaryColor" value="#c9a959" onchange="changePrimaryColor(this.value)">
-        </label>
-        <label style="display: block; margin-bottom: 10px;">
-            Couleur secondaire :
-            <input type="color" id="secondaryColor" value="#0a1a2f" onchange="changeSecondaryColor(this.value)">
-        </label>
-    </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-chart-line"></i> Statistiques</h4>
-        <button class="admin-panel-btn" onclick="editStatistics()">
-            <i class="fas fa-edit"></i> Modifier les statistiques
-        </button>
-    </div>
-    
-    <div class="admin-panel-section">
-        <h4><i class="fas fa-database"></i> Sauvegarde</h4>
-        <button class="admin-panel-btn" onclick="exportData()">
-            <i class="fas fa-download"></i> Exporter les données
-        </button>
-        <button class="admin-panel-btn" onclick="document.getElementById('importFile').click()">
-            <i class="fas fa-upload"></i> Importer les données
-        </button>
-        <input type="file" id="importFile" accept=".json" style="display:none" onchange="importData(this)">
+    <div class="admin-panel-section" style="margin-bottom:2rem; padding:1rem; background:#f8f9fa; border-radius:16px;">
+        <h4><i class="fas fa-users"></i> Avocats</h4>
+        <button class="admin-panel-btn" onclick="openAddLawyerModal()" style="width:100%; padding:10px; margin:5px 0; background:#c9a959; border:none; border-radius:8px;">➕ Ajouter un avocat</button>
     </div>
 </div>
 
@@ -1223,30 +1066,13 @@
 <div class="lawyer-modal" id="addLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-user-plus"></i> Ajouter un avocat</h3>
-        <div class="lawyer-form-group">
-            <label>Photo de l'avocat</label>
-            <input type="file" id="lawyerPhoto" accept="image/*">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Nom complet</label>
-            <input type="text" id="lawyerName" placeholder="Maître Jean DUPONT">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Titre / Rôle</label>
-            <input type="text" id="lawyerRole" placeholder="Avocat associé">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Description</label>
-            <textarea id="lawyerDesc" rows="3" placeholder="Spécialiste en..."></textarea>
-        </div>
-        <div class="lawyer-form-group">
-            <label>Téléphone</label>
-            <input type="text" id="lawyerPhone" placeholder="+243 000 000 000">
-        </div>
-        <div class="lawyer-form-group">
-            <button class="admin-panel-btn" onclick="addLawyer()">Ajouter l'avocat</button>
-            <button class="admin-panel-btn danger" onclick="closeAddLawyerModal()">Annuler</button>
-        </div>
+        <div class="lawyer-form-group"><label>Photo</label><input type="file" id="lawyerPhoto" accept="image/*"></div>
+        <div class="lawyer-form-group"><label>Nom</label><input type="text" id="lawyerName"></div>
+        <div class="lawyer-form-group"><label>Rôle</label><input type="text" id="lawyerRole"></div>
+        <div class="lawyer-form-group"><label>Description</label><textarea id="lawyerDesc" rows="3"></textarea></div>
+        <div class="lawyer-form-group"><label>Téléphone</label><input type="text" id="lawyerPhone"></div>
+        <button class="admin-panel-btn" onclick="addLawyer()">Ajouter</button>
+        <button class="admin-panel-btn danger" onclick="closeAddLawyerModal()">Annuler</button>
     </div>
 </div>
 
@@ -1254,59 +1080,32 @@
 <div class="lawyer-modal" id="editLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-edit"></i> Modifier l'avocat</h3>
-        <div class="lawyer-form-group">
-            <label>Photo de l'avocat</label>
-            <input type="file" id="editLawyerPhoto" accept="image/*">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Nom complet</label>
-            <input type="text" id="editLawyerName">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Titre / Rôle</label>
-            <input type="text" id="editLawyerRole">
-        </div>
-        <div class="lawyer-form-group">
-            <label>Description</label>
-            <textarea id="editLawyerDesc" rows="3"></textarea>
-        </div>
-        <div class="lawyer-form-group">
-            <label>Téléphone</label>
-            <input type="text" id="editLawyerPhone">
-        </div>
-        <div class="lawyer-form-group">
-            <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer</button>
-            <button class="admin-panel-btn danger" onclick="closeEditLawyerModal()">Annuler</button>
-        </div>
+        <div class="lawyer-form-group"><label>Photo</label><input type="file" id="editLawyerPhoto" accept="image/*"></div>
+        <div class="lawyer-form-group"><label>Nom</label><input type="text" id="editLawyerName"></div>
+        <div class="lawyer-form-group"><label>Rôle</label><input type="text" id="editLawyerRole"></div>
+        <div class="lawyer-form-group"><label>Description</label><textarea id="editLawyerDesc" rows="3"></textarea></div>
+        <div class="lawyer-form-group"><label>Téléphone</label><input type="text" id="editLawyerPhone"></div>
+        <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer</button>
+        <button class="admin-panel-btn danger" onclick="closeEditLawyerModal()">Annuler</button>
     </div>
 </div>
 
-<!-- ========== NAVIGATION AVEC MENU HAMBURGER ========== -->
+<!-- ========== NAVIGATION ========== -->
 <nav>
     <div class="logo-container">
-        <div class="logo-placeholder" id="logoContainer">
-            <img src="logo bkr1.png" id="logo" 
-                 alt="logo bkr" 
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'40\' viewBox=\'0 0 100 80\'%3E%3Crect width=\'100\' height=\'80\' fill=\'%23c9a959\'/%3E%3Ctext x=\'15\' y=\'55\' font-size=\'42\' fill=\'%230a1a2f\' font-weight=\'bold\'%3EBKR%3C/text%3E%3C/svg%3E'">
-        </div>
-        <span class="logo-text" id="logoText" ondblclick="if(window.editMode) editText(this)">& ASSOCIÉS</span>
+        <div class="logo-placeholder"><img src="logo bkr1.png" id="logo" alt="logo bkr" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'50\' height=\'40\' viewBox=\'0 0 100 80\'%3E%3Crect width=\'100\' height=\'80\' fill=\'%23c9a959\'/%3E%3Ctext x=\'15\' y=\'55\' font-size=\'42\' fill=\'%230a1a2f\' font-weight=\'bold\'%3EBKR%3C/text%3E%3C/svg%3E'"></div>
+        <span class="logo-text">& ASSOCIÉS</span>
     </div>
-    
-    <div class="menu-toggle" id="menuToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-    
+    <div class="menu-toggle" id="menuToggle"><span></span><span></span><span></span></div>
     <ul class="nav-links" id="navLinks">
-        <li><a href="#accueil" id="navAccueil" ondblclick="if(window.editMode) editText(this)">Accueil</a></li>
-        <li><a href="#apropos" id="navApropos" ondblclick="if(window.editMode) editText(this)">À propos</a></li>
-        <li><a href="#services" id="navServices" ondblclick="if(window.editMode) editText(this)">Nos services</a></li>
-        <li><a href="#avocats" id="navAvocats" ondblclick="if(window.editMode) editText(this)">Avocats</a></li>
-        <li><a href="#galerie" id="navGalerie" ondblclick="if(window.editMode) editText(this)">Galerie</a></li>
-        <li><a href="#statistiques" id="navStats" ondblclick="if(window.editMode) editText(this)">Statistiques</a></li>
-        <li><a href="#contact" id="navContact" ondblclick="if(window.editMode) editText(this)">Contact</a></li>
-        <li class="rdv-btn"><a href="#" id="openRdv" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</a></li>
+        <li><a href="#accueil">Accueil</a></li>
+        <li><a href="#apropos">À propos</a></li>
+        <li><a href="#services">Nos services</a></li>
+        <li><a href="#avocats">Avocats</a></li>
+        <li><a href="#galerie">Galerie</a></li>
+        <li><a href="#statistiques">Statistiques</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li class="rdv-btn"><a href="#" id="openRdv">Prendre rendez-vous</a></li>
     </ul>
 </nav>
 
@@ -1314,214 +1113,138 @@
 <div class="modal" id="rdvModal">
     <div class="modal-content">
         <span class="close-modal" id="closeModal">&times;</span>
-        <h2 style="margin-bottom: 1.5rem; color: #0a1a2f;" id="rdvTitle" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</h2>
+        <h2 style="margin-bottom:1.5rem;">Prendre rendez-vous</h2>
         <form id="rdvForm">
-            <div class="form-group">
-                <input type="text" placeholder="Votre nom complet" required id="rdvName">
-            </div>
-            <div class="form-group">
-                <input type="email" placeholder="Votre email" required id="rdvEmail">
-            </div>
-            <div class="form-group">
-                <input type="tel" placeholder="Votre téléphone" required id="rdvPhone">
-            </div>
-            <div class="form-group">
-                <select required id="rdvLawyer">
-                    <option value="">Choisissez un avocat</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <input type="date" required id="rdvDate">
-            </div>
-            <div class="form-group">
-                <textarea rows="3" placeholder="Motif du rendez-vous" id="rdvMotif"></textarea>
-            </div>
-            <button type="submit" class="btn" style="width: 100%;" id="rdvSubmit" ondblclick="if(window.editMode) editText(this)">Confirmer le rendez-vous</button>
+            <div class="form-group"><input type="text" placeholder="Nom complet" required id="rdvName"></div>
+            <div class="form-group"><input type="email" placeholder="Email" required id="rdvEmail"></div>
+            <div class="form-group"><input type="tel" placeholder="Téléphone" required id="rdvPhone"></div>
+            <div class="form-group"><select required id="rdvLawyer"><option value="">Choisissez un avocat</option></select></div>
+            <div class="form-group"><input type="date" required id="rdvDate"></div>
+            <div class="form-group"><textarea rows="3" placeholder="Motif" id="rdvMotif"></textarea></div>
+            <button type="submit" class="btn" style="width:100%;">Confirmer</button>
         </form>
     </div>
 </div>
 
-<!-- ========== MODAL PDF ========== -->
+<!-- ========== MODAL PDF AVEC BOUTON TÉLÉCHARGEMENT EN BAS ========== -->
 <div class="pdf-modal" id="pdfModal">
     <div class="pdf-modal-content">
         <div class="pdf-modal-header">
             <h3 id="pdfModalTitle">Document BKR & Associés</h3>
-            <div class="pdf-controls">
-                <button id="pdfPrevPage"><i class="fas fa-chevron-left"></i> Précédent</button>
-                <span id="pdfPageInfo">Page 1 / 1</span>
-                <button id="pdfNextPage">Suivant <i class="fas fa-chevron-right"></i></button>
-                <button id="pdfDownloadBtn"><i class="fas fa-download"></i> Télécharger</button>
-            </div>
             <button class="close-pdf-modal" id="closePdfModal">&times;</button>
         </div>
         <div class="pdf-viewer" id="pdfViewer"></div>
+        <div class="pdf-controls-bottom">
+            <div class="pdf-nav-buttons">
+                <button id="pdfPrevPageMobile" class="pdf-nav-btn"><i class="fas fa-chevron-left"></i> Précédent</button>
+                <span id="pdfPageInfoMobile" class="pdf-page-info">Page 1 / 1</span>
+                <button id="pdfNextPageMobile" class="pdf-nav-btn">Suivant <i class="fas fa-chevron-right"></i></button>
+            </div>
+            <button id="pdfDownloadBtnMobile" class="pdf-download-btn-bottom">
+                <i class="fas fa-download"></i> Télécharger le document
+            </button>
+        </div>
     </div>
 </div>
 
 <!-- ========== ACCUEIL ========== -->
-<section id="accueil" style="padding-top: 1rem;">
-    <div class="hero" id="hero">
+<section id="accueil">
+    <div class="hero">
         <div class="hero-text">
-            <h1 id="heroTitle" ondblclick="if(window.editMode) editText(this)">CABINET B K R & ASSOCIES<br><span style="font-size: 1.4rem; color: #dbb86a;" id="heroSubtitle" ondblclick="if(window.editMode) editText(this)">Ordre National des Avocats · RDC</span></h1>
-            <p id="heroText" ondblclick="if(window.editMode) editText(this)">Consultation et assistance juridique de haut niveau<br>à Kolwezi et à Partout dans la ville de la RDC.</p>
-            <a href="#" class="btn" id="heroRdvBtn" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous</a>
+            <h1>CABINET B K R & ASSOCIES<br><span style="font-size:1.4rem; color:#dbb86a;">Ordre National des Avocats · RDC</span></h1>
+            <p>Consultation et assistance juridique de haut niveau<br>à Kolwezi et dans toute la RDC.</p>
+            <a href="#" class="btn" id="heroRdvBtn">Prendre rendez-vous</a>
         </div>
-        <div class="contact-hero" id="heroContact">
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 903 551 255</span></div>
-            <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
-            <div><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
+        <div class="contact-hero">
+            <div><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
+            <div><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
+            <div><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
         </div>
     </div>
 </section>
 
 <!-- ========== À PROPOS ========== -->
 <section id="apropos">
-    <h2 class="section-title" id="aproposTitle" ondblclick="if(window.editMode) editText(this)">À propos du cabinet</h2>
-    <div style="display: flex; flex-wrap: wrap; gap: 2rem; background: white; padding: 2rem; border-radius: 32px; box-shadow: 0 5px 15px rgba(0,0,0,0.03);">
-        <div style="flex: 2; min-width: 280px;">
-            <p style="font-size: 1.2rem;" id="aproposText1" ondblclick="if(window.editMode) editText(this)">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux. Notre équipe pluridisciplinaire maîtrise les spécificités du droit OHADA et congolais.</p>
-            <p style="margin-top: 1.5rem;" id="aproposText2" ondblclick="if(window.editMode) editText(this)">Notre devise : <em>rigueur, disponibilité et efficacité.</em> Nous accompagnons nos clients avec une stratégie sur mesure, que ce soit en conseil ou en représentation devant les juridictions nationales et internationales.</p>
+    <h2 class="section-title">À propos du cabinet</h2>
+    <div style="display:flex; flex-wrap:wrap; gap:2rem; background:white; padding:2rem; border-radius:32px;">
+        <div style="flex:2;">
+            <p style="font-size:1.1rem;">Basé à Kolwezi, le <strong>Cabinet BKR & Associés</strong> réunit des avocats expérimentés au service des particuliers, des entreprises et des institutions. Nous intervenons en droit des affaires, minier, fiscal, social et en contentieux.</p>
+            <p style="margin-top:1rem;">Notre devise : <em>rigueur, disponibilité et efficacité.</em></p>
         </div>
-        <div style="flex: 1; background: #e9eff7; border-radius: 2rem; padding: 2rem; text-align: center;">
-            <i class="fas fa-gavel" style="font-size: 3rem; color: #0a1a2f;"></i>
-            <p style="font-weight: 600; margin-top: 1rem;" id="aproposStat" ondblclick="if(window.editMode) editText(this)">Plus de 15 ans d'expérience collective</p>
+        <div style="flex:1; background:#e9eff7; border-radius:24px; padding:2rem; text-align:center;">
+            <i class="fas fa-gavel" style="font-size:3rem; color:#c9a959;"></i>
+            <p style="font-weight:600; margin-top:1rem;">Plus de 15 ans d'expérience</p>
         </div>
     </div>
 </section>
 
 <!-- ========== SERVICES ========== -->
 <section id="services">
-    <h2 class="section-title" id="servicesTitle" ondblclick="if(window.editMode) editText(this)">Nos services</h2>
-    <div class="cards-grid" id="servicesGrid">
-        <div class="card">
-            <i class="fas fa-balance-scale" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit des affaires</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Création de sociétés, fusions/acquisitions, contrats commerciaux, due diligence.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-hard-hat" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit minier</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Assistance dans le secteur extractif, permis, conformité, partenariats.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-hand-holding-usd" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Fiscalité & douanes</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Conseil fiscal, contentieux, optimisation et contrôle douanier.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-users" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Droit social</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Contrats de travail, procédures disciplinaires, négociations collectives.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-gavel" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Contentieux & arbitrage</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Représentation devant toutes les juridictions, médiation et arbitrage OHADA.</p>
-        </div>
-        <div class="card">
-            <i class="fas fa-file-signature" style="font-size: 2.5rem; color:#c9a959;"></i>
-            <h3 style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Conseil & rédaction</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Contrats, statuts, accords de confidentialité, avis juridiques.</p>
-        </div>
+    <h2 class="section-title">Nos services</h2>
+    <div class="cards-grid">
+        <div class="card"><i class="fas fa-balance-scale" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Droit des affaires</h3><p>Création de sociétés, fusions, contrats commerciaux.</p></div>
+        <div class="card"><i class="fas fa-hard-hat" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Droit minier</h3><p>Assistance secteur extractif, permis, conformité.</p></div>
+        <div class="card"><i class="fas fa-hand-holding-usd" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Fiscalité & douanes</h3><p>Conseil fiscal, contentieux, optimisation.</p></div>
+        <div class="card"><i class="fas fa-users" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Droit social</h3><p>Contrats de travail, procédures disciplinaires.</p></div>
+        <div class="card"><i class="fas fa-gavel" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Contentieux & arbitrage</h3><p>Représentation devant les juridictions.</p></div>
+        <div class="card"><i class="fas fa-file-signature" style="font-size:2.5rem; color:#c9a959;"></i><h3 style="margin:1rem 0;">Conseil & rédaction</h3><p>Contrats, statuts, avis juridiques.</p></div>
     </div>
 </section>
 
-<!-- ========== PROFIL DES AVOCATS ========== -->
+<!-- ========== AVOCATS ========== -->
 <section id="avocats">
-    <h2 class="section-title" id="avocatsTitle" ondblclick="if(window.editMode) editText(this)">Nos avocats</h2>
-    <div class="lawyers-grid" id="lawyersGrid">
-        <!-- Les avocats seront chargés dynamiquement ici -->
-    </div>
+    <h2 class="section-title">Nos avocats</h2>
+    <div class="lawyers-grid" id="lawyersGrid"></div>
 </section>
 
-<!-- ========== GALERIE CARROUSEL AVEC PDF ========== -->
+<!-- ========== GALERIE ========== -->
 <section id="galerie">
-    <h2 class="section-title" id="galerieTitle" ondblclick="if(window.editMode) editText(this)">Nos dossiers réussis</h2>
-    
+    <h2 class="section-title">Nos dossiers réussis</h2>
     <div class="carousel-container">
-        <div class="carousel-track" id="carouselTrack">
-            <!-- Les slides seront ajoutés dynamiquement ici -->
-        </div>
-        
-        <!-- Boutons de navigation -->
-        <div class="carousel-btn prev" id="prevBtn">
-            <i class="fas fa-chevron-left"></i>
-        </div>
-        <div class="carousel-btn next" id="nextBtn">
-            <i class="fas fa-chevron-right"></i>
-        </div>
-        
-        <!-- Indicateurs -->
+        <div class="carousel-track" id="carouselTrack"></div>
+        <div class="carousel-btn prev" id="prevBtn"><i class="fas fa-chevron-left"></i></div>
+        <div class="carousel-btn next" id="nextBtn"><i class="fas fa-chevron-right"></i></div>
         <div class="carousel-dots" id="carouselDots"></div>
     </div>
 </section>
 
 <!-- ========== STATISTIQUES ========== -->
 <section id="statistiques">
-    <h2 class="section-title" id="statsTitle" ondblclick="if(window.editMode) editText(this)">Statistiques & victoires</h2>
-    <div class="stats-container" id="statsContainer">
-        <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">95%</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Dossiers contentieux gagnés</p>
-        </div>
-        <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">+350</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Clients accompagnés</p>
-        </div>
-        <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">120</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Affaires miniers traitées</p>
-        </div>
-        <div class="stat-item">
-            <h3 ondblclick="if(window.editMode) editText(this)">98%</h3>
-            <p ondblclick="if(window.editMode) editText(this)">Médiations réussies</p>
-        </div>
+    <h2 class="section-title">Statistiques & victoires</h2>
+    <div class="stats-container">
+        <div class="stat-item"><h3>95%</h3><p>Dossiers gagnés</p></div>
+        <div class="stat-item"><h3>+350</h3><p>Clients accompagnés</p></div>
+        <div class="stat-item"><h3>120</h3><p>Affaires minières</p></div>
+        <div class="stat-item"><h3>98%</h3><p>Médiations réussies</p></div>
     </div>
 </section>
 
 <!-- ========== CONTACT ========== -->
 <section id="contact">
-    <h2 class="section-title" id="contactTitle" ondblclick="if(window.editMode) editText(this)">Contact</h2>
+    <h2 class="section-title">Contact</h2>
     <div class="contact-block">
         <div class="contact-info">
-            <p><strong id="contactName" ondblclick="if(window.editMode) editText(this)">Cabinet BKR & Associés</strong><br><span ondblclick="if(window.editMode) editText(this)">Ordre National des Avocats, RDC</span></p>
-            <div class="info-line"><i class="fas fa-map-marker-alt"></i> <span ondblclick="if(window.editMode) editText(this)">634 Av. du Manguier Q. Dilala / Kolwezi</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 903 551 255</span></div>
-            <div class="info-line"><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
-            <div class="info-line"><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
-            <div class="info-line"><i class="fas fa-clock"></i> <span ondblclick="if(window.editMode) editText(this)">Lun-Ven 8h30 – 17h30</span></div>
-            <button class="btn" id="contactRdvBtn" style="margin-top: 1.5rem;" ondblclick="if(window.editMode) editText(this)">Prendre rendez-vous en ligne</button>
+            <p><strong>Cabinet BKR & Associés</strong><br>Ordre National des Avocats, RDC</p>
+            <div class="info-line"><i class="fas fa-map-marker-alt"></i> 634 Av. du Manguier Q. Dilala / Kolwezi</div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 977 219 423</div>
+            <div class="info-line"><i class="fas fa-phone-alt"></i> +243 813 535 315</div>
+            <div class="info-line"><i class="fas fa-envelope"></i> cabinetbkr@gmail.com</div>
+            <button class="btn" id="contactRdvBtn" style="margin-top:1.5rem;">Prendre rendez-vous</button>
         </div>
-        <div class="map-placeholder">
-            <i class="fas fa-map" style="font-size: 3rem; color: #6883a5;"></i>
-            <p style="margin: 1rem 0;" ondblclick="if(window.editMode) editText(this)">Kolwezi, Lualaba<br> (Plan d'accès interactif bientôt disponible)</p>
-            <div style="background: #cfddee; padding: 1rem; border-radius: 1rem;">
-                <img src="logo bkr2.png" style="max-width: 100px;" id="footerLogo">
-                <p ondblclick="if(window.editMode) editText(this)">RD Congo</p>
-            </div>
+        <div class="map-placeholder" style="background:#eef2f6; border-radius:24px; padding:2rem; text-align:center;">
+            <i class="fas fa-map" style="font-size:3rem; color:#c9a959;"></i>
+            <p>Kolwezi, Lualaba - RDC</p>
         </div>
     </div>
 </section>
 
 <footer>
-    <p id="footerText" ondblclick="if(window.editMode) editText(this)">© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
-    <p style="margin-top: 1rem;">
-        <img src="logo bkr1.png" alt="logo" style="height: 30px; margin: 0 5px;">
-        <img src="logo bkr2.png" alt="logo" style="height: 30px; margin: 0 5px;">
-    </p>
+    <p>© 2025 Cabinet BKR & Associés · Tous droits réservés</p>
 </footer>
 
-<!-- ========== SCRIPT ========== -->
 <script>
-    // Configuration de PDF.js
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     
-    // Variables globales
-    let currentIndex = 0;
     let pdfDocuments = [];
     let currentPdf = null;
     let currentPage = 1;
@@ -1530,87 +1253,42 @@
     let editMode = false;
     let lawyers = [];
     let currentEditLawyerId = null;
-    
-    // Mot de passe admin
     const ADMIN_PASSWORD = "admin123";
-    
-    // Contenu du fichier PDF "Contrat-de-Partenariat.pdf" en base64 (version compressée pour l'exemple)
-    // NOTE: Dans un cas réel, ce serait le contenu complet du PDF encodé en base64
-    // Pour des raisons de taille, je mets un placeholder. L'utilisateur devra importer le fichier réel via l'interface admin.
-    const CONTRAT_PDF_BASE64_PLACEHOLDER = "JVBERi0xLjQKJcOkw7zD..."; // Ceci est un placeholder
     
     // Menu hamburger
     const menuToggle = document.getElementById('menuToggle');
-    const navLinks = document.getElementById('navLinks');
+    const navLinksEl = document.getElementById('navLinks');
+    menuToggle.addEventListener('click', () => navLinksEl.classList.toggle('active'));
+    document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinksEl.classList.remove('active')));
     
-    menuToggle.addEventListener('click', () => {
-        navLinks.classList.toggle('active');
-    });
+    // Modales rendez-vous
+    const rdvModal = document.getElementById('rdvModal');
+    const openRdvBtns = [document.getElementById('openRdv'), document.getElementById('heroRdvBtn'), document.getElementById('contactRdvBtn')];
+    openRdvBtns.forEach(btn => btn?.addEventListener('click', (e) => { e.preventDefault(); rdvModal.classList.add('active'); updateLawyerSelect(); }));
+    document.getElementById('closeModal')?.addEventListener('click', () => rdvModal.classList.remove('active'));
+    window.addEventListener('click', (e) => { if (e.target === rdvModal) rdvModal.classList.remove('active'); });
+    document.getElementById('rdvForm')?.addEventListener('submit', (e) => { e.preventDefault(); alert('Demande envoyée !'); rdvModal.classList.remove('active'); e.target.reset(); });
     
-    // Fermer le menu quand on clique sur un lien
-    document.querySelectorAll('.nav-links a').forEach(link => {
-        link.addEventListener('click', () => {
-            navLinks.classList.remove('active');
-        });
-    });
-    
-    // Modal rendez-vous
-    const modal = document.getElementById('rdvModal');
-    const openRdv = document.getElementById('openRdv');
-    const heroRdvBtn = document.getElementById('heroRdvBtn');
-    const contactRdvBtn = document.getElementById('contactRdvBtn');
-    const closeModal = document.getElementById('closeModal');
-    
-    function openModal(e) {
-        e.preventDefault();
-        modal.classList.add('active');
-        updateLawyerSelect();
-    }
-    
-    openRdv.addEventListener('click', openModal);
-    heroRdvBtn.addEventListener('click', openModal);
-    contactRdvBtn.addEventListener('click', openModal);
-    
-    closeModal.addEventListener('click', () => {
-        modal.classList.remove('active');
-    });
-    
-    window.addEventListener('click', (e) => {
-        if (e.target === modal) {
-            modal.classList.remove('active');
-        }
-    });
-    
-    // Formulaire rendez-vous
-    document.getElementById('rdvForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Demande de rendez-vous envoyée ! Nous vous contacterons dans les plus brefs délais.');
-        modal.classList.remove('active');
-        this.reset();
-    });
-    
-    // Smooth scroll pour tous les liens
+    // Smooth scroll
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             if(this.getAttribute('href') !== '#') {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
-                if(target) {
-                    target.scrollIntoView({behavior: 'smooth'});
-                }
+                if(target) target.scrollIntoView({behavior: 'smooth'});
             }
         });
     });
     
-    // ========== FONCTIONS DE GESTION DES PDF AVEC STOCKAGE BASE64 ==========
+    // ========== GESTION PDF ==========
+    function loadPdfs() {
+        const saved = localStorage.getItem('bkrPdfs');
+        if (saved) { try { pdfDocuments = JSON.parse(saved); } catch(e) { pdfDocuments = []; } }
+        renderCarousel();
+        if (pdfDocuments.length === 0) initDefaultPdf();
+    }
     
-    // Fonction pour initialiser le PDF de démonstration "Contrat-de-Partenariat.pdf"
     async function initDefaultPdf() {
-        // Vérifier si le PDF existe déjà
-        const existingPdf = pdfDocuments.find(doc => doc.fileName === "Contrat-de-Partenariat.pdf");
-        if (existingPdf) return;
-        
-        // Créer une requête pour charger le fichier PDF
         try {
             const response = await fetch('Contrat-de-Partenariat.pdf');
             if (response.ok) {
@@ -1618,144 +1296,168 @@
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const base64 = event.target.result.split(',')[1];
-                    const newDoc = {
+                    pdfDocuments.push({
                         id: Date.now(),
                         title: "Contrat de Partenariat Minier",
-                        description: "Contrat de collaboration entre Monsieur Rais KAZADI MWAMBA, Monsieur Alex YAV THSIAGAMB et Monsieur Bivins KITUNGWA YAMBUTA pour l'exploitation minière artisanale. Date de signature : 31/01/2026",
+                        description: "Contrat entre Rais KAZADI MWAMBA, Alex YAV THSIAGAMB et Bivins KITUNGWA YAMBUTA - Exploitation minière artisanale - Signé le 31/01/2026",
                         dataUrl: base64,
                         fileName: "Contrat-de-Partenariat.pdf",
                         date: "31/01/2026"
-                    };
-                    pdfDocuments.unshift(newDoc); // Ajouter en premier
+                    });
                     savePdfs();
                     renderCarousel();
-                    showToast('Document Contrat-de-Partenariat.pdf chargé avec succès');
                 };
                 reader.readAsDataURL(blob);
-            } else {
-                console.log('Fichier PDF non trouvé, utilisateur devra l\'importer manuellement');
             }
-        } catch (error) {
-            console.log('Erreur lors du chargement du PDF par défaut:', error);
-        }
+        } catch(e) { console.log('PDF par défaut non trouvé'); }
     }
     
-    // Charger les PDF depuis localStorage
-    function loadPdfs() {
-        const saved = localStorage.getItem('bkrPdfs');
-        if (saved) {
-            try {
-                pdfDocuments = JSON.parse(saved);
-            } catch (e) {
-                pdfDocuments = [];
-            }
-        }
-        renderCarousel();
-        
-        // Si aucun PDF n'est chargé, essayer de charger le contrat par défaut
-        if (pdfDocuments.length === 0) {
-            initDefaultPdf();
-        }
-    }
+    function savePdfs() { localStorage.setItem('bkrPdfs', JSON.stringify(pdfDocuments)); }
     
-    // Sauvegarder les PDF dans localStorage
-    function savePdfs() {
-        localStorage.setItem('bkrPdfs', JSON.stringify(pdfDocuments));
-    }
-    
-    // Fonction d'upload de PDF (admin seulement)
     function showPdfUploadForm() {
-        if (!isAdminLogged) {
-            alert('Vous devez être connecté en tant qu\'administrateur pour publier des documents.');
-            return;
-        }
-        
+        if (!isAdminLogged) { alert('Connectez-vous en admin'); return; }
         const title = prompt('Titre du document:');
         if (!title) return;
-        
-        const description = prompt('Description du dossier:');
+        const description = prompt('Description:');
         if (!description) return;
-        
-        const fileInput = document.createElement('input');
-        fileInput.type = 'file';
-        fileInput.accept = '.pdf';
-        fileInput.onchange = function(e) {
+        const input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.pdf';
+        input.onchange = function(e) {
             const file = e.target.files[0];
             if (!file) return;
-            
             const reader = new FileReader();
             reader.onload = function(event) {
                 const base64 = event.target.result.split(',')[1];
-                const newDoc = {
-                    id: Date.now(),
-                    title: title,
-                    description: description,
-                    dataUrl: base64,
-                    fileName: file.name,
-                    date: new Date().toLocaleDateString('fr-FR')
-                };
-                pdfDocuments.push(newDoc);
+                pdfDocuments.push({ id: Date.now(), title, description, dataUrl: base64, fileName: file.name, date: new Date().toLocaleDateString('fr-FR') });
                 savePdfs();
                 renderCarousel();
-                showToast('Document publié avec succès');
+                showToast('Document publié');
             };
             reader.readAsDataURL(file);
         };
-        fileInput.click();
+        input.click();
     }
     
-    // Rendre le carrousel
+    function deletePdf(id) {
+        if (!isAdminLogged) return;
+        if (confirm('Supprimer ce document ?')) {
+            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
+            savePdfs();
+            renderCarousel();
+            showToast('Document supprimé');
+        }
+    }
+    
+    function clearAllDocuments() {
+        if (!isAdminLogged) return;
+        if (confirm('Supprimer TOUS les documents ?')) {
+            pdfDocuments = [];
+            savePdfs();
+            renderCarousel();
+            showToast('Tous les documents supprimés');
+        }
+    }
+    
+    let currentPdfUrl = null;
+    
+    async function openPdf(index) {
+        const doc = pdfDocuments[index];
+        if (!doc || !doc.dataUrl) { alert('Document indisponible'); return; }
+        
+        const modal = document.getElementById('pdfModal');
+        document.getElementById('pdfModalTitle').textContent = doc.title;
+        modal.classList.add('active');
+        document.getElementById('pdfViewer').innerHTML = '';
+        
+        const byteCharacters = atob(doc.dataUrl);
+        const byteNumbers = new Array(byteCharacters.length);
+        for (let i = 0; i < byteCharacters.length; i++) byteNumbers[i] = byteCharacters.charCodeAt(i);
+        const byteArray = new Uint8Array(byteNumbers);
+        const blob = new Blob([byteArray], { type: 'application/pdf' });
+        const url = URL.createObjectURL(blob);
+        
+        if (currentPdfUrl) URL.revokeObjectURL(currentPdfUrl);
+        currentPdfUrl = url;
+        
+        try {
+            const loadingTask = pdfjsLib.getDocument(url);
+            currentPdf = await loadingTask.promise;
+            totalPages = currentPdf.numPages;
+            currentPage = 1;
+            updatePdfPageInfo();
+            await renderPage(currentPage);
+            
+            const downloadBtn = document.getElementById('pdfDownloadBtnMobile');
+            downloadBtn.onclick = () => {
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = doc.fileName || 'document.pdf';
+                a.click();
+                showToast('Téléchargement en cours...');
+            };
+        } catch(error) {
+            document.getElementById('pdfViewer').innerHTML = '<p style="color:white; text-align:center; padding:2rem;">Erreur de chargement</p>';
+        }
+    }
+    
+    async function renderPage(pageNumber) {
+        if (!currentPdf) return;
+        const viewer = document.getElementById('pdfViewer');
+        const page = await currentPdf.getPage(pageNumber);
+        const containerWidth = viewer.clientWidth - 40;
+        const viewport = page.getViewport({ scale: 1 });
+        const scale = containerWidth / viewport.width;
+        const scaledViewport = page.getViewport({ scale });
+        const canvas = document.createElement('canvas');
+        canvas.width = scaledViewport.width;
+        canvas.height = scaledViewport.height;
+        viewer.innerHTML = '';
+        viewer.appendChild(canvas);
+        await page.render({ canvasContext: canvas.getContext('2d'), viewport: scaledViewport }).promise;
+    }
+    
+    function updatePdfPageInfo() {
+        const pageInfo = document.getElementById('pdfPageInfoMobile');
+        if (pageInfo) pageInfo.textContent = `Page ${currentPage} / ${totalPages}`;
+    }
+    
+    async function goToPrevPage() { if (currentPdf && currentPage > 1) { currentPage--; await renderPage(currentPage); updatePdfPageInfo(); } }
+    async function goToNextPage() { if (currentPdf && currentPage < totalPages) { currentPage++; await renderPage(currentPage); updatePdfPageInfo(); } }
+    
+    document.getElementById('closePdfModal')?.addEventListener('click', () => {
+        document.getElementById('pdfModal').classList.remove('active');
+        if (currentPdfUrl) { URL.revokeObjectURL(currentPdfUrl); currentPdfUrl = null; }
+        currentPdf = null;
+    });
+    document.getElementById('pdfPrevPageMobile')?.addEventListener('click', goToPrevPage);
+    document.getElementById('pdfNextPageMobile')?.addEventListener('click', goToNextPage);
+    
+    let currentIndex = 0;
     function renderCarousel() {
         const track = document.getElementById('carouselTrack');
         const dotsContainer = document.getElementById('carouselDots');
-        
         if (!track) return;
-        
         track.innerHTML = '';
-        
         if (pdfDocuments.length === 0) {
-            // Aucun document
-            const emptySlide = document.createElement('div');
-            emptySlide.className = 'carousel-slide';
-            emptySlide.innerHTML = `
-                <div class="pdf-preview" style="cursor: default;">
-                    <i class="fas fa-images" style="font-size: 5rem; color: #c9a959;"></i>
-                    <h3>Galerie de dossiers</h3>
-                    <p>Aucun dossier publié pour le moment</p>
-                    ${isAdminLogged ? '<p style="margin-top: 1rem; font-size: 0.9rem;">Cliquez sur "Publier un dossier" dans le panneau admin</p>' : ''}
-                </div>
-            `;
-            track.appendChild(emptySlide);
+            track.innerHTML = `<div class="carousel-slide"><div class="pdf-preview" style="cursor:default;"><i class="fas fa-images"></i><h3>Aucun dossier</h3><p>Connectez-vous en admin pour publier</p></div></div>`;
             dotsContainer.innerHTML = '';
             return;
         }
-        
-        // Créer les slides pour chaque PDF
-        pdfDocuments.forEach((doc, index) => {
+        pdfDocuments.forEach((doc, idx) => {
             const slide = document.createElement('div');
             slide.className = 'carousel-slide';
             slide.innerHTML = `
-                <div class="pdf-preview" onclick="openPdf(${index})">
+                <div class="pdf-preview" onclick="openPdf(${idx})">
                     <i class="fas fa-file-pdf"></i>
                     <h3>${escapeHtml(doc.title)}</h3>
                     <p>${escapeHtml(doc.description)}</p>
-                    <p style="margin-top: 1rem; font-size: 0.9rem;"><i class="fas fa-calendar"></i> Publié le ${doc.date}</p>
-                    ${isAdminLogged ? `
-                        <div class="admin-delete-btn" onclick="event.stopPropagation(); deletePdf(${doc.id})">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                    ` : ''}
+                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="event.stopPropagation(); deletePdf(${doc.id})"><i class="fas fa-trash"></i></div>` : ''}
                 </div>
-                <div class="carousel-caption">
-                    <h3>${escapeHtml(doc.title)}</h3>
-                    <p>${escapeHtml(doc.description)}</p>
-                    <p style="font-size: 0.9rem;"><i class="fas fa-calendar"></i> ${doc.date}</p>
-                </div>
+                <div class="carousel-caption"><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.description)}</p></div>
             `;
             track.appendChild(slide);
         });
-        
-        // Créer les dots
         dotsContainer.innerHTML = '';
         for (let i = 0; i < pdfDocuments.length; i++) {
             const dot = document.createElement('div');
@@ -1764,704 +1466,73 @@
             dot.addEventListener('click', () => goToSlide(i));
             dotsContainer.appendChild(dot);
         }
-        
-        // S'assurer que l'index est valide
-        if (currentIndex >= pdfDocuments.length) {
-            currentIndex = 0;
-        }
+        if (currentIndex >= pdfDocuments.length) currentIndex = 0;
         goToSlide(currentIndex);
     }
     
-    // Fonction pour supprimer un PDF
-    function deletePdf(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer ce document ?')) {
-            pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
-            savePdfs();
-            renderCarousel();
-            showToast('Document supprimé');
-        }
-    }
-    
-    // Fonction pour supprimer tous les documents
-    function clearAllDocuments() {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer TOUS les dossiers ? Cette action est irréversible.')) {
-            pdfDocuments = [];
-            savePdfs();
-            renderCarousel();
-            showToast('Tous les dossiers ont été supprimés');
-        }
-    }
-    
-    // Fonction pour ouvrir un PDF
-    async function openPdf(index) {
-        const doc = pdfDocuments[index];
-        if (!doc || !doc.dataUrl) {
-            alert('Ce document n\'est pas disponible pour le moment.');
-            return;
-        }
-        
-        const modal = document.getElementById('pdfModal');
-        const title = document.getElementById('pdfModalTitle');
-        const viewer = document.getElementById('pdfViewer');
-        const downloadBtn = document.getElementById('pdfDownloadBtn');
-        
-        title.textContent = doc.title;
-        modal.classList.add('active');
-        
-        // Vider le viewer
-        viewer.innerHTML = '';
-        
-        // Créer un Blob à partir du base64
-        const byteCharacters = atob(doc.dataUrl);
-        const byteNumbers = new Array(byteCharacters.length);
-        for (let i = 0; i < byteCharacters.length; i++) {
-            byteNumbers[i] = byteCharacters.charCodeAt(i);
-        }
-        const byteArray = new Uint8Array(byteNumbers);
-        const blob = new Blob([byteArray], { type: 'application/pdf' });
-        const url = URL.createObjectURL(blob);
-        
-        // Charger le PDF
-        try {
-            const loadingTask = pdfjsLib.getDocument(url);
-            currentPdf = await loadingTask.promise;
-            totalPages = currentPdf.numPages;
-            currentPage = 1;
-            
-            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
-            
-            // Afficher la première page
-            await renderPage(currentPage);
-            
-            // Configurer le bouton de téléchargement
-            downloadBtn.onclick = () => {
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = doc.fileName || 'document.pdf';
-                a.click();
-            };
-            
-        } catch (error) {
-            console.error('Erreur lors du chargement du PDF:', error);
-            viewer.innerHTML = '<p style="color: white; text-align: center; padding: 2rem;">Erreur lors du chargement du PDF</p>';
-        }
-    }
-    
-    // Fonction pour rendre une page PDF
-    async function renderPage(pageNumber) {
-        if (!currentPdf) return;
-        
-        const viewer = document.getElementById('pdfViewer');
-        const page = await currentPdf.getPage(pageNumber);
-        
-        // Déterminer l'échelle pour s'adapter à la largeur
-        const containerWidth = viewer.clientWidth - 40;
-        const viewport = page.getViewport({ scale: 1 });
-        const scale = containerWidth / viewport.width;
-        const scaledViewport = page.getViewport({ scale });
-        
-        // Créer un canvas
-        const canvas = document.createElement('canvas');
-        const context = canvas.getContext('2d');
-        canvas.width = scaledViewport.width;
-        canvas.height = scaledViewport.height;
-        
-        viewer.innerHTML = '';
-        viewer.appendChild(canvas);
-        
-        // Rendre la page
-        const renderContext = {
-            canvasContext: context,
-            viewport: scaledViewport
-        };
-        
-        await page.render(renderContext).promise;
-    }
-    
-    // Fonction de navigation dans le carrousel
     function goToSlide(index) {
         const track = document.getElementById('carouselTrack');
-        if (!track) return;
-        
-        if (pdfDocuments.length > 0) {
-            currentIndex = Math.min(Math.max(0, index), pdfDocuments.length - 1);
-            track.style.transform = `translateX(-${currentIndex * 100}%)`;
-            
-            // Mettre à jour les dots
-            const dots = document.querySelectorAll('.carousel-dot');
-            dots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentIndex);
-            });
-        }
+        if (!track || pdfDocuments.length === 0) return;
+        currentIndex = Math.min(Math.max(0, index), pdfDocuments.length - 1);
+        track.style.transform = `translateX(-${currentIndex * 100}%)`;
+        document.querySelectorAll('.carousel-dot').forEach((dot, i) => dot.classList.toggle('active', i === currentIndex));
     }
+    document.getElementById('prevBtn')?.addEventListener('click', () => { if(pdfDocuments.length) goToSlide((currentIndex - 1 + pdfDocuments.length) % pdfDocuments.length); });
+    document.getElementById('nextBtn')?.addEventListener('click', () => { if(pdfDocuments.length) goToSlide((currentIndex + 1) % pdfDocuments.length); });
     
-    function nextSlide() {
-        if (pdfDocuments.length > 0) {
-            goToSlide((currentIndex + 1) % pdfDocuments.length);
-        }
-    }
+    function escapeHtml(text) { if(!text) return ''; return text.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
     
-    function prevSlide() {
-        if (pdfDocuments.length > 0) {
-            goToSlide((currentIndex - 1 + pdfDocuments.length) % pdfDocuments.length);
-        }
-    }
-    
-    // Échapper les caractères HTML pour éviter les injections
-    function escapeHtml(text) {
-        if (!text) return '';
-        const div = document.createElement('div');
-        div.textContent = text;
-        return div.innerHTML;
-    }
-    
-    // Gestionnaire pour le modal PDF
-    document.getElementById('closePdfModal').addEventListener('click', () => {
-        document.getElementById('pdfModal').classList.remove('active');
-        if (currentPdf) {
-            currentPdf.destroy();
-            currentPdf = null;
-        }
-    });
-    
-    document.getElementById('pdfPrevPage').addEventListener('click', async () => {
-        if (currentPdf && currentPage > 1) {
-            currentPage--;
-            await renderPage(currentPage);
-            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
-        }
-    });
-    
-    document.getElementById('pdfNextPage').addEventListener('click', async () => {
-        if (currentPdf && currentPage < totalPages) {
-            currentPage++;
-            await renderPage(currentPage);
-            document.getElementById('pdfPageInfo').textContent = `Page ${currentPage} / ${totalPages}`;
-        }
-    });
-    
-    // Initialisation des événements du carrousel
-    document.getElementById('prevBtn')?.addEventListener('click', prevSlide);
-    document.getElementById('nextBtn')?.addEventListener('click', nextSlide);
-    
-    // ========== FONCTIONS ADMIN EXISTANTES ==========
-    
-    function toggleAdminLogin() {
-        if (!isAdminLogged) {
-            document.getElementById('adminModal').classList.add('active');
-        } else {
-            isAdminLogged = false;
-            editMode = false;
-            document.body.classList.remove('admin-mode');
-            document.getElementById('adminBadge').classList.remove('logged');
-            document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock"></i><span>Admin</span>';
-            document.getElementById('adminPanel').classList.remove('active');
-            showToast('Déconnexion réussie');
-            renderCarousel();
-        }
-    }
-    
-    function checkAdminPassword() {
-        const password = document.getElementById('adminPassword').value;
-        if (password === ADMIN_PASSWORD) {
-            isAdminLogged = true;
-            document.getElementById('adminModal').classList.remove('active');
-            document.getElementById('adminBadge').classList.add('logged');
-            document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock-open"></i><span>Admin connecté</span>';
-            document.getElementById('adminPassword').value = '';
-            showToast('Connexion réussie');
-            toggleAdminPanel();
-            renderCarousel();
-        } else {
-            alert('Mot de passe incorrect !');
-        }
-    }
-    
-    function toggleAdminPanel() {
-        if (isAdminLogged) {
-            document.getElementById('adminPanel').classList.toggle('active');
-        }
-    }
-    
-    function enableEditMode() {
-        if (!isAdminLogged) return;
-        editMode = !editMode;
-        if (editMode) {
-            document.body.classList.add('admin-mode');
-            showToast('Mode édition activé - Double-cliquez sur les textes pour les modifier');
-        } else {
-            document.body.classList.remove('admin-mode');
-            showToast('Mode édition désactivé');
-        }
-    }
-    
-    function editText(element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const currentText = element.innerText;
-        const newText = prompt('Modifier le texte :', currentText);
-        
-        if (newText !== null && newText.trim() !== '') {
-            element.innerText = newText;
-            showToast('Texte modifié');
-            saveAllChanges();
-        }
-    }
-    
-    function changeLogo(input) {
-        if (!isAdminLogged) return;
-        
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('logo').src = event.target.result;
-            showToast('Logo modifié');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function changeHeroImage(input) {
-        if (!isAdminLogged) return;
-        
-        const file = input.files[0];
-        const reader = new FileReader();
-        reader.onload = function(event) {
-            document.getElementById('hero').style.backgroundImage = `url('${event.target.result}')`;
-            showToast('Image d\'arrière-plan modifiée');
-        };
-        reader.readAsDataURL(file);
-    }
-    
-    function changePrimaryColor(color) {
-        document.querySelectorAll('.btn, .rdv-btn a, .carousel-dot.active, .admin-panel-btn').forEach(el => {
-            el.style.backgroundColor = color;
-        });
-    }
-    
-    function changeSecondaryColor(color) {
-        document.querySelectorAll('nav, .hero, .stats-container').forEach(el => {
-            el.style.backgroundColor = color;
-        });
-    }
-    
-    function saveAllChanges() {
-        const changes = {};
-        document.querySelectorAll('[id]').forEach(el => {
-            if (el.id && el.innerText) {
-                changes[el.id] = el.innerText;
-            }
-        });
-        
-        localStorage.setItem('bkrWebsiteData', JSON.stringify(changes));
-        saveLawyersToStorage();
-        showToast('Toutes les modifications ont été sauvegardées');
-    }
-    
-    function resetChanges() {
-        if (confirm('Êtes-vous sûr de vouloir annuler toutes les modifications ?')) {
-            localStorage.removeItem('bkrWebsiteData');
-            localStorage.removeItem('bkrLawyers');
-            localStorage.removeItem('bkrPdfs');
-            location.reload();
-        }
-    }
-    
-    // Gestion des avocats
+    // ========== GESTION AVOCATS ==========
     function loadLawyers() {
         const saved = localStorage.getItem('bkrLawyers');
-        if (saved) {
-            try {
-                lawyers = JSON.parse(saved);
-            } catch (e) {
-                lawyers = [];
-            }
-        } else {
+        if(saved) { try { lawyers = JSON.parse(saved); } catch(e) { lawyers = []; } }
+        else {
             lawyers = [
-                {
-                    id: 1,
-                    name: "Maître Bivens KITUNGWA",
-                    role: "Administrateur du cabinet",
-                    desc: "Avocat au barreau du lualaba, expert en droit minier et corporate. Pilotage stratégique du cabinet.",
-                    phone: "+243 977 219 423",
-                    photo: "Maitre bivens kitungwa charger.jpeg"
-                },
-                {
-                    id: 2,
-                    name: "Maître Jonathan KASHAMA",
-                    role: "Membre du cabinet",
-                    desc: "Spécialiste en contentieux des affaires et droit fiscal. Intervient dans les dossiers complexes.",
-                    phone: "+243 813 535 315",
-                    photo: "maitre jk.jpeg"
-                },
-                {
-                    id: 3,
-                    name: "Maître Jealuc KANDA",
-                    role: "Chargé d'exécution",
-                    desc: "Responsable du suivi opérationnel des dossiers et des procédures judiciaires.",
-                    phone: "+243 975 886 336",
-                    photo: "jeanluc.jpeg"
-                },
-                {
-                    id: 4,
-                    name: "Maître Jonathan NSHIMBA",
-                    role: "Chargé de relations et affaires",
-                    desc: "Gestion des partenariats, relations clients et développement des affaires juridiques.",
-                    phone: "+243 999 816 551",
-                    photo: "Maitre jonathan nshima charger des relation et des affaire.jpeg"
-                }
+                { id:1, name:"Maître Bivens KITUNGWA", role:"Administrateur", desc:"Expert en droit minier et corporate", phone:"+243 977 219 423", photo:"Maitre bivens kitungwa charger.jpeg" },
+                { id:2, name:"Maître Jonathan KASHAMA", role:"Membre", desc:"Spécialiste contentieux et fiscal", phone:"+243 813 535 315", photo:"maitre jk.jpeg" },
+                { id:3, name:"Maître Jealuc KANDA", role:"Chargé d'exécution", desc:"Suivi des procédures judiciaires", phone:"+243 975 886 336", photo:"jeanluc.jpeg" },
+                { id:4, name:"Maître Jonathan NSHIMBA", role:"Relations et affaires", desc:"Gestion des partenariats", phone:"+243 999 816 551", photo:"Maitre jonathan nshima charger des relation et des affaire.jpeg" }
             ];
         }
         displayLawyers();
     }
-    
-    function saveLawyersToStorage() {
-        localStorage.setItem('bkrLawyers', JSON.stringify(lawyers));
-    }
-    
+    function saveLawyersToStorage() { localStorage.setItem('bkrLawyers', JSON.stringify(lawyers)); }
     function displayLawyers() {
         const grid = document.getElementById('lawyersGrid');
-        if (!grid) return;
+        if(!grid) return;
         grid.innerHTML = '';
-        
-        lawyers.forEach((lawyer, index) => {
+        lawyers.forEach(lawyer => {
             const card = document.createElement('div');
             card.className = 'lawyer-card';
             card.dataset.lawyerId = lawyer.id;
-            
             card.innerHTML = `
-                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}');" 
-                     onclick="if(window.isAdminLogged && window.editMode) changeLawyerPhoto(${lawyer.id})">
+                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}');">
                     <div class="photo-overlay">${lawyer.name}</div>
-                    ${isAdminLogged ? `
-                        <div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id})">
-                            <i class="fas fa-trash"></i>
-                        </div>
-                        <div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id})">
-                            <i class="fas fa-edit"></i>
-                        </div>
-                    ` : ''}
+                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id})"><i class="fas fa-trash"></i></div><div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id})"><i class="fas fa-edit"></i></div>` : ''}
                 </div>
-                <div class="info">
-                    <h4 ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'name', this)">${escapeHtml(lawyer.name)}</h4>
-                    <div class="role" ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'role', this)">${escapeHtml(lawyer.role)}</div>
-                    <p ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'desc', this)">${escapeHtml(lawyer.desc)}</p>
-                    <div class="contact-l"><i class="fas fa-phone"></i> <span ondblclick="if(window.editMode) editLawyerField(${lawyer.id}, 'phone', this)">${escapeHtml(lawyer.phone)}</span></div>
-                </div>
+                <div class="info"><h4>${escapeHtml(lawyer.name)}</h4><div class="role">${escapeHtml(lawyer.role)}</div><p>${escapeHtml(lawyer.desc)}</p><div class="contact-l"><i class="fas fa-phone"></i> ${escapeHtml(lawyer.phone)}</div></div>
             `;
-            
             grid.appendChild(card);
         });
     }
+    function deleteLawyer(id) { if(!isAdminLogged) return; if(confirm('Supprimer cet avocat ?')) { lawyers = lawyers.filter(l => l.id !== id); saveLawyersToStorage(); displayLawyers(); showToast('Avocat supprimé'); } }
+    function editLawyer(id) { if(!isAdminLogged) return; const lawyer = lawyers.find(l => l.id === id); if(lawyer) { currentEditLawyerId = id; document.getElementById('editLawyerName').value = lawyer.name; document.getElementById('editLawyerRole').value = lawyer.role; document.getElementById('editLawyerDesc').value = lawyer.desc; document.getElementById('editLawyerPhone').value = lawyer.phone; document.getElementById('editLawyerModal').classList.add('active'); } }
+    function saveLawyerEdit() { const lawyer = lawyers.find(l => l.id === currentEditLawyerId); if(lawyer) { lawyer.name = document.getElementById('editLawyerName').value; lawyer.role = document.getElementById('editLawyerRole').value; lawyer.desc = document.getElementById('editLawyerDesc').value; lawyer.phone = document.getElementById('editLawyerPhone').value; const photo = document.getElementById('editLawyerPhoto').files[0]; if(photo) { const reader = new FileReader(); reader.onload = e => { lawyer.photo = e.target.result; saveLawyersToStorage(); displayLawyers(); }; reader.readAsDataURL(photo); } else { saveLawyersToStorage(); displayLawyers(); } closeEditLawyerModal(); showToast('Avocat modifié'); } }
+    function closeEditLawyerModal() { document.getElementById('editLawyerModal').classList.remove('active'); currentEditLawyerId = null; }
+    function openAddLawyerModal() { if(isAdminLogged) document.getElementById('addLawyerModal').classList.add('active'); }
+    function closeAddLawyerModal() { document.getElementById('addLawyerModal').classList.remove('active'); document.getElementById('lawyerPhoto').value = ''; document.getElementById('lawyerName').value = ''; document.getElementById('lawyerRole').value = ''; document.getElementById('lawyerDesc').value = ''; document.getElementById('lawyerPhone').value = ''; }
+    function addLawyer() { const name = document.getElementById('lawyerName').value; const role = document.getElementById('lawyerRole').value; const desc = document.getElementById('lawyerDesc').value; const phone = document.getElementById('lawyerPhone').value; if(!name || !role || !desc || !phone) { alert('Remplissez tous les champs'); return; } const photo = document.getElementById('lawyerPhoto').files[0]; const newId = Math.max(...lawyers.map(l=>l.id),0)+1; if(photo) { const reader = new FileReader(); reader.onload = e => { lawyers.push({ id:newId, name, role, desc, phone, photo:e.target.result }); saveLawyersToStorage(); displayLawyers(); closeAddLawyerModal(); showToast('Avocat ajouté'); }; reader.readAsDataURL(photo); } else { lawyers.push({ id:newId, name, role, desc, phone, photo:'https://via.placeholder.com/400x300?text=Photo' }); saveLawyersToStorage(); displayLawyers(); closeAddLawyerModal(); showToast('Avocat ajouté'); } }
+    function updateLawyerSelect() { const select = document.getElementById('rdvLawyer'); if(select) { select.innerHTML = '<option value="">Choisissez un avocat</option>'; lawyers.forEach(l => { const opt = document.createElement('option'); opt.value = l.name; opt.textContent = l.name; select.appendChild(opt); }); } }
     
-    function editLawyerField(id, field, element) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const newValue = prompt(`Modifier ${field} :`, element.innerText);
-        if (newValue && newValue.trim() !== '') {
-            const lawyer = lawyers.find(l => l.id === id);
-            if (lawyer) {
-                lawyer[field] = newValue;
-                element.innerText = newValue;
-                saveLawyersToStorage();
-                showToast('Informations modifiées');
-            }
-        }
-    }
+    // ========== ADMIN ==========
+    function toggleAdminLogin() { if(!isAdminLogged) document.getElementById('adminModal').classList.add('active'); else { isAdminLogged = false; editMode = false; document.body.classList.remove('admin-mode'); document.getElementById('adminBadge').classList.remove('logged'); document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock"></i><span>Admin</span>'; document.getElementById('adminPanel').classList.remove('active'); showToast('Déconnexion'); renderCarousel(); displayLawyers(); } }
+    function checkAdminPassword() { const pwd = document.getElementById('adminPassword').value; if(pwd === ADMIN_PASSWORD) { isAdminLogged = true; document.getElementById('adminModal').classList.remove('active'); document.getElementById('adminBadge').classList.add('logged'); document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock-open"></i><span>Admin</span>'; showToast('Connecté'); toggleAdminPanel(); renderCarousel(); displayLawyers(); } else alert('Mot de passe incorrect'); }
+    function toggleAdminPanel() { if(isAdminLogged) document.getElementById('adminPanel').classList.toggle('active'); }
+    function enableEditMode() { if(!isAdminLogged) return; editMode = !editMode; if(editMode) { document.body.classList.add('admin-mode'); showToast('Mode édition activé'); } else { document.body.classList.remove('admin-mode'); showToast('Mode édition désactivé'); } }
+    function saveAllChanges() { showToast('Modifications sauvegardées'); saveLawyersToStorage(); savePdfs(); }
+    function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMessage').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
     
-    function changeLawyerPhoto(id) {
-        if (!editMode || !isAdminLogged) return;
-        
-        const input = document.createElement('input');
-        input.type = 'file';
-        input.accept = 'image/*';
-        input.onchange = function(e) {
-            const file = e.target.files[0];
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                const lawyer = lawyers.find(l => l.id === id);
-                if (lawyer) {
-                    lawyer.photo = event.target.result;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                    showToast('Photo modifiée');
-                }
-            };
-            reader.readAsDataURL(file);
-        };
-        input.click();
-    }
-    
-    function openAddLawyerModal() {
-        if (!isAdminLogged) return;
-        document.getElementById('addLawyerModal').classList.add('active');
-    }
-    
-    function closeAddLawyerModal() {
-        document.getElementById('addLawyerModal').classList.remove('active');
-        document.getElementById('lawyerPhoto').value = '';
-        document.getElementById('lawyerName').value = '';
-        document.getElementById('lawyerRole').value = '';
-        document.getElementById('lawyerDesc').value = '';
-        document.getElementById('lawyerPhone').value = '';
-    }
-    
-    function addLawyer() {
-        const photo = document.getElementById('lawyerPhoto').files[0];
-        const name = document.getElementById('lawyerName').value;
-        const role = document.getElementById('lawyerRole').value;
-        const desc = document.getElementById('lawyerDesc').value;
-        const phone = document.getElementById('lawyerPhone').value;
-        
-        if (!name || !role || !desc || !phone) {
-            alert('Veuillez remplir tous les champs');
-            return;
-        }
-        
-        const newId = Math.max(...lawyers.map(l => l.id), 0) + 1;
-        
-        if (photo) {
-            const reader = new FileReader();
-            reader.onload = function(event) {
-                lawyers.push({
-                    id: newId,
-                    name: name,
-                    role: role,
-                    desc: desc,
-                    phone: phone,
-                    photo: event.target.result
-                });
-                saveLawyersToStorage();
-                displayLawyers();
-                closeAddLawyerModal();
-                showToast('Avocat ajouté avec succès');
-            };
-            reader.readAsDataURL(photo);
-        } else {
-            lawyers.push({
-                id: newId,
-                name: name,
-                role: role,
-                desc: desc,
-                phone: phone,
-                photo: 'https://via.placeholder.com/400x300?text=Photo'
-            });
-            saveLawyersToStorage();
-            displayLawyers();
-            closeAddLawyerModal();
-            showToast('Avocat ajouté avec succès');
-        }
-    }
-    
-    function editLawyer(id) {
-        if (!isAdminLogged) return;
-        
-        const lawyer = lawyers.find(l => l.id === id);
-        if (lawyer) {
-            currentEditLawyerId = id;
-            document.getElementById('editLawyerName').value = lawyer.name;
-            document.getElementById('editLawyerRole').value = lawyer.role;
-            document.getElementById('editLawyerDesc').value = lawyer.desc;
-            document.getElementById('editLawyerPhone').value = lawyer.phone;
-            document.getElementById('editLawyerModal').classList.add('active');
-        }
-    }
-    
-    function closeEditLawyerModal() {
-        document.getElementById('editLawyerModal').classList.remove('active');
-        currentEditLawyerId = null;
-    }
-    
-    function saveLawyerEdit() {
-        const lawyer = lawyers.find(l => l.id === currentEditLawyerId);
-        if (lawyer) {
-            const photo = document.getElementById('editLawyerPhoto').files[0];
-            const name = document.getElementById('editLawyerName').value;
-            const role = document.getElementById('editLawyerRole').value;
-            const desc = document.getElementById('editLawyerDesc').value;
-            const phone = document.getElementById('editLawyerPhone').value;
-            
-            if (photo) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    lawyer.photo = event.target.result;
-                    lawyer.name = name;
-                    lawyer.role = role;
-                    lawyer.desc = desc;
-                    lawyer.phone = phone;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                    closeEditLawyerModal();
-                    showToast('Avocat modifié avec succès');
-                };
-                reader.readAsDataURL(photo);
-            } else {
-                lawyer.name = name;
-                lawyer.role = role;
-                lawyer.desc = desc;
-                lawyer.phone = phone;
-                saveLawyersToStorage();
-                displayLawyers();
-                closeEditLawyerModal();
-                showToast('Avocat modifié avec succès');
-            }
-        }
-    }
-    
-    function deleteLawyer(id) {
-        if (!isAdminLogged) return;
-        
-        if (confirm('Êtes-vous sûr de vouloir supprimer cet avocat ?')) {
-            lawyers = lawyers.filter(l => l.id !== id);
-            saveLawyersToStorage();
-            displayLawyers();
-            showToast('Avocat supprimé');
-        }
-    }
-    
-    function reorderLawyers() {
-        if (!isAdminLogged) return;
-        
-        new Sortable(document.getElementById('lawyersGrid'), {
-            animation: 150,
-            onEnd: function(evt) {
-                const newOrder = [];
-                document.querySelectorAll('.lawyer-card').forEach(card => {
-                    const id = parseInt(card.dataset.lawyerId);
-                    const lawyer = lawyers.find(l => l.id === id);
-                    if (lawyer) newOrder.push(lawyer);
-                });
-                lawyers = newOrder;
-                saveLawyersToStorage();
-                showToast('Ordre des avocats modifié');
-            }
-        });
-    }
-    
-    function updateLawyerSelect() {
-        const select = document.getElementById('rdvLawyer');
-        if (select) {
-            select.innerHTML = '<option value="">Choisissez un avocat</option>';
-            lawyers.forEach(lawyer => {
-                const option = document.createElement('option');
-                option.value = lawyer.name;
-                option.textContent = lawyer.name;
-                select.appendChild(option);
-            });
-        }
-    }
-    
-    function editStatistics() {
-        if (!isAdminLogged) return;
-        
-        const stats = document.querySelectorAll('.stat-item h3, .stat-item p');
-        stats.forEach(stat => {
-            stat.setAttribute('contenteditable', 'true');
-        });
-    }
-    
-    function exportData() {
-        const data = {
-            texts: {},
-            images: {},
-            pdfDocuments: pdfDocuments,
-            lawyers: lawyers
-        };
-        
-        document.querySelectorAll('[id]').forEach(el => {
-            if (el.tagName === 'IMG') {
-                data.images[el.id] = el.src;
-            } else if (el.innerText) {
-                data.texts[el.id] = el.innerText;
-            }
-        });
-        
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: 'application/json'});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = 'bkr-website-backup.json';
-        a.click();
-        showToast('Données exportées');
-    }
-    
-    function importData(input) {
-        const file = input.files[0];
-        const reader = new FileReader();
-        
-        reader.onload = function(e) {
-            try {
-                const data = JSON.parse(e.target.result);
-                
-                if (data.texts) {
-                    Object.keys(data.texts).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.innerText = data.texts[id];
-                    });
-                }
-                
-                if (data.images) {
-                    Object.keys(data.images).forEach(id => {
-                        const el = document.getElementById(id);
-                        if (el) el.src = data.images[id];
-                    });
-                }
-                
-                if (data.pdfDocuments) {
-                    pdfDocuments = data.pdfDocuments;
-                    savePdfs();
-                    renderCarousel();
-                }
-                
-                if (data.lawyers) {
-                    lawyers = data.lawyers;
-                    saveLawyersToStorage();
-                    displayLawyers();
-                }
-                
-                showToast('Données importées avec succès');
-            } catch (error) {
-                alert('Erreur lors de l\'importation');
-            }
-        };
-        
-        reader.readAsText(file);
-    }
-    
-    function showToast(message) {
-        const toast = document.getElementById('toast');
-        document.getElementById('toastMessage').textContent = message;
-        toast.classList.add('show');
-        setTimeout(() => {
-            toast.classList.remove('show');
-        }, 3000);
-    }
-    
-    function loadSavedData() {
-        const saved = localStorage.getItem('bkrWebsiteData');
-        if (saved) {
-            try {
-                const data = JSON.parse(saved);
-                Object.keys(data).forEach(id => {
-                    const el = document.getElementById(id);
-                    if (el) el.innerText = data[id];
-                });
-            } catch (e) {
-                console.error('Erreur lors du chargement des données');
-            }
-        }
-    }
-    
-    // Initialisation
-    window.onload = function() {
-        loadSavedData();
-        loadLawyers();
-        loadPdfs();
-        updateLawyerSelect();
-    };
+    window.onload = () => { loadLawyers(); loadPdfs(); updateLawyerSelect(); };
 </script>
 </body>
 </html>
