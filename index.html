@@ -10,6 +10,10 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.min.js"></script>
     <!-- SortableJS pour le drag & drop -->
     <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
+    <!-- Firebase SDKs -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-storage-compat.js"></script>
     <style>
         * {
             margin: 0;
@@ -1066,13 +1070,13 @@
 <div class="lawyer-modal" id="addLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-user-plus"></i> Ajouter un avocat</h3>
-        <div class="lawyer-form-group"><label>Photo</label><input type="file" id="lawyerPhoto" accept="image/*"></div>
-        <div class="lawyer-form-group"><label>Nom</label><input type="text" id="lawyerName"></div>
-        <div class="lawyer-form-group"><label>Rôle</label><input type="text" id="lawyerRole"></div>
-        <div class="lawyer-form-group"><label>Description</label><textarea id="lawyerDesc" rows="3"></textarea></div>
-        <div class="lawyer-form-group"><label>Téléphone</label><input type="text" id="lawyerPhone"></div>
-        <button class="admin-panel-btn" onclick="addLawyer()">Ajouter</button>
-        <button class="admin-panel-btn danger" onclick="closeAddLawyerModal()">Annuler</button>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Photo</label><input type="file" id="lawyerPhoto" accept="image/*" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Nom complet</label><input type="text" id="lawyerName" placeholder="Ex: Maître Jean Dupont" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Rôle / Spécialité</label><input type="text" id="lawyerRole" placeholder="Ex: Avocat associé" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Description / Bio</label><textarea id="lawyerDesc" rows="3" placeholder="Présentation de l'avocat..." style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></textarea></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Téléphone</label><input type="text" id="lawyerPhone" placeholder="+243 XXX XXX XXX" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <button onclick="addLawyer()" style="width:100%; padding:12px; margin-top:10px; background:#c9a959; border:none; border-radius:8px; font-weight:600; cursor:pointer;">Ajouter l'avocat</button>
+        <button onclick="closeAddLawyerModal()" style="width:100%; padding:12px; margin-top:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
     </div>
 </div>
 
@@ -1080,13 +1084,13 @@
 <div class="lawyer-modal" id="editLawyerModal">
     <div class="lawyer-modal-content">
         <h3><i class="fas fa-edit"></i> Modifier l'avocat</h3>
-        <div class="lawyer-form-group"><label>Photo</label><input type="file" id="editLawyerPhoto" accept="image/*"></div>
-        <div class="lawyer-form-group"><label>Nom</label><input type="text" id="editLawyerName"></div>
-        <div class="lawyer-form-group"><label>Rôle</label><input type="text" id="editLawyerRole"></div>
-        <div class="lawyer-form-group"><label>Description</label><textarea id="editLawyerDesc" rows="3"></textarea></div>
-        <div class="lawyer-form-group"><label>Téléphone</label><input type="text" id="editLawyerPhone"></div>
-        <button class="admin-panel-btn" onclick="saveLawyerEdit()">Enregistrer</button>
-        <button class="admin-panel-btn danger" onclick="closeEditLawyerModal()">Annuler</button>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Nouvelle photo (optionnel)</label><input type="file" id="editLawyerPhoto" accept="image/*" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Nom complet</label><input type="text" id="editLawyerName" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Rôle / Spécialité</label><input type="text" id="editLawyerRole" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Description</label><textarea id="editLawyerDesc" rows="3" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></textarea></div>
+        <div class="lawyer-form-group" style="margin-bottom:15px;"><label>Téléphone</label><input type="text" id="editLawyerPhone" style="width:100%; padding:8px; margin-top:5px; border:1px solid #ddd; border-radius:8px;"></div>
+        <button onclick="saveLawyerEdit()" style="width:100%; padding:12px; margin-top:10px; background:#c9a959; border:none; border-radius:8px; font-weight:600; cursor:pointer;">Enregistrer</button>
+        <button onclick="closeEditLawyerModal()" style="width:100%; padding:12px; margin-top:10px; background:#6c757d; color:white; border:none; border-radius:8px; cursor:pointer;">Annuler</button>
     </div>
 </div>
 
@@ -1112,21 +1116,21 @@
 <!-- ========== MODAL RENDEZ-VOUS ========== -->
 <div class="modal" id="rdvModal">
     <div class="modal-content">
-        <span class="close-modal" id="closeModal">&times;</span>
+        <span class="close-modal" id="closeModal" style="float:right; font-size:2rem; cursor:pointer;">&times;</span>
         <h2 style="margin-bottom:1.5rem;">Prendre rendez-vous</h2>
         <form id="rdvForm">
-            <div class="form-group"><input type="text" placeholder="Nom complet" required id="rdvName"></div>
-            <div class="form-group"><input type="email" placeholder="Email" required id="rdvEmail"></div>
-            <div class="form-group"><input type="tel" placeholder="Téléphone" required id="rdvPhone"></div>
-            <div class="form-group"><select required id="rdvLawyer"><option value="">Choisissez un avocat</option></select></div>
-            <div class="form-group"><input type="date" required id="rdvDate"></div>
-            <div class="form-group"><textarea rows="3" placeholder="Motif" id="rdvMotif"></textarea></div>
+            <div class="form-group" style="margin-bottom:15px;"><input type="text" placeholder="Nom complet" required id="rdvName" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></div>
+            <div class="form-group" style="margin-bottom:15px;"><input type="email" placeholder="Email" required id="rdvEmail" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></div>
+            <div class="form-group" style="margin-bottom:15px;"><input type="tel" placeholder="Téléphone" required id="rdvPhone" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></div>
+            <div class="form-group" style="margin-bottom:15px;"><select required id="rdvLawyer" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"><option value="">Choisissez un avocat</option></select></div>
+            <div class="form-group" style="margin-bottom:15px;"><input type="date" required id="rdvDate" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></div>
+            <div class="form-group" style="margin-bottom:15px;"><textarea rows="3" placeholder="Motif" id="rdvMotif" style="width:100%; padding:12px; border:1px solid #ddd; border-radius:8px;"></textarea></div>
             <button type="submit" class="btn" style="width:100%;">Confirmer</button>
         </form>
     </div>
 </div>
 
-<!-- ========== MODAL PDF AVEC BOUTON TÉLÉCHARGEMENT EN BAS ========== -->
+<!-- ========== MODAL PDF ========== -->
 <div class="pdf-modal" id="pdfModal">
     <div class="pdf-modal-content">
         <div class="pdf-modal-header">
@@ -1159,7 +1163,6 @@
             <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 977 219 423</span></div>
             <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 813 535 315</span></div>
             <div><i class="fas fa-phone-alt"></i> <span ondblclick="if(window.editMode) editText(this)">+243 975 886 336</span></div>
-    
             <div><i class="fas fa-envelope"></i> <span ondblclick="if(window.editMode) editText(this)">cabinetbkr@gmail.com</span></div>
         </div>
     </div>
@@ -1242,7 +1245,6 @@
 
 <footer>
     <p>© 2026 Cabinet B.K.J & Associés · Tous droits réservés</p>
-    <!-- Bouton développeur avec logo image -->
     <div style="margin-top: 1.5rem; display: flex; justify-content: center; align-items: center;">
         <a href="https://jordan-lydia.github.io/medisoft-services/" target="_blank" 
            style="display: inline-flex; align-items: center; justify-content: center; width: 45px; height: 45px; border-radius: 50%; transition: all 0.3s ease; border: 2px solid rgba(201, 169, 89, 0.4); overflow: hidden; background: #fff;"
@@ -1255,6 +1257,22 @@
 </footer>
 
 <script>
+    // Configuration Firebase
+    const firebaseConfig = {
+        apiKey: "AIzaSyBkQcNkWCIOY9FCzbWchWWnuUvhk8JsjFs",
+        authDomain: "cabinet-bkr-id.firebaseapp.com",
+        databaseURL: "https://cabinet-bkr-id-default-rtdb.europe-west1.firebasedatabase.app",
+        projectId: "cabinet-bkr-id",
+        storageBucket: "cabinet-bkr-id.firebasestorage.app",
+        messagingSenderId: "185254439157",
+        appId: "1:185254439157:web:8d4563d2ae3f4ce5d43dbc"
+    };
+
+    // Initialisation Firebase
+    firebase.initializeApp(firebaseConfig);
+    const database = firebase.database();
+    const storage = firebase.storage();
+
     pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.16.105/pdf.worker.min.js';
     
     let pdfDocuments = [];
@@ -1270,7 +1288,7 @@
     // Menu hamburger
     const menuToggle = document.getElementById('menuToggle');
     const navLinksEl = document.getElementById('navLinks');
-    menuToggle.addEventListener('click', () => navLinksEl.classList.toggle('active'));
+    if(menuToggle) menuToggle.addEventListener('click', () => navLinksEl.classList.toggle('active'));
     document.querySelectorAll('.nav-links a').forEach(link => link.addEventListener('click', () => navLinksEl.classList.remove('active')));
     
     // Modales rendez-vous
@@ -1292,14 +1310,231 @@
         });
     });
     
-    // ========== GESTION PDF ==========
-    function loadPdfs() {
-        const saved = localStorage.getItem('bkrPdfs');
-        if (saved) { try { pdfDocuments = JSON.parse(saved); } catch(e) { pdfDocuments = []; } }
-        renderCarousel();
-        if (pdfDocuments.length === 0) initDefaultPdf();
+    // ========== GESTION AVOCATS AVEC FIREBASE ==========
+    function loadLawyersFromFirebase() {
+        const lawyersRef = database.ref('lawyers');
+        lawyersRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                lawyers = Object.keys(data).map(key => ({
+                    id: key,
+                    ...data[key]
+                }));
+            } else {
+                // Données par défaut
+                lawyers = [
+                    { id: "1", name: "Maître Bivens KITUNGWA", role: "Administrateur", desc: "Expert en droit minier et corporate", phone: "+243 977 219 423", photo: "Maitre bivens kitungwa charger.jpeg" },
+                    { id: "2", name: "Maître Jonathan KASHAMA", role: "Relations et affaires", desc: "Spécialiste contentieux et Gestion des partenariats", phone: "+243 813 535 315", photo: "maitre jk.jpeg" },
+                    { id: "3", name: "Maître Jealuc KANDA", role: "Chargé d'exécution", desc: "Suivi des procédures judiciaires", phone: "+243 975 886 336", photo: "jeanluc.jpeg" }
+                ];
+                saveLawyersToFirebase();
+            }
+            displayLawyers();
+            updateLawyerSelect();
+        });
+    }
+
+    function saveLawyersToFirebase() {
+        const lawyersRef = database.ref('lawyers');
+        const lawyersData = {};
+        lawyers.forEach(lawyer => {
+            lawyersData[lawyer.id] = {
+                name: lawyer.name,
+                role: lawyer.role,
+                desc: lawyer.desc,
+                phone: lawyer.phone,
+                photo: lawyer.photo
+            };
+        });
+        lawyersRef.set(lawyersData);
+    }
+
+    function uploadLawyerPhoto(file, lawyerId) {
+        return new Promise((resolve, reject) => {
+            if(!file) {
+                resolve(null);
+                return;
+            }
+            const storageRef = storage.ref(`lawyers/${lawyerId}/${Date.now()}_${file.name}`);
+            const uploadTask = storageRef.put(file);
+            uploadTask.on('state_changed',
+                null,
+                (error) => reject(error),
+                () => {
+                    uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+                        resolve(downloadURL);
+                    });
+                }
+            );
+        });
+    }
+
+    async function addLawyer() {
+        if(!isAdminLogged) { alert('Connectez-vous en tant qu\'admin'); return; }
+        
+        const name = document.getElementById('lawyerName').value;
+        const role = document.getElementById('lawyerRole').value;
+        const desc = document.getElementById('lawyerDesc').value;
+        const phone = document.getElementById('lawyerPhone').value;
+        const photoFile = document.getElementById('lawyerPhoto').files[0];
+        
+        if(!name || !role || !desc || !phone) {
+            alert('Remplissez tous les champs');
+            return;
+        }
+        
+        const newId = Date.now().toString();
+        
+        if(photoFile) {
+            try {
+                const photoUrl = await uploadLawyerPhoto(photoFile, newId);
+                lawyers.push({ id: newId, name, role, desc, phone, photo: photoUrl });
+                saveLawyersToFirebase();
+                closeAddLawyerModal();
+                showToast('Avocat ajouté avec succès');
+            } catch(error) {
+                console.error('Erreur upload:', error);
+                alert('Erreur lors de l\'upload de la photo');
+            }
+        } else {
+            lawyers.push({ id: newId, name, role, desc, phone, photo: 'https://via.placeholder.com/400x300?text=Avocat' });
+            saveLawyersToFirebase();
+            closeAddLawyerModal();
+            showToast('Avocat ajouté avec succès');
+        }
+    }
+
+    function deleteLawyer(id) {
+        if(!isAdminLogged) return;
+        if(confirm('Supprimer cet avocat ?')) {
+            lawyers = lawyers.filter(l => l.id !== id);
+            saveLawyersToFirebase();
+            showToast('Avocat supprimé');
+        }
+    }
+
+    function editLawyer(id) {
+        if(!isAdminLogged) return;
+        const lawyer = lawyers.find(l => l.id === id);
+        if(lawyer) {
+            currentEditLawyerId = id;
+            document.getElementById('editLawyerName').value = lawyer.name;
+            document.getElementById('editLawyerRole').value = lawyer.role;
+            document.getElementById('editLawyerDesc').value = lawyer.desc;
+            document.getElementById('editLawyerPhone').value = lawyer.phone;
+            document.getElementById('editLawyerModal').classList.add('active');
+        }
+    }
+
+    async function saveLawyerEdit() {
+        const lawyer = lawyers.find(l => l.id === currentEditLawyerId);
+        if(lawyer) {
+            lawyer.name = document.getElementById('editLawyerName').value;
+            lawyer.role = document.getElementById('editLawyerRole').value;
+            lawyer.desc = document.getElementById('editLawyerDesc').value;
+            lawyer.phone = document.getElementById('editLawyerPhone').value;
+            
+            const photoFile = document.getElementById('editLawyerPhoto').files[0];
+            if(photoFile) {
+                try {
+                    const photoUrl = await uploadLawyerPhoto(photoFile, currentEditLawyerId);
+                    lawyer.photo = photoUrl;
+                } catch(error) {
+                    console.error('Erreur upload:', error);
+                    alert('Erreur lors de l\'upload de la photo');
+                }
+            }
+            
+            saveLawyersToFirebase();
+            closeEditLawyerModal();
+            showToast('Avocat modifié');
+        }
+    }
+
+    function displayLawyers() {
+        const grid = document.getElementById('lawyersGrid');
+        if(!grid) return;
+        grid.innerHTML = '';
+        lawyers.forEach(lawyer => {
+            const card = document.createElement('div');
+            card.className = 'lawyer-card';
+            card.dataset.lawyerId = lawyer.id;
+            card.innerHTML = `
+                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}'); background-size: cover; background-position: center;">
+                    <div class="photo-overlay">${escapeHtml(lawyer.name)}</div>
+                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="deleteLawyer('${lawyer.id}')"><i class="fas fa-trash"></i></div><div class="admin-edit-photo-btn" onclick="editLawyer('${lawyer.id}')"><i class="fas fa-edit"></i></div>` : ''}
+                </div>
+                <div class="info"><h4>${escapeHtml(lawyer.name)}</h4><div class="role">${escapeHtml(lawyer.role)}</div><p>${escapeHtml(lawyer.desc)}</p><div class="contact-l"><i class="fas fa-phone"></i> ${escapeHtml(lawyer.phone)}</div></div>
+            `;
+            grid.appendChild(card);
+        });
+    }
+
+    function closeEditLawyerModal() { 
+        document.getElementById('editLawyerModal').classList.remove('active'); 
+        currentEditLawyerId = null; 
+        document.getElementById('editLawyerPhoto').value = '';
     }
     
+    function openAddLawyerModal() { 
+        if(isAdminLogged) document.getElementById('addLawyerModal').classList.add('active'); 
+    }
+    
+    function closeAddLawyerModal() { 
+        document.getElementById('addLawyerModal').classList.remove('active'); 
+        document.getElementById('lawyerPhoto').value = ''; 
+        document.getElementById('lawyerName').value = ''; 
+        document.getElementById('lawyerRole').value = ''; 
+        document.getElementById('lawyerDesc').value = ''; 
+        document.getElementById('lawyerPhone').value = ''; 
+    }
+    
+    function updateLawyerSelect() { 
+        const select = document.getElementById('rdvLawyer'); 
+        if(select) { 
+            select.innerHTML = '<option value="">Choisissez un avocat</option>'; 
+            lawyers.forEach(l => { 
+                const opt = document.createElement('option'); 
+                opt.value = l.name; 
+                opt.textContent = l.name; 
+                select.appendChild(opt); 
+            }); 
+        } 
+    }
+    
+    // ========== GESTION PDF ==========
+    function loadPdfsFromFirebase() {
+        const pdfsRef = database.ref('pdfs');
+        pdfsRef.on('value', (snapshot) => {
+            const data = snapshot.val();
+            if(data) {
+                pdfDocuments = Object.keys(data).map(key => ({
+                    id: key,
+                    ...data[key]
+                }));
+            } else {
+                pdfDocuments = [];
+                initDefaultPdf();
+            }
+            renderCarousel();
+        });
+    }
+
+    function savePdfsToFirebase() {
+        const pdfsRef = database.ref('pdfs');
+        const pdfsData = {};
+        pdfDocuments.forEach(doc => {
+            pdfsData[doc.id] = {
+                title: doc.title,
+                description: doc.description,
+                dataUrl: doc.dataUrl,
+                fileName: doc.fileName,
+                date: doc.date
+            };
+        });
+        pdfsRef.set(pdfsData);
+    }
+
     async function initDefaultPdf() {
         try {
             const response = await fetch('Contrat-de-Partenariat.pdf');
@@ -1308,23 +1543,22 @@
                 const reader = new FileReader();
                 reader.onload = function(event) {
                     const base64 = event.target.result.split(',')[1];
+                    const newId = Date.now().toString();
                     pdfDocuments.push({
-                        id: Date.now(),
+                        id: newId,
                         title: "Contrat de Partenariat Minier",
                         description: "Contrat entre Rais KAZADI MWAMBA, Alex YAV THSIAGAMB et Bivins KITUNGWA YAMBUTA - Exploitation minière artisanale - Signé le 31/01/2026",
                         dataUrl: base64,
                         fileName: "Contrat-de-Partenariat.pdf",
                         date: "31/01/2026"
                     });
-                    savePdfs();
+                    savePdfsToFirebase();
                     renderCarousel();
                 };
                 reader.readAsDataURL(blob);
             }
         } catch(e) { console.log('PDF par défaut non trouvé'); }
     }
-    
-    function savePdfs() { localStorage.setItem('bkrPdfs', JSON.stringify(pdfDocuments)); }
     
     function showPdfUploadForm() {
         if (!isAdminLogged) { alert('Connectez-vous en admin'); return; }
@@ -1341,8 +1575,16 @@
             const reader = new FileReader();
             reader.onload = function(event) {
                 const base64 = event.target.result.split(',')[1];
-                pdfDocuments.push({ id: Date.now(), title, description, dataUrl: base64, fileName: file.name, date: new Date().toLocaleDateString('fr-FR') });
-                savePdfs();
+                const newId = Date.now().toString();
+                pdfDocuments.push({ 
+                    id: newId, 
+                    title, 
+                    description, 
+                    dataUrl: base64, 
+                    fileName: file.name, 
+                    date: new Date().toLocaleDateString('fr-FR') 
+                });
+                savePdfsToFirebase();
                 renderCarousel();
                 showToast('Document publié');
             };
@@ -1355,7 +1597,7 @@
         if (!isAdminLogged) return;
         if (confirm('Supprimer ce document ?')) {
             pdfDocuments = pdfDocuments.filter(doc => doc.id !== id);
-            savePdfs();
+            savePdfsToFirebase();
             renderCarousel();
             showToast('Document supprimé');
         }
@@ -1365,7 +1607,7 @@
         if (!isAdminLogged) return;
         if (confirm('Supprimer TOUS les documents ?')) {
             pdfDocuments = [];
-            savePdfs();
+            savePdfsToFirebase();
             renderCarousel();
             showToast('Tous les documents supprimés');
         }
@@ -1464,7 +1706,7 @@
                     <i class="fas fa-file-pdf"></i>
                     <h3>${escapeHtml(doc.title)}</h3>
                     <p>${escapeHtml(doc.description)}</p>
-                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="event.stopPropagation(); deletePdf(${doc.id})"><i class="fas fa-trash"></i></div>` : ''}
+                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="event.stopPropagation(); deletePdf('${doc.id}')"><i class="fas fa-trash"></i></div>` : ''}
                 </div>
                 <div class="carousel-caption"><h3>${escapeHtml(doc.title)}</h3><p>${escapeHtml(doc.description)}</p></div>
             `;
@@ -1494,57 +1736,19 @@
     
     function escapeHtml(text) { if(!text) return ''; return text.replace(/[&<>]/g, function(m) { if(m === '&') return '&amp;'; if(m === '<') return '&lt;'; if(m === '>') return '&gt;'; return m; }); }
     
-    // ========== GESTION AVOCATS ==========
-    function loadLawyers() {
-        const saved = localStorage.getItem('bkrLawyers');
-        if(saved) { try { lawyers = JSON.parse(saved); } catch(e) { lawyers = []; } }
-        else {
-            lawyers = [
-                { id:1, name:"Maître Bivens KITUNGWA", role:"Administrateur", desc:"Expert en droit minier et corporate", phone:"+243 977 219 423", photo:"Maitre bivens kitungwa charger.jpeg" },
-                { id:2, name:"Maître Jonathan KASHAMA", role:"Relations et affaires", desc:"Spécialiste contentieux et Gestion des partenariats ", phone:"+243 813 535 315", photo:"maitre jk.jpeg" },
-                { id:3, name:"Maître Jealuc KANDA", role:"Chargé d'exécution", desc:"Suivi des procédures judiciaires", phone:"+243 975 886 336", photo:"jeanluc.jpeg" },
-                
-            ];
-        }
-        displayLawyers();
-    }
-    function saveLawyersToStorage() { localStorage.setItem('bkrLawyers', JSON.stringify(lawyers)); }
-    function displayLawyers() {
-        const grid = document.getElementById('lawyersGrid');
-        if(!grid) return;
-        grid.innerHTML = '';
-        lawyers.forEach(lawyer => {
-            const card = document.createElement('div');
-            card.className = 'lawyer-card';
-            card.dataset.lawyerId = lawyer.id;
-            card.innerHTML = `
-                <div class="lawyer-photo" style="background-image: url('${lawyer.photo}');">
-                    <div class="photo-overlay">${lawyer.name}</div>
-                    ${isAdminLogged ? `<div class="admin-delete-btn" onclick="deleteLawyer(${lawyer.id})"><i class="fas fa-trash"></i></div><div class="admin-edit-photo-btn" onclick="editLawyer(${lawyer.id})"><i class="fas fa-edit"></i></div>` : ''}
-                </div>
-                <div class="info"><h4>${escapeHtml(lawyer.name)}</h4><div class="role">${escapeHtml(lawyer.role)}</div><p>${escapeHtml(lawyer.desc)}</p><div class="contact-l"><i class="fas fa-phone"></i> ${escapeHtml(lawyer.phone)}</div></div>
-            `;
-            grid.appendChild(card);
-        });
-    }
-    function deleteLawyer(id) { if(!isAdminLogged) return; if(confirm('Supprimer cet avocat ?')) { lawyers = lawyers.filter(l => l.id !== id); saveLawyersToStorage(); displayLawyers(); showToast('Avocat supprimé'); } }
-    function editLawyer(id) { if(!isAdminLogged) return; const lawyer = lawyers.find(l => l.id === id); if(lawyer) { currentEditLawyerId = id; document.getElementById('editLawyerName').value = lawyer.name; document.getElementById('editLawyerRole').value = lawyer.role; document.getElementById('editLawyerDesc').value = lawyer.desc; document.getElementById('editLawyerPhone').value = lawyer.phone; document.getElementById('editLawyerModal').classList.add('active'); } }
-    function saveLawyerEdit() { const lawyer = lawyers.find(l => l.id === currentEditLawyerId); if(lawyer) { lawyer.name = document.getElementById('editLawyerName').value; lawyer.role = document.getElementById('editLawyerRole').value; lawyer.desc = document.getElementById('editLawyerDesc').value; lawyer.phone = document.getElementById('editLawyerPhone').value; const photo = document.getElementById('editLawyerPhoto').files[0]; if(photo) { const reader = new FileReader(); reader.onload = e => { lawyer.photo = e.target.result; saveLawyersToStorage(); displayLawyers(); }; reader.readAsDataURL(photo); } else { saveLawyersToStorage(); displayLawyers(); } closeEditLawyerModal(); showToast('Avocat modifié'); } }
-    function closeEditLawyerModal() { document.getElementById('editLawyerModal').classList.remove('active'); currentEditLawyerId = null; }
-    function openAddLawyerModal() { if(isAdminLogged) document.getElementById('addLawyerModal').classList.add('active'); }
-    function closeAddLawyerModal() { document.getElementById('addLawyerModal').classList.remove('active'); document.getElementById('lawyerPhoto').value = ''; document.getElementById('lawyerName').value = ''; document.getElementById('lawyerRole').value = ''; document.getElementById('lawyerDesc').value = ''; document.getElementById('lawyerPhone').value = ''; }
-    function addLawyer() { const name = document.getElementById('lawyerName').value; const role = document.getElementById('lawyerRole').value; const desc = document.getElementById('lawyerDesc').value; const phone = document.getElementById('lawyerPhone').value; if(!name || !role || !desc || !phone) { alert('Remplissez tous les champs'); return; } const photo = document.getElementById('lawyerPhoto').files[0]; const newId = Math.max(...lawyers.map(l=>l.id),0)+1; if(photo) { const reader = new FileReader(); reader.onload = e => { lawyers.push({ id:newId, name, role, desc, phone, photo:e.target.result }); saveLawyersToStorage(); displayLawyers(); closeAddLawyerModal(); showToast('Avocat ajouté'); }; reader.readAsDataURL(photo); } else { lawyers.push({ id:newId, name, role, desc, phone, photo:'https://via.placeholder.com/400x300?text=Photo' }); saveLawyersToStorage(); displayLawyers(); closeAddLawyerModal(); showToast('Avocat ajouté'); } }
-    function updateLawyerSelect() { const select = document.getElementById('rdvLawyer'); if(select) { select.innerHTML = '<option value="">Choisissez un avocat</option>'; lawyers.forEach(l => { const opt = document.createElement('option'); opt.value = l.name; opt.textContent = l.name; select.appendChild(opt); }); } }
-    
     // ========== ADMIN ==========
     function toggleAdminLogin() { if(!isAdminLogged) document.getElementById('adminModal').classList.add('active'); else { isAdminLogged = false; editMode = false; document.body.classList.remove('admin-mode'); document.getElementById('adminBadge').classList.remove('logged'); document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock"></i><span>Admin</span>'; document.getElementById('adminPanel').classList.remove('active'); showToast('Déconnexion'); renderCarousel(); displayLawyers(); } }
     function checkAdminPassword() { const pwd = document.getElementById('adminPassword').value; if(pwd === ADMIN_PASSWORD) { isAdminLogged = true; document.getElementById('adminModal').classList.remove('active'); document.getElementById('adminBadge').classList.add('logged'); document.getElementById('adminBadge').innerHTML = '<i class="fas fa-lock-open"></i><span>Admin</span>'; showToast('Connecté'); toggleAdminPanel(); renderCarousel(); displayLawyers(); } else alert('Mot de passe incorrect'); }
     function toggleAdminPanel() { if(isAdminLogged) document.getElementById('adminPanel').classList.toggle('active'); }
     function enableEditMode() { if(!isAdminLogged) return; editMode = !editMode; if(editMode) { document.body.classList.add('admin-mode'); showToast('Mode édition activé'); } else { document.body.classList.remove('admin-mode'); showToast('Mode édition désactivé'); } }
-    function saveAllChanges() { showToast('Modifications sauvegardées'); saveLawyersToStorage(); savePdfs(); }
+    function saveAllChanges() { showToast('Modifications sauvegardées'); }
     function showToast(msg) { const toast = document.getElementById('toast'); document.getElementById('toastMessage').textContent = msg; toast.classList.add('show'); setTimeout(() => toast.classList.remove('show'), 3000); }
+    function editText(element) { if(editMode) { const newText = prompt('Modifier le texte:', element.innerText); if(newText !== null) element.innerText = newText; } }
     
-    window.onload = () => { loadLawyers(); loadPdfs(); updateLawyerSelect(); };
+    window.onload = () => { 
+        loadLawyersFromFirebase();
+        loadPdfsFromFirebase();
+    };
 </script>
 </body>
 </html>
